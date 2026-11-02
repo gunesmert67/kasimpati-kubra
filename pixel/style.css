@@ -1,0 +1,326 @@
+/* 8-Bit Retro Piksel Stilleri */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+:root {
+  --bg-dark: #0a0718;
+  --arcade-border: #f43f5e;
+  --pixel-gold: #fbbf24;
+  --pixel-pink: #fda4af;
+  --pixel-green: #34d399;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  position: fixed;
+  inset: 0;
+  background-color: var(--bg-dark);
+  font-family: 'Press Start 2P', monospace;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  image-rendering: pixelated;
+}
+
+/* Arcade Çerçeve Konteyneri */
+.arcade-cabinet {
+  width: 100%;
+  max-width: 440px;
+  height: 100%;
+  height: 100vh;
+  height: 100dvh;
+  padding: max(0.8rem, env(safe-area-inset-top)) 0.8rem max(1rem, env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Üst Skor Tablosu (HUD) */
+.hud-bar {
+  width: 100%;
+  background: #19122c;
+  border: 3px solid #f43f5e;
+  border-radius: 8px;
+  padding: 0.5rem 0.6rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.62rem;
+  box-shadow: 0 4px 0 #9f1239;
+  flex-shrink: 0;
+}
+
+.hud-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.hud-label {
+  color: #94a3b8;
+  font-size: 0.52rem;
+}
+
+.hud-val {
+  color: var(--pixel-gold);
+}
+
+/* Oyun Tuvali Sarıcısı */
+.canvas-wrapper {
+  position: relative;
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0.4rem 0;
+}
+
+#gameCanvas {
+  width: 100%;
+  height: auto;
+  max-height: 100%;
+  aspect-ratio: 480 / 320;
+  background: #0f0b20;
+  border: 4px solid #ffffff;
+  border-radius: 6px;
+  box-shadow: 0 8px 0 #1e153a, 0 0 25px rgba(244, 63, 94, 0.35);
+  display: block;
+}
+
+/* Retro Overlay Ekranları (Başlangıç & Bitiş) */
+.game-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 7, 24, 0.88);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  z-index: 30;
+  transition: opacity 0.3s ease;
+}
+
+.game-overlay.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.retro-box {
+  background: #1b1333;
+  border: 4px solid #fbbf24;
+  border-radius: 8px;
+  padding: 1.4rem 1rem;
+  text-align: center;
+  width: 100%;
+  max-width: 380px;
+  box-shadow: 0 6px 0 #b45309, 0 0 25px rgba(251, 191, 36, 0.3);
+}
+
+.blink-text {
+  font-size: 0.65rem;
+  color: #fbbf24;
+  margin-bottom: 0.6rem;
+  animation: blink 1s infinite steps(2);
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.pixel-title {
+  font-size: 1rem;
+  line-height: 1.4;
+  color: #ffffff;
+  margin-bottom: 0.6rem;
+  text-shadow: 2px 2px 0 #f43f5e;
+}
+
+.pixel-desc {
+  font-size: 0.58rem;
+  line-height: 1.6;
+  color: #cbd5e1;
+  margin-bottom: 1.2rem;
+}
+
+.pixel-tip {
+  font-size: 0.48rem;
+  color: #94a3b8;
+  margin-top: 0.8rem;
+}
+
+/* Retro Butonlar */
+.pixel-btn {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.72rem;
+  padding: 0.8rem 1.4rem;
+  color: #ffffff;
+  background: #f43f5e;
+  border: 3px solid #ffffff;
+  border-radius: 4px;
+  cursor: pointer;
+  box-shadow: 0 5px 0 #9f1239;
+  transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.pixel-btn:active {
+  transform: translateY(4px);
+  box-shadow: 0 1px 0 #9f1239;
+}
+
+.start-btn {
+  background: #10b981;
+  box-shadow: 0 5px 0 #047857;
+}
+.start-btn:active {
+  box-shadow: 0 1px 0 #047857;
+}
+
+/* Zafer Kutusu */
+.victory-box {
+  border-color: #f43f5e;
+  box-shadow: 0 6px 0 #9f1239;
+}
+
+.badge-tag {
+  font-size: 0.52rem;
+  color: #fbbf24;
+  margin-bottom: 0.5rem;
+}
+
+.victory-title {
+  font-size: 1.1rem;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+  text-shadow: 2px 2px 0 #f43f5e;
+}
+
+.victory-desc {
+  font-size: 0.55rem;
+  line-height: 1.6;
+  color: #fecdd3;
+  margin-bottom: 0.8rem;
+}
+
+.pixel-hearts-burst {
+  font-size: 1.4rem;
+  margin: 0.5rem 0 1rem;
+  animation: floatBounce 1s infinite alternate;
+}
+
+@keyframes floatBounce {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-5px); }
+}
+
+.proposal-box {
+  background: #281a4b;
+  border: 2px dashed #fda4af;
+  padding: 0.8rem 0.5rem;
+  border-radius: 6px;
+}
+
+.proposal-text {
+  font-size: 0.55rem;
+  line-height: 1.6;
+  color: #ffffff;
+  margin-bottom: 0.8rem;
+}
+
+.btn-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.accept-btn {
+  width: 100%;
+  font-size: 0.62rem;
+  padding: 0.7rem 0.5rem;
+  background: #ec4899;
+  box-shadow: 0 4px 0 #be185d;
+}
+.accept-btn:active {
+  box-shadow: 0 1px 0 #be185d;
+}
+
+/* Mobil Alt Kontrol Paneli */
+.controls-bar {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.3rem 0;
+  flex-shrink: 0;
+}
+
+.arcade-jump-btn {
+  background: #f43f5e;
+  border: 3px solid #ffffff;
+  border-radius: 12px;
+  color: #ffffff;
+  font-family: 'Press Start 2P', monospace;
+  padding: 0.85rem 1.6rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+  box-shadow: 0 6px 0 #9f1239;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  touch-action: manipulation;
+  transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.arcade-jump-btn:active {
+  transform: translateY(4px);
+  box-shadow: 0 2px 0 #9f1239;
+}
+
+.jump-arrow {
+  font-size: 0.9rem;
+}
+
+.sound-toggle-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 3px;
+}
+
+.sound-btn {
+  background: #1e153a;
+  border: 2px solid #64748b;
+  border-radius: 6px;
+  color: #94a3b8;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.52rem;
+  padding: 0.45rem 0.65rem;
+  cursor: pointer;
+}
+
+.hint-text {
+  font-size: 0.44rem;
+  color: #64748b;
+}
+
+@media (max-width: 380px) {
+  .hud-bar { font-size: 0.52rem; }
+  .pixel-title { font-size: 0.85rem; }
+  .arcade-jump-btn { padding: 0.75rem 1.2rem; font-size: 0.75rem; }
+}
