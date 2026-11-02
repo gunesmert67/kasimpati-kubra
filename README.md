@@ -14,6 +14,7 @@ Bu proje, **Kübra**'ya özel olarak tasarlanmış, modüler mimariye sahip roma
 | `/` | **Kasımpatı (Ana Karşılama)** | 🟢 Canlı | Canlı filizlenen kasımpatı, 5 adımlı kaçan buton ve kalp sürprizi. |
 | `/kasimpati` | **Kasımpatı (Bağımsız Modül)** | 🟢 Canlı | Kasımpatı animasyonunun tamamen kendi klasöründe çalışan bağımsız sürümü. |
 | `/pixel` | **1520 KM Retro Oyun** | 🟢 Canlı | 8-Bit piksel runner. Kübra / Mert karakter seçimi, Iğdır-İstanbul mesafesi ve tatlı/kahve borcu sonu. |
+| `/soru` | **Kahve & Tatlı Sözleşmesi** | 🟢 Canlı | Kaçan buton / Büyüyen Evet TikTok akımı, suçluluk psikolojisi replikleri ve date ruleti. |
 | `/hub` | **Oyun Portalı (Hub)** | 🟢 Hazır | İleride ana sayfa yapılacak olan lüks karanlık tema oyun seçim merkezi. |
 
 ---
@@ -38,10 +39,14 @@ kasimpati-kubra/
 │   ├── style.css           # Kasımpatıya özel stiller
 │   └── script.js           # SVG büyüme, kaçan buton ve konfeti motoru
 │
-└── pixel/                  # 2. BÖLÜM: 1520 KM RETRO PİKSEL OYUNU
-    ├── index.html          # /pixel rotası (Self-contained arcade kabineti)
-    ├── style.css           # Arcade retro piksel teması
-    └── game.js             # Canvas 8-bit motoru, ses sentezleyici ve fizik motoru
+├── pixel/                  # 2. BÖLÜM: 1520 KM RETRO PİKSEL OYUNU
+│   ├── index.html          # /pixel rotası (Self-contained arcade kabineti)
+│   ├── style.css           # Arcade retro piksel teması
+│   └── game.js             # Canvas 8-bit motoru, ses sentezleyici ve fizik motoru
+│
+└── soru/                   # 3. BÖLÜM: KAHVE & TATLI SÖZLEŞMESİ (TIKTOK KAÇAN BUTON)
+    ├── index.html          # /soru rotası (Büyüyen Evet, replikler, konfeti, date ruleti)
+    └── images/             # Yerel animasyonlu GIF'ler (ask.gif, yes.gif)
 ```
 
 ---

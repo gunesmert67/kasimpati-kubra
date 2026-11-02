@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Kübra'ya Küçük Bir Soru... ☕🍰</title>
+  <meta name="theme-color" content="#090812">
+
+  <!-- WhatsApp & Sosyal Medya Önizleme -->
+  <meta property="og:title" content="Kübra'ya Küçük Bir Soru... ☕🍰">
+  <meta property="og:description" content="Mert'in sana sormak istediği çok önemli bir soru var!">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://kubra.mertgunes.com/soru">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
+    }
+
+    :root {
+      --bg-dark: #090812;
+      --rose: #f43f5e;
+      --rose-glow: rgba(244, 63, 94, 0.45);
+      --green: #10b981;
+      --green-glow: rgba(16, 185, 129, 0.45);
+    }
+
+    html, body {
+      width: 100%;
+      height: 100vh;
+      height: 100dvh;
+      background: var(--bg-dark);
+      background-image: radial-gradient(circle at 50% 20%, #22122b 0%, #110b1e 50%, #07060e 100%);
+      font-family: 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: #ffffff;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Arka Plan Atmosfer Parıltısı */
+    .glow-blob {
+      position: fixed;
+      top: 25%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 380px;
+      height: 380px;
+      background: radial-gradient(circle, rgba(244, 63, 94, 0.2) 0%, rgba(168, 85, 247, 0.08) 50%, transparent 70%);
+      filter: blur(60px);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Ana Konteyner - iPhone 14 Pro Max Safe Area Tam Uyum */
+    .app-card {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      max-width: 440px;
+      height: 100vh;
+      height: 100dvh;
+      padding: max(1.2rem, env(safe-area-inset-top)) 1.2rem max(1.4rem, env(safe-area-inset-bottom));
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* Üst Navigasyon Barı */
+    .top-nav {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 9999px;
+      padding: 0.4rem 0.85rem;
+      color: #e2e8f0;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-decoration: none;
+      backdrop-filter: blur(10px);
+      transition: all 0.2s ease;
+    }
+    .back-btn:active {
+      transform: scale(0.95);
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .badge-pill {
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 0.35rem 0.8rem;
+      border-radius: 9999px;
+      background: rgba(244, 63, 94, 0.15);
+      border: 1px solid rgba(244, 63, 94, 0.35);
+      color: #fda4af;
+      letter-spacing: 0.02em;
+    }
+
+    /* Orta Soru & Görsel Alanı */
+    .center-stage {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      width: 100%;
+      margin: auto 0;
+    }
+
+    /* Başlık */
+    .question-title {
+      font-family: 'Nunito', sans-serif;
+      font-size: clamp(1.25rem, 5.2vw, 1.55rem);
+      font-weight: 900;
+      line-height: 1.35;
+      color: #ffffff;
+      margin-bottom: 0.4rem;
+      text-shadow: 0 2px 14px rgba(0, 0, 0, 0.6);
+      padding: 0 0.5rem;
+    }
+
+    .question-sub {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #cbd5e1;
+      margin-bottom: 1.2rem;
+    }
+
+    /* Sevimli GIF Konteyneri */
+    .gif-frame {
+      width: 190px;
+      height: 190px;
+      max-width: 55vw;
+      max-height: 55vw;
+      border-radius: 28px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 2px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4), 0 0 24px var(--rose-glow);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      margin-bottom: 1.2rem;
+      transition: transform 0.3s ease;
+    }
+
+    .gif-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Alt Butonlar Bölgesi */
+    .action-container {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      position: relative;
+      min-height: 120px;
+      margin-top: 0.5rem;
+    }
+
+    /* EVET BUTONU - Büyüyen Süper Buton */
+    .btn-yes {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: #ffffff;
+      font-family: 'Nunito', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 800;
+      padding: 0.85rem 2rem;
+      border: none;
+      border-radius: 9999px;
+      cursor: pointer;
+      box-shadow: 0 6px 20px var(--green-glow), 0 2px 6px rgba(0, 0, 0, 0.3);
+      transition: all 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      z-index: 50;
+      white-space: nowrap;
+    }
+
+    .btn-yes:active {
+      transform: scale(0.94);
+    }
+
+    /* HAYIR BUTONU - Replikleri Değişen & Kaçan */
+    .btn-no {
+      background: rgba(255, 255, 255, 0.1);
+      color: #f1f5f9;
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      padding: 0.85rem 1.4rem;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 9999px;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+      z-index: 40;
+      white-space: nowrap;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    }
+
+    .btn-no:active {
+      transform: scale(0.92);
+      background: rgba(255, 255, 255, 0.18);
+    }
+
+    /* KUTLAMA MODALI / SÖZLEŞME EKRANI */
+    .celebration-screen {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 30%, #271131 0%, #12091c 60%, #08050e 100%);
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: max(1.2rem, env(safe-area-inset-top)) 1.2rem max(1.4rem, env(safe-area-inset-bottom));
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0.92);
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .celebration-screen.active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: scale(1);
+    }
+
+    .celeb-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      margin: auto 0;
+      width: 100%;
+    }
+
+    .celeb-badge {
+      font-size: 0.76rem;
+      font-weight: 800;
+      padding: 0.4rem 1rem;
+      border-radius: 9999px;
+      background: rgba(16, 185, 129, 0.2);
+      border: 1px solid rgba(16, 185, 129, 0.5);
+      color: #6ee7b7;
+      margin-bottom: 0.8rem;
+    }
+
+    .celeb-title {
+      font-family: 'Nunito', sans-serif;
+      font-size: 1.55rem;
+      font-weight: 900;
+      color: #ffffff;
+      line-height: 1.3;
+      margin-bottom: 0.4rem;
+    }
+
+    .celeb-desc {
+      font-size: 0.9rem;
+      color: #cbd5e1;
+      line-height: 1.5;
+      margin-bottom: 1.2rem;
+      padding: 0 0.8rem;
+    }
+
+    /* Date Ruleti / Ne Yiyeceğiz Kartı */
+    .roulette-box {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 18px;
+      padding: 1rem 0.8rem;
+      margin-top: 0.4rem;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    }
+
+    .roulette-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #f472b6;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.3rem;
+    }
+
+    .roulette-result {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #ffffff;
+      min-height: 2.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .spin-btn {
+      margin-top: 0.6rem;
+      background: rgba(244, 63, 94, 0.2);
+      border: 1px solid rgba(244, 63, 94, 0.5);
+      border-radius: 9999px;
+      color: #fda4af;
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 0.45rem 1rem;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .spin-btn:active {
+      transform: scale(0.95);
+      background: rgba(244, 63, 94, 0.3);
+    }
+
+    /* Kutlama Alt Butonları */
+    .celeb-actions {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 1rem;
+    }
+
+    .hub-return-btn {
+      width: 100%;
+      padding: 0.85rem;
+      border-radius: 9999px;
+      background: linear-gradient(135deg, #f43f5e, #e11d48);
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 0.95rem;
+      text-decoration: none;
+      text-align: center;
+      box-shadow: 0 4px 16px rgba(244, 63, 94, 0.4);
+    }
+
+    .replay-link {
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: underline;
+      padding: 0.3rem;
+    }
+
+    /* Konfeti Canvas */
+    #confettiCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 999;
+    }
+  </style>
+</head>
+<body>
+  <div class="glow-blob"></div>
+
+  <!-- Konfeti Efekti -->
+  <canvas id="confettiCanvas"></canvas>
+
+  <main class="app-card">
+    <!-- Üst Bar -->
+    <header class="top-nav">
+      <a href="/hub" class="back-btn">← Menü</a>
+      <span class="badge-pill">Mert'in Sorusu ✨</span>
+    </header>
+
+    <!-- Soru & Karakter Sahnesi -->
+    <div class="center-stage" id="mainStage">
+      <h1 class="question-title">İstanbul'a gelince kahve & tatlı date'ine çıkmayı onaylıyor musun? ☕🍰</h1>
+      <p class="question-sub">1520 KM mesafeden sonra ilk resmi teklif 🌸</p>
+
+      <div class="gif-frame" id="gifFrame">
+        <img id="mainGif" src="/soru/images/ask.gif" alt="Sevimli Teklif">
+      </div>
+
+      <!-- Butonlar Bölgesi -->
+      <div class="action-container" id="actionContainer">
+        <button id="yesBtn" class="btn-yes">
+          <span>Evet! 🥰</span>
+        </button>
+        <button id="noBtn" class="btn-no">
+          <span>Hayır 🙄</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Alt Bilgi / İpucu -->
+    <footer style="font-size: 0.72rem; color: #64748b; text-align: center;">
+      Kübra için sevgiyle kodlandı 💖
+    </footer>
+  </main>
+
+  <!-- KUTLAMA / SÖZLEŞME EKRANI -->
+  <div id="celebrationScreen" class="celebration-screen">
+    <header class="top-nav">
+      <a href="/hub" class="back-btn">← Oyun Merkezi</a>
+      <span class="badge-pill" style="border-color: #34d399; color: #6ee7b7;">Sözleşme Onaylandı ✨</span>
+    </header>
+
+    <div class="celeb-card">
+      <div class="gif-frame" style="box-shadow: 0 10px 28px rgba(16, 185, 129, 0.4); margin-bottom: 0.8rem;">
+        <img src="/soru/images/yes.gif" alt="Kutlama!">
+      </div>
+      <span class="celeb-badge">RESMİ OLARAK KAYDEDİLDİ 📜</span>
+      <h2 class="celeb-title">SÖZLEŞME İMZALANDI! 🥳</h2>
+      <p class="celeb-desc">
+        Tebrikler Kübra! 1520 KM mesafe kapandığında kahve ve tatlılar Mert'ten, sohbet senden! ☕🍰
+      </p>
+
+      <!-- İnteraktif Date Ruleti -->
+      <div class="roulette-box">
+        <div class="roulette-label">Buluştuğumuzda İlk Ne Yiyeceğiz? 🎲</div>
+        <div class="roulette-result" id="rouletteResult">Kadıköy'de Bol Çikolatalı Waffle 🧇</div>
+        <button id="spinBtn" class="spin-btn">Fikri Değiştir ↺</button>
+      </div>
+    </div>
+
+    <div class="celeb-actions">
+      <a href="/hub" class="hub-return-btn">Oyun Merkezine Dön ➔</a>
+      <button id="replayBtn" class="replay-link">Soruyu Baştan Sor ↺</button>
+    </div>
+  </div>
+
+  <script>
+    // --- SES MOTORU (Web Audio API - Sıfır Dış Bağımlılık) ---
+    const AudioEngine = {
+      ctx: null,
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) this.ctx = new AudioContext();
+        }
+      },
+      playBoing() {
+        try {
+          this.init();
+          if (!this.ctx) return;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          const now = this.ctx.currentTime;
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(320, now);
+          osc.frequency.exponentialRampToValueAtTime(140, now + 0.18);
+          gain.gain.setValueAtTime(0.2, now);
+          gain.gain.linearRampToValueAtTime(0.01, now + 0.18);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.2);
+        } catch(e) {}
+      },
+      playFanfare() {
+        try {
+          this.init();
+          if (!this.ctx) return;
+          const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+          notes.forEach((freq, idx) => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            const now = this.ctx.currentTime + (idx * 0.1);
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(freq, now);
+            gain.gain.setValueAtTime(0.25, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.start(now);
+            osc.stop(now + 0.4);
+          });
+        } catch(e) {}
+      }
+    };
+
+    // --- REPLİKLER VE MEKANİK ---
+    const messages = [
+      "Emin misin? 🥺",
+      "Gerçekten mi yaa? 💔",
+      "1520 KM yol gelicem ama... 🥺",
+      "Diyetteyim dersen filtre kahve içeriz? ☕",
+      "Birazcık düşünsen bari? 🍰",
+      "Bak çok çok çok üzülürüm... 🌧️",
+      "Ağlarım ama bak yapma... 😭",
+      "Son kararın mı cidden? 🥀",
+      "Tamam pes, bir daha sormuyorum... 😔",
+      "Şaka yaptım tabii ki, EVET de lütfen! 🥰"
+    ];
+
+    let noClickCount = 0;
+    const yesBtn = document.getElementById("yesBtn");
+    const noBtn = document.getElementById("noBtn");
+    const mainGif = document.getElementById("mainGif");
+    const gifFrame = document.getElementById("gifFrame");
+    const celebrationScreen = document.getElementById("celebrationScreen");
+    const spinBtn = document.getElementById("spinBtn");
+    const rouletteResult = document.getElementById("rouletteResult");
+    const replayBtn = document.getElementById("replayBtn");
+
+    // "Hayır" Tıklama Mekaniği (TikTok İvysone Büyüyen Evet & Değişen Replikler)
+    function handleNoClick(e) {
+      if (e) e.preventDefault();
+      AudioEngine.playBoing();
+
+      // Titreşim (destekleyen cihazlarda)
+      if (navigator.vibrate) navigator.vibrate(40);
+
+      // Yazıyı sıradaki replikle değiştir
+      const currentMsg = messages[noClickCount % messages.length];
+      noBtn.querySelector("span").textContent = currentMsg;
+
+      noClickCount++;
+
+      // "EVET" BUTONUNU AKILLI VE KADEMELİ BÜYÜT
+      // iPhone 14 Pro Max ekranına sığacak şekilde dinamik büyüme
+      const scaleMultiplier = 1 + (noClickCount * 0.22);
+      const paddingY = Math.min(0.85 + (noClickCount * 0.12), 1.6);
+      const paddingX = Math.min(2.0 + (noClickCount * 0.35), 4.2);
+      const fontSize = Math.min(1.1 + (noClickCount * 0.16), 2.2);
+
+      yesBtn.style.transform = `scale(${Math.min(scaleMultiplier, 1.8)})`;
+      yesBtn.style.padding = `${paddingY}rem ${paddingX}rem`;
+      yesBtn.style.fontSize = `${fontSize}rem`;
+      yesBtn.style.zIndex = "60";
+
+      // 4. tıklamadan sonra Hayır butonu hafifçe koordinat kaçışı yapsın
+      if (noClickCount >= 3) {
+        const randomX = (Math.random() - 0.5) * 60;
+        const randomY = (Math.random() - 0.5) * 40;
+        noBtn.style.transform = `translate(${randomX}px, ${randomY}px) scale(0.9)`;
+      }
+
+      // 8. tıklamadan sonra Hayır butonu minicik kalsın, Evet tamamen odakta olsun
+      if (noClickCount >= 8) {
+        noBtn.style.opacity = "0.6";
+        noBtn.style.transform = "scale(0.75)";
+      }
+
+      // Hafif GIF sallanma animasyonu
+      gifFrame.style.transform = "scale(0.95) rotate(-3deg)";
+      setTimeout(() => {
+        gifFrame.style.transform = "scale(1) rotate(0deg)";
+      }, 200);
+    }
+
+    noBtn.addEventListener("click", handleNoClick);
+    noBtn.addEventListener("touchstart", function(e) {
+      // 5. tıklamadan sonra parmak dokunur dokunmaz kaçsın
+      if (noClickCount >= 4) {
+        handleNoClick(e);
+      }
+    }, { passive: false });
+
+    // "Evet" Tıklama Mekaniği (Kutlama Ekranı & Konfeti)
+    function handleYesClick() {
+      AudioEngine.playFanfare();
+      if (navigator.vibrate) navigator.vibrate([100, 50, 150]);
+
+      // Konfetiyi başlat
+      startConfetti();
+
+      // Kutlama ekranını aç
+      celebrationScreen.classList.add("active");
+    }
+
+    yesBtn.addEventListener("click", handleYesClick);
+
+    // --- DATE RULETİ LİSTESİ ---
+    const dateIdeas = [
+      "Kadıköy'de Bol Çikolatalı & Çilekli Waffle 🧇",
+      "Boğaz Manzaralı San Sebastian & Filtre Kahve 🍰☕",
+      "Tarihi Çınaraltı'nda Sıcak Çay & Çıtır Simit 🥯",
+      "Karaköy'de Fıstıklı Sıcak Baklava & Dondurma 🍨",
+      "Sıcak Belçika Çikolatalı Akışkan Sufle 🍫",
+      "Iğdır'da Közde Demlik Çay & Saatlerce Sohbet 🌸",
+      "Buzlu Karamel Latte & Lotus Cheesecake 🍓"
+    ];
+
+    spinBtn.addEventListener("click", () => {
+      AudioEngine.playBoing();
+      rouletteResult.textContent = "Seçiliyor... 🎲";
+      spinBtn.disabled = true;
+
+      let counter = 0;
+      const interval = setInterval(() => {
+        const rand = Math.floor(Math.random() * dateIdeas.length);
+        rouletteResult.textContent = dateIdeas[rand];
+        counter++;
+        if (counter > 8) {
+          clearInterval(interval);
+          spinBtn.disabled = false;
+        }
+      }, 80);
+    });
+
+    // Baştan Başlat
+    replayBtn.addEventListener("click", () => {
+      noClickCount = 0;
+      yesBtn.style.transform = "scale(1)";
+      yesBtn.style.padding = "0.85rem 2rem";
+      yesBtn.style.fontSize = "1.1rem";
+      noBtn.style.transform = "none";
+      noBtn.style.opacity = "1";
+      noBtn.querySelector("span").textContent = "Hayır 🙄";
+      celebrationScreen.classList.remove("active");
+    });
+
+    // --- KONFETİ MOTORU ---
+    const canvas = document.getElementById("confettiCanvas");
+    const ctx = canvas.getContext("2d");
+    let particles = [];
+    let animationId = null;
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener("resize", resizeCanvas);
+    resizeCanvas();
+
+    class ConfettiParticle {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height - canvas.height;
+        this.size = Math.random() * 8 + 4;
+        this.speedY = Math.random() * 3 + 2;
+        this.speedX = Math.random() * 2 - 1;
+        this.rotation = Math.random() * 360;
+        this.rotationSpeed = Math.random() * 6 - 3;
+        const colors = ["#f43f5e", "#fda4af", "#10b981", "#6ee7b7", "#fbbf24", "#c084fc"];
+        this.color = colors[Math.floor(Math.random() * colors.length)];
+        this.isHeart = Math.random() > 0.6;
+      }
+
+      update() {
+        this.y += this.speedY;
+        this.x += this.speedX;
+        this.rotation += this.rotationSpeed;
+        if (this.y > canvas.height) {
+          this.y = -10;
+          this.x = Math.random() * canvas.width;
+        }
+      }
+
+      draw() {
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate((this.rotation * Math.PI) / 180);
+        ctx.fillStyle = this.color;
+        if (this.isHeart) {
+          ctx.font = `${this.size * 1.5}px serif`;
+          ctx.fillText("🌸", 0, 0);
+        } else {
+          ctx.fillRect(-this.size / 2, -this.size / 2, this.size, this.size * 1.4);
+        }
+        ctx.restore();
+      }
+    }
+
+    function startConfetti() {
+      particles = [];
+      for (let i = 0; i < 70; i++) {
+        particles.push(new ConfettiParticle());
+      }
+      if (animationId) cancelAnimationFrame(animationId);
+      renderConfetti();
+    }
+
+    function renderConfetti() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach((p) => {
+        p.update();
+        p.draw();
+      });
+      animationId = requestAnimationFrame(renderConfetti);
+    }
+  </script>
+</body>
+</html>
