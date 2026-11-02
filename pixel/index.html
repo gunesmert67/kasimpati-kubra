@@ -168,11 +168,12 @@
     }
 
     .pixel-title {
-      font-size: 0.92rem;
+      font-size: 0.95rem;
       line-height: 1.4;
-      color: #ffffff;
-      margin-bottom: 0.5rem;
+      color: #fbbf24;
+      margin-bottom: 0.8rem;
       text-shadow: 2px 2px 0 #f43f5e;
+      animation: blink 1s infinite steps(2);
     }
 
     /* Karakter Seçim Paneli */
@@ -423,7 +424,6 @@
       <!-- Başlangıç Ekranı (Overlay + Karakter Seçimi) -->
       <div id="startScreen" class="game-overlay">
         <div class="retro-box">
-          <p class="blink-text">★ 1520 KM OPERASYONU ★</p>
           <h1 class="pixel-title">KAVUŞMAYA HAZIR MISIN?</h1>
           
           <!-- Karakter Seçimi -->
@@ -474,7 +474,6 @@
       </button>
       <div class="sound-toggle-wrapper">
         <button id="soundToggle" class="sound-btn" type="button">SES: AÇIK 🔊</button>
-        <span class="hint-text">veya ekrana dokun</span>
       </div>
     </footer>
   </main>

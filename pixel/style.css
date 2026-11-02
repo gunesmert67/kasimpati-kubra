@@ -156,9 +156,10 @@ html, body {
 .pixel-title {
   font-size: 0.95rem;
   line-height: 1.4;
-  color: #ffffff;
-  margin-bottom: 0.6rem;
+  color: #fbbf24;
+  margin-bottom: 0.8rem;
   text-shadow: 2px 2px 0 #f43f5e;
+  animation: blink 1s infinite steps(2);
 }
 
 .pixel-desc {
