@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Kübra'ya Ulaşma Operasyonu 👾</title>
+  <title>İstanbul'dan Iğdır'a: Kübra'ya Kavuşma 🌸</title>
   <meta name="theme-color" content="#120c24">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,16 +16,16 @@
     <!-- Üst Skor Tablosu (HUD) -->
     <header class="hud-bar">
       <div class="hud-item">
-        <span class="hud-label">MESAFE:</span>
-        <span class="hud-val" id="hudDistance">450 KM</span>
+        <span class="hud-label">İSTANBUL ➔ IĞDIR</span>
+        <span class="hud-val" id="hudDistance">1520 KM</span>
       </div>
       <div class="hud-item">
-        <span class="hud-label">ÇİÇEK:</span>
+        <span class="hud-label">KASIMPATI:</span>
         <span class="hud-val" id="hudFlowers">🌸 x 0</span>
       </div>
       <div class="hud-item">
-        <span class="hud-label">CAN:</span>
-        <span class="hud-val" id="hudLives">❤️❤️❤️</span>
+        <span class="hud-label">PUAN:</span>
+        <span class="hud-val" id="hudScore">0</span>
       </div>
     </header>
 
@@ -36,26 +36,26 @@
       <!-- Başlangıç Ekranı (Overlay) -->
       <div id="startScreen" class="game-overlay">
         <div class="retro-box">
-          <p class="blink-text">★ LEVEL 1 ★</p>
-          <h1 class="pixel-title">KÜBRA'YA ULAŞ!</h1>
-          <p class="pixel-desc">Mesafeleri aş, çiçekleri topla ve prensese kavuş!</p>
-          <button id="startBtn" class="pixel-btn start-btn">OYNA 🕹️</button>
+          <p class="blink-text">★ İSTANBUL ➔ IĞDIR ★</p>
+          <h1 class="pixel-title">KÜBRA'YA KAVUŞ!</h1>
+          <p class="pixel-desc">1520 kilometreyi aş, kasımpatıları topla ve Kübra'ya ulaş!</p>
+          <button id="startBtn" class="pixel-btn start-btn">BAŞLA 🕹️</button>
           <p class="pixel-tip">Zıplamak için ekrana dokun veya butona bas</p>
         </div>
       </div>
 
-      <!-- Zafer / Manitalık Teklif Ekranı (Game Clear) -->
+      <!-- Zafer Ekranı (Romantik & Tatlı) -->
       <div id="victoryScreen" class="game-overlay hidden">
         <div class="retro-box victory-box">
           <div class="badge-tag">GÖREV TAMAMLANDI! 🏆</div>
           <h2 class="victory-title">KAVUŞTUK! 🥰</h2>
-          <p class="victory-desc">Aramızdaki 450 km bile sana gelmeme engel olamaz minnoşum.</p>
-          <div class="pixel-hearts-burst">💖 🌸 💖</div>
+          <p class="victory-desc">İstanbul - Iğdır arası 1520 km bile sana gelmeme engel olamaz minnoşum.</p>
+          <div class="pixel-hearts-burst">🌸 💖 🌸</div>
           <div class="proposal-box">
-            <p class="proposal-text">LEVEL 1: FLÖRT BİTTİ.<br>LEVEL 2: RESMİ MANİTALIK BAŞLASIN MI? 💍</p>
+            <p class="proposal-text">İyi ki hayatımdasın, seni çok seviyorum. Her kilometreye değer... ✨</p>
             <div class="btn-group">
-              <button class="pixel-btn accept-btn" id="yesBtn1">EVET 🥰</button>
-              <button class="pixel-btn accept-btn" id="yesBtn2">KESİNLİKLE EVET 💖</button>
+              <button class="pixel-btn accept-btn" id="yesBtn1">BEN DE SENİ ÇOK SEVİYORUM 🥰</button>
+              <button class="pixel-btn accept-btn" id="yesBtn2">İYİ Kİ VARSIN MERT 💖</button>
             </div>
           </div>
         </div>
