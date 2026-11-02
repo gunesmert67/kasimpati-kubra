@@ -591,25 +591,52 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  function claimReward(btn, text) {
-    playSound('win');
-    btn.textContent = text;
-    btn.style.background = '#10b981';
-    btn.style.boxShadow = '0 5px 0 #047857';
+  const rewardResult = document.getElementById('rewardResult');
 
-    for (let i = 0; i < 40; i++) {
+  function claimReward(choice) {
+    playSound('win');
+
+    for (let i = 0; i < 50; i++) {
       collectibles.push({
-        x: player.x + Math.random() * 50 - 25,
-        y: player.y - Math.random() * 80,
-        w: 8,
-        h: 8,
+        x: player.x + Math.random() * 80 - 40,
+        y: player.y - Math.random() * 90,
+        w: 10,
+        h: 10,
         type: 'heart'
       });
     }
+
+    if (choice === 1) {
+      if (yesBtn1) {
+        yesBtn1.textContent = 'SÖZÜNÜ ALDIM! 😉☕';
+        yesBtn1.style.background = '#10b981';
+        yesBtn1.style.boxShadow = '0 5px 0 #047857';
+        yesBtn1.disabled = true;
+      }
+      if (yesBtn2) yesBtn2.style.display = 'none';
+
+      if (rewardResult) {
+        rewardResult.style.display = 'block';
+        rewardResult.innerHTML = '☕🍰 <b>Borç Yazıldı!</b> En lezzetli kahve ve tatlılar Mert\'ten sana söz olsun. Ekran görüntüsünü at ve tahsil et bakalım 😉';
+      }
+    } else {
+      if (yesBtn2) {
+        yesBtn2.textContent = 'BEN DE SENİİİ! 🥰💖';
+        yesBtn2.style.background = '#f43f5e';
+        yesBtn2.style.boxShadow = '0 5px 0 #9f1239';
+        yesBtn2.disabled = true;
+      }
+      if (yesBtn1) yesBtn1.style.display = 'none';
+
+      if (rewardResult) {
+        rewardResult.style.display = 'block';
+        rewardResult.innerHTML = '🥰💖 <b>Ben de seni çok seviyorum/istiyorum minnoşum!</b> Zaten tamamen seninim... Kahveler ve tatlılar da üstüne bonus olsun! 💕🌸';
+      }
+    }
   }
 
-  yesBtn1?.addEventListener('click', () => claimReward(yesBtn1, 'BORÇ YAZILDI! EKRAN GÖRÜNTÜSÜNÜ AT 😉☕'));
-  yesBtn2?.addEventListener('click', () => claimReward(yesBtn2, 'BORÇ YAZILDI! TATLI BENDEN 😉🍰'));
+  yesBtn1?.addEventListener('click', () => claimReward(1));
+  yesBtn2?.addEventListener('click', () => claimReward(2));
 
   requestAnimationFrame(loop);
 });

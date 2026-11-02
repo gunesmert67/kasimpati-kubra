@@ -448,19 +448,20 @@
         </div>
       </div>
 
-      <!-- Zafer Ekranı: 1. Fikir (Kahve & Tatlı Borcu) -->
+      <!-- Zafer Ekranı: Flörtöz Seçenekler (Kahve/Tatlı veya Sen) -->
       <div id="victoryScreen" class="game-overlay hidden">
         <div class="retro-box victory-box">
           <div class="badge-tag">TEBRİKLER! 1520 KM'Yİ AŞTIN 🏆</div>
           <h2 class="victory-title">KAVUŞTUK! 🥰</h2>
-          <p class="victory-desc" id="vicDesc">İstanbul - Iğdır arası 1520 km bile bize engel olamadı.</p>
+          <p class="victory-desc" id="vicDesc">1520 km bile bana ulaşmana engel olamadı.</p>
           <div class="pixel-hearts-burst">☕ 🌸 🍰</div>
           <div class="proposal-box">
-            <p class="proposal-text">Ödülün: İlk buluştuğumuzda en sevdiğin kahve ve tatlı benden borcum olsun! ✨</p>
-            <div class="btn-group">
-              <button class="pixel-btn accept-btn" id="yesBtn1" type="button">KAHVEMİ İSTERİM ☕</button>
-              <button class="pixel-btn accept-btn" id="yesBtn2" type="button">YANINA TATLI DA ŞART 🍰</button>
+            <p class="proposal-text" id="proposalText">Peki kavuştuğumuza göre ödül olarak ne istersin? ✨</p>
+            <div class="btn-group" id="victoryBtnGroup">
+              <button class="pixel-btn accept-btn" id="yesBtn1" type="button">☕ KAHVE & TATLI</button>
+              <button class="pixel-btn accept-btn" id="yesBtn2" type="button" style="background: #f43f5e; box-shadow: 0 4px 0 #9f1239;">💖 SENİ İSTERİM</button>
             </div>
+            <div id="rewardResult" style="display: none; margin-top: 0.8rem; font-size: 0.58rem; line-height: 1.6; color: #fbbf24; background: rgba(0,0,0,0.3); padding: 0.6rem; border-radius: 6px;"></div>
           </div>
         </div>
       </div>
@@ -1102,26 +1103,47 @@
         }
       });
 
-      // 1. Fikir: Kahve & Tatlı Borcu Onay Butonları
-      function claimReward(btn, text) {
-        playSound('win');
-        btn.textContent = text;
-        btn.style.background = '#10b981';
-        btn.style.boxShadow = '0 5px 0 #047857';
+      // Flörtöz Bitiş Seçenekleri (Kahve/Tatlı vs Seni İsterim)
+      const rewardResult = document.getElementById('rewardResult');
 
-        for (let i = 0; i < 40; i++) {
+      function claimReward(choice) {
+        playSound('win');
+
+        for (let i = 0; i < 50; i++) {
           collectibles.push({
-            x: player.x + Math.random() * 50 - 25,
-            y: player.y - Math.random() * 80,
-            w: 8,
-            h: 8,
+            x: player.x + Math.random() * 80 - 40,
+            y: player.y - Math.random() * 90,
+            w: 10,
+            h: 10,
             type: 'heart'
           });
         }
+
+        if (choice === 1) {
+          // Kahve & Tatlı Seçeneği
+          yesBtn1.textContent = 'SÖZÜNÜ ALDIM! 😉☕';
+          yesBtn1.style.background = '#10b981';
+          yesBtn1.style.boxShadow = '0 5px 0 #047857';
+          yesBtn1.disabled = true;
+          yesBtn2.style.display = 'none';
+
+          rewardResult.style.display = 'block';
+          rewardResult.innerHTML = '☕🍰 <b>Borç Yazıldı!</b> En lezzetli kahve ve tatlılar Mert\\'ten sana söz olsun. Ekran görüntüsünü at ve tahsil et bakalım 😉';
+        } else {
+          // Seni İsterim Seçeneği
+          yesBtn2.textContent = 'BEN DE SENİİİ! 🥰💖';
+          yesBtn2.style.background = '#f43f5e';
+          yesBtn2.style.boxShadow = '0 5px 0 #9f1239';
+          yesBtn2.disabled = true;
+          yesBtn1.style.display = 'none';
+
+          rewardResult.style.display = 'block';
+          rewardResult.innerHTML = '🥰💖 <b>Ben de seni çok seviyorum/istiyorum minnoşum!</b> Zaten tamamen seninim... Kahveler ve tatlılar da üstüne bonus olsun! 💕🌸';
+        }
       }
 
-      yesBtn1.addEventListener('click', () => claimReward(yesBtn1, 'BORÇ YAZILDI! EKRAN GÖRÜNTÜSÜNÜ AT 😉☕'));
-      yesBtn2.addEventListener('click', () => claimReward(yesBtn2, 'BORÇ YAZILDI! TATLI BENDEN 😉🍰'));
+      yesBtn1.addEventListener('click', () => claimReward(1));
+      yesBtn2.addEventListener('click', () => claimReward(2));
 
       requestAnimationFrame(loop);
     });
