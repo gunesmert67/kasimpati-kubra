@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <title>İstanbul'dan Iğdır'a: Kübra'ya Kavuşma 🌸</title>
+  <title>İstanbul - Iğdır: Kübra & Mert 🌸</title>
   <meta name="theme-color" content="#090616">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -49,15 +49,15 @@
       image-rendering: crisp-edges;
     }
 
-    /* Arcade Çerçeve Konteyneri - iPhone 14 Pro Max (430px) için Tam Uyum */
+    /* Arcade Çerçeve Konteyneri */
     .arcade-cabinet {
       width: 100%;
       max-width: 440px;
       height: 100%;
       height: 100vh;
       height: 100dvh;
-      padding-top: max(1rem, env(safe-area-inset-top));
-      padding-bottom: max(1.2rem, env(safe-area-inset-bottom));
+      padding-top: max(0.9rem, env(safe-area-inset-top));
+      padding-bottom: max(1.1rem, env(safe-area-inset-bottom));
       padding-left: max(0.9rem, env(safe-area-inset-left));
       padding-right: max(0.9rem, env(safe-area-inset-right));
       display: flex;
@@ -72,11 +72,11 @@
       background: #17102a;
       border: 3px solid #f43f5e;
       border-radius: 8px;
-      padding: 0.6rem 0.7rem;
+      padding: 0.55rem 0.65rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 0.65rem;
+      font-size: 0.62rem;
       box-shadow: 0 4px 0 #9f1239;
       flex-shrink: 0;
     }
@@ -90,7 +90,7 @@
 
     .hud-label {
       color: #94a3b8;
-      font-size: 0.52rem;
+      font-size: 0.5rem;
       letter-spacing: 0.02em;
     }
 
@@ -107,7 +107,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 0.6rem 0;
+      margin: 0.5rem 0;
     }
 
     #gameCanvas {
@@ -123,11 +123,11 @@
       touch-action: none;
     }
 
-    /* Retro Overlay Ekranları (Başlangıç & Bitiş) */
+    /* Retro Overlay Ekranları */
     .game-overlay {
       position: absolute;
       inset: 0;
-      background: rgba(9, 6, 22, 0.92);
+      background: rgba(9, 6, 22, 0.94);
       backdrop-filter: blur(5px);
       -webkit-backdrop-filter: blur(5px);
       display: flex;
@@ -148,7 +148,7 @@
       background: #1b1233;
       border: 4px solid #fbbf24;
       border-radius: 10px;
-      padding: 1.4rem 1rem;
+      padding: 1.2rem 0.9rem;
       text-align: center;
       width: 100%;
       max-width: 380px;
@@ -158,7 +158,7 @@
     .blink-text {
       font-size: 0.65rem;
       color: #fbbf24;
-      margin-bottom: 0.6rem;
+      margin-bottom: 0.5rem;
       animation: blink 1s infinite steps(2);
     }
 
@@ -168,24 +168,66 @@
     }
 
     .pixel-title {
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       line-height: 1.4;
       color: #ffffff;
-      margin-bottom: 0.6rem;
+      margin-bottom: 0.5rem;
       text-shadow: 2px 2px 0 #f43f5e;
     }
 
-    .pixel-desc {
-      font-size: 0.58rem;
-      line-height: 1.6;
-      color: #cbd5e1;
-      margin-bottom: 1.2rem;
+    /* Karakter Seçim Paneli */
+    .char-select-container {
+      margin: 0.8rem 0;
+      background: rgba(0, 0, 0, 0.35);
+      border: 2px dashed #fda4af;
+      border-radius: 8px;
+      padding: 0.6rem 0.4rem;
     }
 
-    .pixel-tip {
-      font-size: 0.5rem;
+    .char-select-label {
+      font-size: 0.52rem;
+      color: #fbbf24;
+      margin-bottom: 0.5rem;
+    }
+
+    .char-buttons {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+    }
+
+    .char-btn {
+      flex: 1;
+      background: #150f29;
+      border: 2px solid #475569;
+      border-radius: 6px;
+      padding: 0.55rem 0.2rem;
       color: #94a3b8;
-      margin-top: 0.8rem;
+      font-family: 'Press Start 2P', monospace;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      transition: all 0.15s ease;
+    }
+
+    .char-btn.active {
+      border-color: #f43f5e;
+      background: #2a113a;
+      color: #ffffff;
+      box-shadow: 0 0 14px rgba(244, 63, 94, 0.6);
+      transform: scale(1.04);
+    }
+
+    .char-avatar { font-size: 1.2rem; }
+    .char-name { font-size: 0.56rem; font-weight: bold; margin-top: 2px; }
+    .char-route { font-size: 0.42rem; color: #fbbf24; }
+
+    .pixel-tip {
+      font-size: 0.48rem;
+      color: #94a3b8;
+      margin-top: 0.7rem;
     }
 
     /* Retro Butonlar */
@@ -208,14 +250,16 @@
     }
 
     .start-btn {
+      width: 100%;
       background: #10b981;
       box-shadow: 0 5px 0 #047857;
+      margin-top: 0.3rem;
     }
     .start-btn:active {
       box-shadow: 0 1px 0 #047857;
     }
 
-    /* Zafer Kutusu (Romantik) */
+    /* Zafer Kutusu */
     .victory-box {
       border-color: #f43f5e;
       box-shadow: 0 6px 0 #9f1239, 0 0 35px rgba(244, 63, 94, 0.4);
@@ -260,7 +304,7 @@
     }
 
     .proposal-text {
-      font-size: 0.56rem;
+      font-size: 0.58rem;
       line-height: 1.7;
       color: #ffffff;
       margin-bottom: 0.9rem;
@@ -275,7 +319,7 @@
     .accept-btn {
       width: 100%;
       font-size: 0.62rem;
-      padding: 0.75rem 0.6rem;
+      padding: 0.8rem 0.6rem;
       background: #ec4899;
       box-shadow: 0 4px 0 #be185d;
     }
@@ -350,8 +394,6 @@
       .hud-bar { font-size: 0.52rem; padding: 0.4rem 0.5rem; }
       .pixel-title { font-size: 0.82rem; }
       .arcade-jump-btn { padding: 0.75rem 1rem; font-size: 0.75rem; }
-      .proposal-text { font-size: 0.5rem; }
-      .accept-btn { font-size: 0.55rem; }
     }
   </style>
 </head>
@@ -361,7 +403,7 @@
     <!-- Üst Skor Tablosu (HUD) -->
     <header class="hud-bar">
       <div class="hud-item">
-        <span class="hud-label">İSTANBUL ➔ IĞDIR</span>
+        <span class="hud-label" id="hudRoute">IĞDIR ➔ İSTANBUL</span>
         <span class="hud-val" id="hudDistance">1520 KM</span>
       </div>
       <div class="hud-item">
@@ -378,29 +420,46 @@
     <div class="canvas-wrapper">
       <canvas id="gameCanvas" width="480" height="320"></canvas>
 
-      <!-- Başlangıç Ekranı (Overlay) -->
+      <!-- Başlangıç Ekranı (Overlay + Karakter Seçimi) -->
       <div id="startScreen" class="game-overlay">
         <div class="retro-box">
-          <p class="blink-text">★ İSTANBUL ➔ IĞDIR ★</p>
-          <h1 class="pixel-title">KÜBRA'YA KAVUŞ!</h1>
-          <p class="pixel-desc">1520 kilometreyi aş, kasımpatıları topla ve Kübra'ya ulaş!</p>
-          <button id="startBtn" class="pixel-btn start-btn">BAŞLA 🕹️</button>
-          <p class="pixel-tip">Zıplamak için ekrana dokun veya butona bas</p>
+          <p class="blink-text">★ 1520 KM OPERASYONU ★</p>
+          <h1 class="pixel-title">KAVUŞMAYA HAZIR MISIN?</h1>
+          
+          <!-- Karakter Seçimi -->
+          <div class="char-select-container">
+            <p class="char-select-label">KİM OYNUYOR? (KARAKTERİNİ SEÇ):</p>
+            <div class="char-buttons">
+              <button id="charBtnKubra" class="char-btn active" type="button">
+                <span class="char-avatar">🌸</span>
+                <span class="char-name">KÜBRA</span>
+                <span class="char-route">Iğdır ➔ İst</span>
+              </button>
+              <button id="charBtnMert" class="char-btn" type="button">
+                <span class="char-avatar">🧢</span>
+                <span class="char-name">MERT</span>
+                <span class="char-route">İst ➔ Iğdır</span>
+              </button>
+            </div>
+          </div>
+
+          <button id="startBtn" class="pixel-btn start-btn" type="button">OYUNU BAŞLAT 🕹️</button>
+          <p class="pixel-tip">Zıplamak için ekrana dokun veya ZIPLA tuşuna bas</p>
         </div>
       </div>
 
-      <!-- Zafer Ekranı (Romantik & Tatlı) -->
+      <!-- Zafer Ekranı: 1. Fikir (Kahve & Tatlı Borcu) -->
       <div id="victoryScreen" class="game-overlay hidden">
         <div class="retro-box victory-box">
-          <div class="badge-tag">GÖREV TAMAMLANDI! 🏆</div>
+          <div class="badge-tag">TEBRİKLER! 1520 KM'Yİ AŞTIN 🏆</div>
           <h2 class="victory-title">KAVUŞTUK! 🥰</h2>
-          <p class="victory-desc">İstanbul - Iğdır arası 1520 km bile sana gelmeme engel olamaz minnoşum.</p>
-          <div class="pixel-hearts-burst">🌸 💖 🌸</div>
+          <p class="victory-desc" id="vicDesc">İstanbul - Iğdır arası 1520 km bile bize engel olamadı.</p>
+          <div class="pixel-hearts-burst">☕ 🌸 🍰</div>
           <div class="proposal-box">
-            <p class="proposal-text">İyi ki hayatımdasın, seni çok seviyorum. Her kilometreye değer... ✨</p>
+            <p class="proposal-text">Ödülün: İlk buluştuğumuzda en sevdiğin kahve ve tatlı benden borcum olsun! ✨</p>
             <div class="btn-group">
-              <button class="pixel-btn accept-btn" id="yesBtn1">BEN DE SENİ ÇOK SEVİYORUM 🥰</button>
-              <button class="pixel-btn accept-btn" id="yesBtn2">İYİ Kİ VARSIN MERT 💖</button>
+              <button class="pixel-btn accept-btn" id="yesBtn1" type="button">KAHVEMİ İSTERİM ☕</button>
+              <button class="pixel-btn accept-btn" id="yesBtn2" type="button">YANINA TATLI DA ŞART 🍰</button>
             </div>
           </div>
         </div>
@@ -409,23 +468,24 @@
 
     <!-- Mobil / Arcade Kontrol Paneli -->
     <footer class="controls-bar">
-      <button id="jumpBtn" class="arcade-jump-btn" aria-label="Zıpla">
+      <button id="jumpBtn" class="arcade-jump-btn" aria-label="Zıpla" type="button">
         <span class="jump-arrow">▲</span>
         <span class="jump-label">ZIPLA</span>
       </button>
       <div class="sound-toggle-wrapper">
-        <button id="soundToggle" class="sound-btn">SES: AÇIK 🔊</button>
+        <button id="soundToggle" class="sound-btn" type="button">SES: AÇIK 🔊</button>
         <span class="hint-text">veya ekrana dokun</span>
       </div>
     </footer>
   </main>
 
   <script>
-    // 8-Bit Retro Mini Oyunu: İstanbul'dan Iğdır'a Kübra'ya Kavuşma
+    // 8-Bit Retro Mini Oyunu: İstanbul - Iğdır Kavuşması
     document.addEventListener('DOMContentLoaded', () => {
       const canvas = document.getElementById('gameCanvas');
       const ctx = canvas.getContext('2d');
       
+      const hudRoute = document.getElementById('hudRoute');
       const hudDistance = document.getElementById('hudDistance');
       const hudFlowers = document.getElementById('hudFlowers');
       const hudScore = document.getElementById('hudScore');
@@ -437,6 +497,9 @@
       const soundToggle = document.getElementById('soundToggle');
       const yesBtn1 = document.getElementById('yesBtn1');
       const yesBtn2 = document.getElementById('yesBtn2');
+      const charBtnKubra = document.getElementById('charBtnKubra');
+      const charBtnMert = document.getElementById('charBtnMert');
+      const vicDesc = document.getElementById('vicDesc');
 
       let audioCtx = null;
       let soundEnabled = true;
@@ -500,6 +563,25 @@
         soundToggle.textContent = soundEnabled ? 'SES: AÇIK 🔊' : 'SES: KAPALI 🔇';
       });
 
+      // Karakter Seçimi: Varsayılan 'kubra' (Çünkü Kübra oynuyor!)
+      let activeCharacter = 'kubra';
+
+      charBtnKubra.addEventListener('click', () => {
+        activeCharacter = 'kubra';
+        charBtnKubra.classList.add('active');
+        charBtnMert.classList.remove('active');
+        hudRoute.textContent = 'IĞDIR ➔ İSTANBUL';
+        vicDesc.textContent = 'Iğdır - İstanbul arası 1520 km bile bana ulaşmana engel olamadı.';
+      });
+
+      charBtnMert.addEventListener('click', () => {
+        activeCharacter = 'mert';
+        charBtnMert.classList.add('active');
+        charBtnKubra.classList.remove('active');
+        hudRoute.textContent = 'İSTANBUL ➔ IĞDIR';
+        vicDesc.textContent = 'İstanbul - Iğdır arası 1520 km bile sana gelmeme engel olamaz.';
+      });
+
       let gameState = 'START';
       let distance = 1520;
       let flowerCount = 0;
@@ -508,6 +590,7 @@
       let groundY = 245;
       let gameTime = 0;
 
+      // Oyuncu Nesnesi (Seçilen karaktere göre dinamik çizilir)
       const player = {
         x: 60,
         y: groundY - 36,
@@ -540,36 +623,85 @@
         draw() {
           ctx.save();
           ctx.translate(Math.floor(this.x), Math.floor(this.y));
-          ctx.fillStyle = '#1e293b';
-          ctx.fillRect(4, 0, 16, 8);
-          ctx.fillRect(2, 4, 20, 6);
-          ctx.fillStyle = '#fed7aa';
-          ctx.fillRect(4, 8, 16, 12);
-          ctx.fillStyle = '#0f172a';
-          ctx.fillRect(14, 11, 3, 3);
-          ctx.fillStyle = '#334155';
-          ctx.fillRect(2, 20, 20, 11);
-          ctx.fillStyle = '#f43f5e';
-          ctx.fillRect(8, 20, 8, 2);
-          ctx.fillStyle = '#0f172a';
-          const step = Math.floor(this.runFrame) % 2;
-          if (this.isGrounded) {
-            if (step === 0) {
-              ctx.fillRect(4, 31, 6, 5);
-              ctx.fillRect(14, 31, 6, 3);
+
+          if (activeCharacter === 'kubra') {
+            // === KÜBRA KOŞUYOR (Başörtülü, Temiz Yüz, Şık) ===
+            // Şal / Başörtüsü (Gül Pembe)
+            ctx.fillStyle = '#fda4af';
+            ctx.fillRect(3, 0, 18, 9);
+            ctx.fillStyle = '#fb7185';
+            ctx.fillRect(1, 4, 22, 18);
+
+            // Yüz (KIRMIZI LEKELER/ALLIKLAR TAMAMEN KALDIRILDI! Sadece pürüzsüz ten ve tatlı gözler)
+            ctx.fillStyle = '#fed7aa';
+            ctx.fillRect(6, 8, 12, 10);
+            ctx.fillStyle = '#0f172a';
+            ctx.fillRect(9, 10, 3, 3); // Göz
+
+            // Pardösü (Zarif Mürdüm Rengi)
+            ctx.fillStyle = '#831843';
+            ctx.fillRect(3, 22, 18, 10);
+            ctx.fillStyle = '#fbcfe8';
+            ctx.fillRect(8, 22, 8, 10); // Ön döküm
+
+            // Koşan Etek / Ayaklar
+            ctx.fillStyle = '#1e1b4b';
+            const step = Math.floor(this.runFrame) % 2;
+            if (this.isGrounded) {
+              if (step === 0) {
+                ctx.fillRect(4, 32, 6, 4);
+                ctx.fillRect(14, 32, 6, 2);
+              } else {
+                ctx.fillRect(4, 32, 6, 2);
+                ctx.fillRect(14, 32, 6, 4);
+              }
+            } else {
+              ctx.fillRect(4, 32, 6, 3);
+              ctx.fillRect(13, 32, 6, 3);
+            }
+
+          } else {
+            // === MERT KOŞUYOR ===
+            // Saç
+            ctx.fillStyle = '#1e293b';
+            ctx.fillRect(4, 0, 16, 8);
+            ctx.fillRect(2, 4, 20, 6);
+
+            // Yüz
+            ctx.fillStyle = '#fed7aa';
+            ctx.fillRect(4, 8, 16, 12);
+            ctx.fillStyle = '#0f172a';
+            ctx.fillRect(14, 11, 3, 3);
+
+            // Kapüşonlu
+            ctx.fillStyle = '#334155';
+            ctx.fillRect(2, 20, 20, 11);
+            ctx.fillStyle = '#f43f5e';
+            ctx.fillRect(8, 20, 8, 2);
+
+            // Bacaklar
+            ctx.fillStyle = '#0f172a';
+            const step = Math.floor(this.runFrame) % 2;
+            if (this.isGrounded) {
+              if (step === 0) {
+                ctx.fillRect(4, 31, 6, 5);
+                ctx.fillRect(14, 31, 6, 3);
+              } else {
+                ctx.fillRect(4, 31, 6, 3);
+                ctx.fillRect(14, 31, 6, 5);
+              }
             } else {
               ctx.fillRect(4, 31, 6, 3);
-              ctx.fillRect(14, 31, 6, 5);
+              ctx.fillRect(12, 31, 6, 3);
             }
-          } else {
-            ctx.fillRect(4, 31, 6, 3);
-            ctx.fillRect(12, 31, 6, 3);
           }
+
           ctx.restore();
         }
       };
 
-      const kubra = {
+      // Hedef Karakter (Bitişte Bekleyen Kişi)
+      const waitingPartner = {
         x: 480 + 50,
         y: groundY - 36,
         w: 24,
@@ -579,31 +711,53 @@
           if (!this.visible) return;
           ctx.save();
           ctx.translate(Math.floor(this.x), Math.floor(this.y));
-          // Gül pembe şal / başörtüsü
-          ctx.fillStyle = '#fda4af';
-          ctx.fillRect(3, 0, 18, 9);
-          ctx.fillStyle = '#fb7185';
-          ctx.fillRect(1, 4, 22, 18);
-          // Yüz
-          ctx.fillStyle = '#ffedd5';
-          ctx.fillRect(6, 8, 12, 10);
-          ctx.fillStyle = '#0f172a';
-          ctx.fillRect(9, 10, 3, 3);
-          ctx.fillStyle = '#f43f5e';
-          ctx.fillRect(7, 13, 3, 2);
-          ctx.fillRect(14, 13, 3, 2);
-          // Pardösü
-          ctx.fillStyle = '#831843';
-          ctx.fillRect(3, 22, 18, 11);
-          ctx.fillStyle = '#fbcfe8';
-          ctx.fillRect(8, 22, 8, 11);
-          // Ayaklar
-          ctx.fillStyle = '#1e1b4b';
-          ctx.fillRect(6, 33, 4, 3);
-          ctx.fillRect(14, 33, 4, 3);
-          // Çiçek
-          ctx.fillStyle = '#fbbf24';
-          ctx.fillRect(0, 19, 4, 4);
+
+          if (activeCharacter === 'kubra') {
+            // Hedef MERT (İstanbul'da Bekliyor)
+            ctx.fillStyle = '#1e293b';
+            ctx.fillRect(4, 0, 16, 8);
+            ctx.fillRect(2, 4, 20, 6);
+
+            ctx.fillStyle = '#fed7aa';
+            ctx.fillRect(4, 8, 16, 12);
+            ctx.fillStyle = '#0f172a';
+            ctx.fillRect(8, 11, 3, 3); // Göz
+
+            ctx.fillStyle = '#334155';
+            ctx.fillRect(2, 20, 20, 12);
+            ctx.fillStyle = '#10b981';
+            ctx.fillRect(6, 20, 4, 4); // Elinde tuttuğu hediye/çiçek
+
+            ctx.fillStyle = '#0f172a';
+            ctx.fillRect(5, 32, 5, 4);
+            ctx.fillRect(14, 32, 5, 4);
+
+          } else {
+            // Hedef KÜBRA (Iğdır'da Bekliyor - Yüzünde Kırmızı Leke YOK)
+            ctx.fillStyle = '#fda4af';
+            ctx.fillRect(3, 0, 18, 9);
+            ctx.fillStyle = '#fb7185';
+            ctx.fillRect(1, 4, 22, 18);
+
+            // Temiz Yüz
+            ctx.fillStyle = '#fed7aa';
+            ctx.fillRect(6, 8, 12, 10);
+            ctx.fillStyle = '#0f172a';
+            ctx.fillRect(8, 10, 3, 3);
+
+            ctx.fillStyle = '#831843';
+            ctx.fillRect(3, 22, 18, 11);
+            ctx.fillStyle = '#fbcfe8';
+            ctx.fillRect(8, 22, 8, 11);
+
+            ctx.fillStyle = '#1e1b4b';
+            ctx.fillRect(6, 33, 4, 3);
+            ctx.fillRect(14, 33, 4, 3);
+
+            ctx.fillStyle = '#fbbf24';
+            ctx.fillRect(0, 19, 4, 4); // Çiçek
+          }
+
           ctx.restore();
         }
       };
@@ -649,9 +803,9 @@
           hudDistance.textContent = `${Math.floor(distance)} KM`;
         }
 
-        if (distance === 0 && !kubra.visible) {
-          kubra.visible = true;
-          kubra.x = 410;
+        if (distance === 0 && !waitingPartner.visible) {
+          waitingPartner.visible = true;
+          waitingPartner.x = 410;
         }
 
         stars.forEach(s => {
@@ -699,8 +853,8 @@
           if (ft.opacity <= 0) floatingTexts.splice(i, 1);
         }
 
-        if (distance === 0 && kubra.visible) {
-          if (player.x < kubra.x - 26) {
+        if (distance === 0 && waitingPartner.visible) {
+          if (player.x < waitingPartner.x - 26) {
             player.x += 1.2;
           } else {
             triggerVictory();
@@ -766,7 +920,7 @@
         });
 
         player.draw();
-        kubra.draw();
+        waitingPartner.draw();
 
         floatingTexts.forEach(ft => {
           ctx.save();
@@ -841,25 +995,26 @@
         }
       });
 
-      function celebrateAccept(btn, text) {
+      // 1. Fikir: Kahve & Tatlı Borcu Onay Butonları
+      function claimReward(btn, text) {
         playSound('win');
         btn.textContent = text;
         btn.style.background = '#10b981';
         btn.style.boxShadow = '0 5px 0 #047857';
 
-        for (let i = 0; i < 45; i++) {
+        for (let i = 0; i < 40; i++) {
           collectibles.push({
             x: player.x + Math.random() * 50 - 25,
             y: player.y - Math.random() * 80,
-            w: 10,
-            h: 10,
+            w: 8,
+            h: 8,
             type: 'heart'
           });
         }
       }
 
-      yesBtn1.addEventListener('click', () => celebrateAccept(yesBtn1, 'CANIMSIN BENİM! 🥰'));
-      yesBtn2.addEventListener('click', () => celebrateAccept(yesBtn2, 'BEN DAHA ÇOK SEVİYORUM 💖'));
+      yesBtn1.addEventListener('click', () => claimReward(yesBtn1, 'BORÇ YAZILDI! EKRAN GÖRÜNTÜSÜNÜ AT 😉☕'));
+      yesBtn2.addEventListener('click', () => claimReward(yesBtn2, 'BORÇ YAZILDI! TATLI BENDEN 😉🍰'));
 
       requestAnimationFrame(loop);
     });
