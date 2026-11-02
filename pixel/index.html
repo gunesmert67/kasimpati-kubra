@@ -540,6 +540,14 @@
             gain.gain.linearRampToValueAtTime(0, now + 0.22);
             osc.start(now);
             osc.stop(now + 0.22);
+          } else if (type === 'hit') {
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(160, now);
+            osc.frequency.linearRampToValueAtTime(60, now + 0.16);
+            gain.gain.setValueAtTime(0.2, now);
+            gain.gain.linearRampToValueAtTime(0.01, now + 0.16);
+            osc.start(now);
+            osc.stop(now + 0.18);
           } else if (type === 'win') {
             const notes = [329, 392, 523, 659, 783, 1046];
             notes.forEach((freq, idx) => {
@@ -598,9 +606,10 @@
         h: 36,
         vy: 0,
         gravity: 0.52,
-        jumpForce: -10.2,
+        jumpForce: -10.5,
         isGrounded: true,
         runFrame: 0,
+        invulnerable: 0,
         jump() {
           if (this.isGrounded && gameState === 'PLAYING') {
             this.vy = this.jumpForce;
@@ -619,8 +628,16 @@
           if (this.isGrounded) {
             this.runFrame += 0.18;
           }
+          if (this.invulnerable > 0) {
+            this.invulnerable--;
+          }
         },
         draw() {
+          // Tökezleme yanıp sönme efekti
+          if (this.invulnerable > 0 && Math.floor(this.invulnerable / 3) % 2 === 0) {
+            return;
+          }
+
           ctx.save();
           ctx.translate(Math.floor(this.x), Math.floor(this.y));
 
@@ -773,21 +790,64 @@
       }
 
       let collectibles = [];
+      let obstacles = [];
       let floatingTexts = [];
       let spawnTimer = 0;
 
-      function spawnCollectibles() {
+      // Zıplama Mantığı: Ödüller havada (zıplayarak toplanır), engeller yerde (zıplayarak kaçılır)!
+      function spawnEntities() {
         spawnTimer++;
-        if (distance > 25 && spawnTimer % 38 === 0) {
-          const isAirborne = Math.random() > 0.45;
-          const type = Math.random() > 0.35 ? 'flower' : 'heart';
-          collectibles.push({
-            x: 490,
-            y: isAirborne ? (groundY - 55) : (groundY - 22),
-            w: 22,
-            h: 22,
-            type: type
-          });
+        if (distance > 35 && spawnTimer % 55 === 0) {
+          const rand = Math.random();
+
+          if (rand < 0.45) {
+            // Desen 1: Yerde Engel + Üstünde Uçan Kasımpatı/Kalp
+            // Zıplayınca hem engelden kaçılır hem de havadaki ödül kapılır!
+            const obsType = Math.random() > 0.5 ? 'rock' : 'hurdle';
+            obstacles.push({
+              x: 490,
+              y: obsType === 'rock' ? groundY - 16 : groundY - 22,
+              w: 22,
+              h: obsType === 'rock' ? 16 : 22,
+              type: obsType
+            });
+
+            collectibles.push({
+              x: 492,
+              y: groundY - 78,
+              w: 22,
+              h: 22,
+              type: Math.random() > 0.35 ? 'flower' : 'heart'
+            });
+
+          } else if (rand < 0.8) {
+            // Desen 2: Yüksekte Uçan Ödül Yay Dizilimi (Zıplamadan asla alınamaz!)
+            const rewardType = Math.random() > 0.35 ? 'flower' : 'heart';
+            collectibles.push({
+              x: 490,
+              y: groundY - 75,
+              w: 22,
+              h: 22,
+              type: rewardType
+            });
+            collectibles.push({
+              x: 524,
+              y: groundY - 88,
+              w: 22,
+              h: 22,
+              type: 'flower'
+            });
+
+          } else {
+            // Desen 3: Sürpriz Zemin Engeli (Zıplayarak aşılmalı)
+            obstacles.push({
+              x: 490,
+              y: groundY - 16,
+              w: 20,
+              h: 16,
+              type: 'rock'
+            });
+          }
         }
       }
 
@@ -813,29 +873,50 @@
           if (s.x < 0) s.x = 480;
         });
 
-        spawnCollectibles();
+        spawnEntities();
 
+        // 1. ZEMİN ENGELLERİ GÜNCELLEME & ÇARPIŞMA (Tökezleme & Puan Kaybı)
+        for (let i = obstacles.length - 1; i >= 0; i--) {
+          const obs = obstacles[i];
+          obs.x -= gameSpeed;
+
+          // Oyuncu ile engel çarpışma kutusu
+          const pBox = { x: player.x + 4, y: player.y + 4, w: player.w - 8, h: player.h - 4 };
+          const oBox = { x: obs.x + 2, y: obs.y + 2, w: obs.w - 4, h: obs.h - 2 };
+
+          if (pBox.x < oBox.x + oBox.w && pBox.x + pBox.w > oBox.x &&
+              pBox.y < oBox.y + oBox.h && pBox.y + pBox.h > oBox.y) {
+            if (player.invulnerable === 0) {
+              player.invulnerable = 36;
+              score = Math.max(0, score - 50);
+              hudScore.textContent = score;
+              floatingTexts.push({ x: player.x, y: player.y - 12, text: '-50 💥', opacity: 1, color: '#ef4444' });
+              playSound('hit');
+            }
+          }
+
+          if (obs.x < -40) obstacles.splice(i, 1);
+        }
+
+        // 2. HAVADAKİ ÖDÜLLER GÜNCELLEME & ÇARPIŞMA (Sadece Zıplayıp Dokununca Alınır!)
         for (let i = collectibles.length - 1; i >= 0; i--) {
           const col = collectibles[i];
           col.x -= gameSpeed;
 
-          const pCenterX = player.x + player.w / 2;
-          const pCenterY = player.y + player.h / 2;
-          const cCenterX = col.x + col.w / 2;
-          const cCenterY = col.y + col.h / 2;
+          // Kutu çarpışması (Ayaktayken havadaki ödüle erişilemez!)
+          const pBox = { x: player.x - 2, y: player.y - 2, w: player.w + 4, h: player.h + 4 };
+          const cBox = { x: col.x + 2, y: col.y + 2, w: col.w - 4, h: col.h - 4 };
 
-          const dx = Math.abs(pCenterX - cCenterX);
-          const dy = Math.abs(pCenterY - cCenterY);
-
-          if (dx < 30 && dy < 32) {
+          if (pBox.x < cBox.x + cBox.w && pBox.x + pBox.w > cBox.x &&
+              pBox.y < cBox.y + cBox.h && pBox.y + pBox.h > cBox.y) {
             playSound('coin');
             if (col.type === 'flower') {
               flowerCount++;
               score += 100;
-              floatingTexts.push({ x: col.x, y: col.y, text: '+100 🌸', opacity: 1 });
+              floatingTexts.push({ x: col.x, y: col.y, text: '+100 🌸', opacity: 1, color: '#fbbf24' });
             } else {
               score += 250;
-              floatingTexts.push({ x: col.x, y: col.y, text: '+250 💖', opacity: 1 });
+              floatingTexts.push({ x: col.x, y: col.y, text: '+250 💖', opacity: 1, color: '#f43f5e' });
             }
             hudFlowers.textContent = `🌸 x ${flowerCount}`;
             hudScore.textContent = score;
@@ -897,6 +978,33 @@
           ctx.fillRect(Math.floor(x), groundY + 4, 14, 3);
         }
 
+        // Engelleri Çiz (Taş ve Çit)
+        obstacles.forEach(obs => {
+          ctx.save();
+          ctx.translate(Math.floor(obs.x), Math.floor(obs.y));
+          if (obs.type === 'rock') {
+            ctx.fillStyle = '#64748b';
+            ctx.fillRect(2, 4, 18, 12);
+            ctx.fillRect(5, 1, 12, 15);
+            ctx.fillStyle = '#94a3b8';
+            ctx.fillRect(5, 3, 6, 4);
+            ctx.fillStyle = '#334155';
+            ctx.fillRect(2, 13, 18, 3);
+          } else {
+            ctx.fillStyle = '#b45309';
+            ctx.fillRect(2, 0, 4, 22);
+            ctx.fillRect(12, 0, 4, 22);
+            ctx.fillStyle = '#d97706';
+            ctx.fillRect(0, 4, 18, 5);
+            ctx.fillRect(0, 13, 18, 5);
+            ctx.fillStyle = '#fbbf24';
+            ctx.fillRect(1, 5, 2, 3);
+            ctx.fillRect(15, 5, 2, 3);
+          }
+          ctx.restore();
+        });
+
+        // Havadaki Ödülleri Çiz (Çiçek & Kalp)
         collectibles.forEach(col => {
           ctx.save();
           ctx.translate(Math.floor(col.x), Math.floor(col.y));
@@ -925,7 +1033,7 @@
         floatingTexts.forEach(ft => {
           ctx.save();
           ctx.globalAlpha = Math.max(0, ft.opacity);
-          ctx.fillStyle = '#fbbf24';
+          ctx.fillStyle = ft.color || '#fbbf24';
           ctx.font = '10px "Press Start 2P", monospace';
           ctx.fillText(ft.text, ft.x, ft.y);
           ctx.restore();

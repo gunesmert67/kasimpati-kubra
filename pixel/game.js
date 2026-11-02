@@ -1,15 +1,16 @@
-// 8-Bit Retro Mini Oyunu: İstanbul'dan Iğdır'a Kübra'ya Kavuşma 🌸
+// 1520 KM Retro Runner - Canvas 2D Motoru
+// Karakter Seçimi (Kübra / Mert), Zıplama Fiziği ve 8-Bit Web Audio API
 
-document.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('DOMContentLoaded', () => {
   const canvas = document.getElementById('gameCanvas');
+  if (!canvas) return;
   const ctx = canvas.getContext('2d');
-  
-  // HUD Elementleri
+
   const hudDistance = document.getElementById('hudDistance');
   const hudFlowers = document.getElementById('hudFlowers');
   const hudScore = document.getElementById('hudScore');
-  
-  // Ekranlar ve Butonlar
+  const hudRoute = document.getElementById('hudRoute');
+
   const startScreen = document.getElementById('startScreen');
   const victoryScreen = document.getElementById('victoryScreen');
   const startBtn = document.getElementById('startBtn');
@@ -17,17 +18,19 @@ document.addEventListener('DOMContentLoaded', () => {
   const soundToggle = document.getElementById('soundToggle');
   const yesBtn1 = document.getElementById('yesBtn1');
   const yesBtn2 = document.getElementById('yesBtn2');
+  const charBtnKubra = document.getElementById('charBtnKubra');
+  const charBtnMert = document.getElementById('charBtnMert');
+  const vicDesc = document.getElementById('vicDesc');
 
-  // Web Audio API
   let audioCtx = null;
   let soundEnabled = true;
 
   function initAudio() {
     if (!audioCtx) {
       const AudioContext = window.AudioContext || window.webkitAudioContext;
-      audioCtx = new AudioContext();
+      if (AudioContext) audioCtx = new AudioContext();
     }
-    if (audioCtx.state === 'suspended') {
+    if (audioCtx && audioCtx.state === 'suspended') {
       audioCtx.resume();
     }
   }
@@ -58,6 +61,14 @@ document.addEventListener('DOMContentLoaded', () => {
         gain.gain.linearRampToValueAtTime(0, now + 0.22);
         osc.start(now);
         osc.stop(now + 0.22);
+      } else if (type === 'hit') {
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(160, now);
+        osc.frequency.linearRampToValueAtTime(60, now + 0.16);
+        gain.gain.setValueAtTime(0.2, now);
+        gain.gain.linearRampToValueAtTime(0.01, now + 0.16);
+        osc.start(now);
+        osc.stop(now + 0.18);
       } else if (type === 'win') {
         const notes = [329, 392, 523, 659, 783, 1046];
         notes.forEach((freq, idx) => {
@@ -76,21 +87,37 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch (e) {}
   }
 
-  soundToggle.addEventListener('click', () => {
+  soundToggle?.addEventListener('click', () => {
     soundEnabled = !soundEnabled;
     soundToggle.textContent = soundEnabled ? 'SES: AÇIK 🔊' : 'SES: KAPALI 🔇';
   });
 
-  // Oyun Durumu Değişkenleri
-  let gameState = 'START'; // 'START', 'PLAYING', 'VICTORY'
-  let distance = 1520;     // İstanbul - Iğdır: 1520 KM
+  let activeCharacter = 'kubra';
+
+  charBtnKubra?.addEventListener('click', () => {
+    activeCharacter = 'kubra';
+    charBtnKubra.classList.add('active');
+    charBtnMert?.classList.remove('active');
+    if (hudRoute) hudRoute.textContent = 'IĞDIR ➔ İSTANBUL';
+    if (vicDesc) vicDesc.textContent = 'Iğdır - İstanbul arası 1520 km bile bana ulaşmana engel olamadı.';
+  });
+
+  charBtnMert?.addEventListener('click', () => {
+    activeCharacter = 'mert';
+    charBtnMert.classList.add('active');
+    charBtnKubra?.classList.remove('active');
+    if (hudRoute) hudRoute.textContent = 'İSTANBUL ➔ IĞDIR';
+    if (vicDesc) vicDesc.textContent = 'İstanbul - Iğdır arası 1520 km bile sana gelmeme engel olamaz.';
+  });
+
+  let gameState = 'START';
+  let distance = 1520;
   let flowerCount = 0;
   let score = 0;
-  let gameSpeed = 2.4;     // Rahat ve keyifli hız
+  let gameSpeed = 2.4;
   let groundY = 245;
   let gameTime = 0;
 
-  // Oyuncu (Mert - Piksel Karakter)
   const player = {
     x: 60,
     y: groundY - 36,
@@ -98,9 +125,10 @@ document.addEventListener('DOMContentLoaded', () => {
     h: 36,
     vy: 0,
     gravity: 0.52,
-    jumpForce: -10.2,
+    jumpForce: -10.5,
     isGrounded: true,
     runFrame: 0,
+    invulnerable: 0,
     jump() {
       if (this.isGrounded && gameState === 'PLAYING') {
         this.vy = this.jumpForce;
@@ -119,51 +147,84 @@ document.addEventListener('DOMContentLoaded', () => {
       if (this.isGrounded) {
         this.runFrame += 0.18;
       }
+      if (this.invulnerable > 0) {
+        this.invulnerable--;
+      }
     },
     draw() {
+      if (this.invulnerable > 0 && Math.floor(this.invulnerable / 3) % 2 === 0) {
+        return;
+      }
+
       ctx.save();
       ctx.translate(Math.floor(this.x), Math.floor(this.y));
 
-      // Saç
-      ctx.fillStyle = '#1e293b';
-      ctx.fillRect(4, 0, 16, 8);
-      ctx.fillRect(2, 4, 20, 6);
+      if (activeCharacter === 'kubra') {
+        ctx.fillStyle = '#fda4af';
+        ctx.fillRect(3, 0, 18, 9);
+        ctx.fillStyle = '#fb7185';
+        ctx.fillRect(1, 4, 22, 18);
 
-      // Yüz
-      ctx.fillStyle = '#fed7aa';
-      ctx.fillRect(4, 8, 16, 12);
-      // Gözler
-      ctx.fillStyle = '#0f172a';
-      ctx.fillRect(14, 11, 3, 3);
+        ctx.fillStyle = '#fed7aa';
+        ctx.fillRect(6, 8, 12, 10);
+        ctx.fillStyle = '#0f172a';
+        ctx.fillRect(9, 10, 3, 3);
 
-      // Kıyafet (Siyah-Gri Kapüşonlu)
-      ctx.fillStyle = '#334155';
-      ctx.fillRect(2, 20, 20, 11);
-      ctx.fillStyle = '#f43f5e';
-      ctx.fillRect(8, 20, 8, 2); // Kırmızı detay
+        ctx.fillStyle = '#831843';
+        ctx.fillRect(3, 22, 18, 10);
+        ctx.fillStyle = '#fbcfe8';
+        ctx.fillRect(8, 22, 8, 10);
 
-      // Bacaklar
-      ctx.fillStyle = '#0f172a';
-      const step = Math.floor(this.runFrame) % 2;
-      if (this.isGrounded) {
-        if (step === 0) {
-          ctx.fillRect(4, 31, 6, 5);
-          ctx.fillRect(14, 31, 6, 3);
+        ctx.fillStyle = '#1e1b4b';
+        const step = Math.floor(this.runFrame) % 2;
+        if (this.isGrounded) {
+          if (step === 0) {
+            ctx.fillRect(4, 32, 6, 4);
+            ctx.fillRect(14, 32, 6, 2);
+          } else {
+            ctx.fillRect(4, 32, 6, 2);
+            ctx.fillRect(14, 32, 6, 4);
+          }
         } else {
-          ctx.fillRect(4, 31, 6, 3);
-          ctx.fillRect(14, 31, 6, 5);
+          ctx.fillRect(4, 32, 6, 3);
+          ctx.fillRect(13, 32, 6, 3);
         }
       } else {
-        ctx.fillRect(4, 31, 6, 3);
-        ctx.fillRect(12, 31, 6, 3);
+        ctx.fillStyle = '#1e293b';
+        ctx.fillRect(4, 0, 16, 8);
+        ctx.fillRect(2, 4, 20, 6);
+
+        ctx.fillStyle = '#fed7aa';
+        ctx.fillRect(4, 8, 16, 12);
+        ctx.fillStyle = '#0f172a';
+        ctx.fillRect(14, 11, 3, 3);
+
+        ctx.fillStyle = '#334155';
+        ctx.fillRect(2, 20, 20, 11);
+        ctx.fillStyle = '#f43f5e';
+        ctx.fillRect(8, 20, 8, 2);
+
+        ctx.fillStyle = '#0f172a';
+        const step = Math.floor(this.runFrame) % 2;
+        if (this.isGrounded) {
+          if (step === 0) {
+            ctx.fillRect(4, 31, 6, 5);
+            ctx.fillRect(14, 31, 6, 3);
+          } else {
+            ctx.fillRect(4, 31, 6, 3);
+            ctx.fillRect(14, 31, 6, 5);
+          }
+        } else {
+          ctx.fillRect(4, 31, 6, 3);
+          ctx.fillRect(12, 31, 6, 3);
+        }
       }
 
       ctx.restore();
     }
   };
 
-  // Hedef Karakter (Kübra - Başörtülü Zarif Piksel Tasarım)
-  const kubra = {
+  const waitingPartner = {
     x: 480 + 50,
     y: groundY - 36,
     w: 24,
@@ -174,44 +235,51 @@ document.addEventListener('DOMContentLoaded', () => {
       ctx.save();
       ctx.translate(Math.floor(this.x), Math.floor(this.y));
 
-      // 1. Başörtüsü / Şal (Zarif Pudra/Gül Pembe Tonlarında)
-      // Başı tamamen saran şık örtü
-      ctx.fillStyle = '#fda4af';
-      ctx.fillRect(3, 0, 18, 9);
-      ctx.fillStyle = '#fb7185';
-      ctx.fillRect(1, 4, 22, 18); // Omuzlara dökülen kumaş
+      if (activeCharacter === 'kubra') {
+        ctx.fillStyle = '#1e293b';
+        ctx.fillRect(4, 0, 16, 8);
+        ctx.fillRect(2, 4, 20, 6);
 
-      // 2. Yüz (Sadece gözler ve tatlı allık görünür)
-      ctx.fillStyle = '#ffedd5';
-      ctx.fillRect(6, 8, 12, 10);
-      // Gözler
-      ctx.fillStyle = '#0f172a';
-      ctx.fillRect(9, 10, 3, 3);
-      // Allık
-      ctx.fillStyle = '#f43f5e';
-      ctx.fillRect(7, 13, 3, 2);
-      ctx.fillRect(14, 13, 3, 2);
+        ctx.fillStyle = '#fed7aa';
+        ctx.fillRect(4, 8, 16, 12);
+        ctx.fillStyle = '#0f172a';
+        ctx.fillRect(8, 11, 3, 3);
 
-      // 3. Kıyafet / Pardösü (Zarif Mürdüm/Koyu Gül Rengi)
-      ctx.fillStyle = '#831843';
-      ctx.fillRect(3, 22, 18, 11);
-      ctx.fillStyle = '#fbcfe8';
-      ctx.fillRect(8, 22, 8, 11); // Ön açık detay
+        ctx.fillStyle = '#334155';
+        ctx.fillRect(2, 20, 20, 12);
+        ctx.fillStyle = '#10b981';
+        ctx.fillRect(6, 20, 4, 4);
 
-      // 4. Etek Ucu & Ayakkabılar
-      ctx.fillStyle = '#1e1b4b';
-      ctx.fillRect(6, 33, 4, 3);
-      ctx.fillRect(14, 33, 4, 3);
+        ctx.fillStyle = '#0f172a';
+        ctx.fillRect(5, 32, 5, 4);
+        ctx.fillRect(14, 32, 5, 4);
+      } else {
+        ctx.fillStyle = '#fda4af';
+        ctx.fillRect(3, 0, 18, 9);
+        ctx.fillRect(1, 4, 22, 18);
 
-      // 5. Elinde Tuttuğu Çiçek
-      ctx.fillStyle = '#fbbf24';
-      ctx.fillRect(0, 19, 4, 4);
+        ctx.fillStyle = '#fed7aa';
+        ctx.fillRect(6, 8, 12, 10);
+        ctx.fillStyle = '#0f172a';
+        ctx.fillRect(8, 10, 3, 3);
+
+        ctx.fillStyle = '#831843';
+        ctx.fillRect(3, 22, 18, 11);
+        ctx.fillStyle = '#fbcfe8';
+        ctx.fillRect(8, 22, 8, 11);
+
+        ctx.fillStyle = '#1e1b4b';
+        ctx.fillRect(6, 33, 4, 3);
+        ctx.fillRect(14, 33, 4, 3);
+
+        ctx.fillStyle = '#fbbf24';
+        ctx.fillRect(0, 19, 4, 4);
+      }
 
       ctx.restore();
     }
   };
 
-  // Arka Plan Yıldızları
   const stars = [];
   for (let i = 0; i < 30; i++) {
     stars.push({
@@ -222,85 +290,126 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Toplanabilirler (Kasımpatı Çiçekleri & Kalpler)
   let collectibles = [];
+  let obstacles = [];
   let floatingTexts = [];
   let spawnTimer = 0;
 
-  function spawnCollectibles() {
+  function spawnEntities() {
     spawnTimer++;
-    // Her 40 karede bir çiçek veya kalp çıkar (Sık sık çıkar, toplaması keyiflidir)
-    if (distance > 25 && spawnTimer % 38 === 0) {
-      const isAirborne = Math.random() > 0.45;
-      const type = Math.random() > 0.35 ? 'flower' : 'heart';
-      collectibles.push({
-        x: 490,
-        // Yerdeyse zıplamadan alınır (groundY - 22), havadaysa zıplayarak alınır (groundY - 55)
-        y: isAirborne ? (groundY - 55) : (groundY - 22),
-        w: 22,
-        h: 22,
-        type: type
-      });
+    if (distance > 35 && spawnTimer % 55 === 0) {
+      const rand = Math.random();
+
+      if (rand < 0.45) {
+        const obsType = Math.random() > 0.5 ? 'rock' : 'hurdle';
+        obstacles.push({
+          x: 490,
+          y: obsType === 'rock' ? groundY - 16 : groundY - 22,
+          w: 22,
+          h: obsType === 'rock' ? 16 : 22,
+          type: obsType
+        });
+
+        collectibles.push({
+          x: 492,
+          y: groundY - 78,
+          w: 22,
+          h: 22,
+          type: Math.random() > 0.35 ? 'flower' : 'heart'
+        });
+      } else if (rand < 0.8) {
+        const rewardType = Math.random() > 0.35 ? 'flower' : 'heart';
+        collectibles.push({
+          x: 490,
+          y: groundY - 75,
+          w: 22,
+          h: 22,
+          type: rewardType
+        });
+        collectibles.push({
+          x: 524,
+          y: groundY - 88,
+          w: 22,
+          h: 22,
+          type: 'flower'
+        });
+      } else {
+        obstacles.push({
+          x: 490,
+          y: groundY - 16,
+          w: 20,
+          h: 16,
+          type: 'rock'
+        });
+      }
     }
   }
 
-  // Güncelleme Fonksiyonu
   function update() {
     if (gameState !== 'PLAYING') return;
 
     gameTime++;
     player.update();
 
-    // Mesafe Geri Sayımı (1520 KM'den 0'a iner, yaklaşık 20 saniye)
     if (distance > 0) {
       distance -= 1.6;
       if (distance < 0) distance = 0;
-      hudDistance.textContent = `${Math.floor(distance)} KM`;
+      if (hudDistance) hudDistance.textContent = `${Math.floor(distance)} KM`;
     }
 
-    // 0 KM Oldu! Kübra Belirir
-    if (distance === 0 && !kubra.visible) {
-      kubra.visible = true;
-      kubra.x = 410;
+    if (distance === 0 && !waitingPartner.visible) {
+      waitingPartner.visible = true;
+      waitingPartner.x = 410;
     }
 
-    // Yıldızlar
     stars.forEach(s => {
       s.x -= s.speed;
       if (s.x < 0) s.x = 480;
     });
 
-    // Toplanabilirleri Üret
-    spawnCollectibles();
+    spawnEntities();
 
-    // Çiçek / Kalp Toplama & Geniş Çarpışma Kutusu
+    for (let i = obstacles.length - 1; i >= 0; i--) {
+      const obs = obstacles[i];
+      obs.x -= gameSpeed;
+
+      const pBox = { x: player.x + 4, y: player.y + 4, w: player.w - 8, h: player.h - 4 };
+      const oBox = { x: obs.x + 2, y: obs.y + 2, w: obs.w - 4, h: obs.h - 2 };
+
+      if (pBox.x < oBox.x + oBox.w && pBox.x + pBox.w > oBox.x &&
+          pBox.y < oBox.y + oBox.h && pBox.y + pBox.h > oBox.y) {
+        if (player.invulnerable === 0) {
+          player.invulnerable = 36;
+          score = Math.max(0, score - 50);
+          if (hudScore) hudScore.textContent = score;
+          floatingTexts.push({ x: player.x, y: player.y - 12, text: '-50 💥', opacity: 1, color: '#ef4444' });
+          playSound('hit');
+        }
+      }
+
+      if (obs.x < -40) obstacles.splice(i, 1);
+    }
+
     for (let i = collectibles.length - 1; i >= 0; i--) {
       const col = collectibles[i];
       col.x -= gameSpeed;
 
-      // Genişletilmiş mıknatıs/kutu çarpışması
-      const pCenterX = player.x + player.w / 2;
-      const pCenterY = player.y + player.h / 2;
-      const cCenterX = col.x + col.w / 2;
-      const cCenterY = col.y + col.h / 2;
+      const pBox = { x: player.x - 2, y: player.y - 2, w: player.w + 4, h: player.h + 4 };
+      const cBox = { x: col.x + 2, y: col.y + 2, w: col.w - 4, h: col.h - 4 };
 
-      const dx = Math.abs(pCenterX - cCenterX);
-      const dy = Math.abs(pCenterY - cCenterY);
-
-      if (dx < 30 && dy < 32) {
-        // BAŞARIYLA TOPLANDI!
+      if (pBox.x < cBox.x + cBox.w && pBox.x + pBox.w > cBox.x &&
+          pBox.y < cBox.y + cBox.h && pBox.y + pBox.h > cBox.y) {
         playSound('coin');
         if (col.type === 'flower') {
           flowerCount++;
           score += 100;
-          floatingTexts.push({ x: col.x, y: col.y, text: '+100 🌸', opacity: 1 });
+          floatingTexts.push({ x: col.x, y: col.y, text: '+100 🌸', opacity: 1, color: '#fbbf24' });
         } else {
           score += 250;
-          floatingTexts.push({ x: col.x, y: col.y, text: '+250 💖', opacity: 1 });
+          floatingTexts.push({ x: col.x, y: col.y, text: '+250 💖', opacity: 1, color: '#f43f5e' });
         }
-        hudFlowers.textContent = `🌸 x ${flowerCount}`;
-        hudScore.textContent = score;
-
+        if (hudFlowers) hudFlowers.textContent = `🌸 x ${flowerCount}`;
+        if (hudScore) hudScore.textContent = score;
         collectibles.splice(i, 1);
         continue;
       }
@@ -308,7 +417,6 @@ document.addEventListener('DOMContentLoaded', () => {
       if (col.x < -30) collectibles.splice(i, 1);
     }
 
-    // Uçan Puan Yazıları
     for (let i = floatingTexts.length - 1; i >= 0; i--) {
       const ft = floatingTexts[i];
       ft.y -= 0.8;
@@ -316,9 +424,8 @@ document.addEventListener('DOMContentLoaded', () => {
       if (ft.opacity <= 0) floatingTexts.splice(i, 1);
     }
 
-    // KAVUŞMA KONTROLÜ
-    if (distance === 0 && kubra.visible) {
-      if (player.x < kubra.x - 26) {
+    if (distance === 0 && waitingPartner.visible) {
+      if (player.x < waitingPartner.x - 26) {
         player.x += 1.2;
       } else {
         triggerVictory();
@@ -326,55 +433,70 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Çizim Fonksiyonu
   function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // 1. Gece Gökyüzü Degrade
     const skyGrad = ctx.createLinearGradient(0, 0, 0, groundY);
     skyGrad.addColorStop(0, '#0a0618');
     skyGrad.addColorStop(1, '#1b1236');
     ctx.fillStyle = skyGrad;
     ctx.fillRect(0, 0, canvas.width, groundY);
 
-    // 2. Piksel Hilal Ay
     ctx.fillStyle = '#fde047';
     ctx.fillRect(400, 20, 24, 24);
     ctx.fillStyle = '#0a0618';
     ctx.fillRect(396, 17, 14, 14);
 
-    // 3. Yıldızlar
     ctx.fillStyle = '#ffffff';
     stars.forEach(s => {
       ctx.fillRect(Math.floor(s.x), Math.floor(s.y), s.size, s.size);
     });
 
-    // 4. Uzak Şehir Silüeti (İstanbul'dan Iğdır'a Dağlar & Binalar)
     ctx.fillStyle = '#140e2b';
     for (let i = 0; i < 14; i++) {
       const h = ((i * 23) % 40) + 25;
       ctx.fillRect(i * 38 - (gameTime * 0.5 % 38), groundY - h, 34, h);
     }
 
-    // 5. Zemin (Yol / Çimen)
     ctx.fillStyle = '#064e3b';
     ctx.fillRect(0, groundY, canvas.width, 10);
     ctx.fillStyle = '#022c22';
     ctx.fillRect(0, groundY + 10, canvas.width, canvas.height - groundY - 10);
 
-    // Yol şeritleri
     ctx.fillStyle = '#10b981';
     for (let x = - (gameTime * gameSpeed) % 30; x < canvas.width; x += 30) {
       ctx.fillRect(Math.floor(x), groundY + 4, 14, 3);
     }
 
-    // 6. Toplanabilirleri Çiz (Büyük & Parlak)
+    obstacles.forEach(obs => {
+      ctx.save();
+      ctx.translate(Math.floor(obs.x), Math.floor(obs.y));
+      if (obs.type === 'rock') {
+        ctx.fillStyle = '#64748b';
+        ctx.fillRect(2, 4, 18, 12);
+        ctx.fillRect(5, 1, 12, 15);
+        ctx.fillStyle = '#94a3b8';
+        ctx.fillRect(5, 3, 6, 4);
+        ctx.fillStyle = '#334155';
+        ctx.fillRect(2, 13, 18, 3);
+      } else {
+        ctx.fillStyle = '#b45309';
+        ctx.fillRect(2, 0, 4, 22);
+        ctx.fillRect(12, 0, 4, 22);
+        ctx.fillStyle = '#d97706';
+        ctx.fillRect(0, 4, 18, 5);
+        ctx.fillRect(0, 13, 18, 5);
+        ctx.fillStyle = '#fbbf24';
+        ctx.fillRect(1, 5, 2, 3);
+        ctx.fillRect(15, 5, 2, 3);
+      }
+      ctx.restore();
+    });
+
     collectibles.forEach(col => {
       ctx.save();
       ctx.translate(Math.floor(col.x), Math.floor(col.y));
-
       if (col.type === 'heart') {
-        // Kalp
         ctx.fillStyle = '#f43f5e';
         ctx.fillRect(3, 0, 6, 6);
         ctx.fillRect(11, 0, 6, 6);
@@ -382,34 +504,29 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.fillRect(4, 12, 12, 5);
         ctx.fillRect(8, 17, 4, 4);
       } else {
-        // Kasımpatı Çiçeği 🌸
         ctx.fillStyle = '#fda4af';
         ctx.fillRect(6, 0, 10, 22);
         ctx.fillRect(0, 6, 22, 10);
         ctx.fillStyle = '#f43f5e';
         ctx.fillRect(4, 4, 14, 14);
         ctx.fillStyle = '#fbbf24';
-        ctx.fillRect(7, 7, 8, 8); // Altın sarısı çekirdek
+        ctx.fillRect(7, 7, 8, 8);
       }
-
       ctx.restore();
     });
 
-    // 7. Karakterleri Çiz
     player.draw();
-    kubra.draw();
+    waitingPartner.draw();
 
-    // 8. Uçan Puan Yazıları
     floatingTexts.forEach(ft => {
       ctx.save();
       ctx.globalAlpha = Math.max(0, ft.opacity);
-      ctx.fillStyle = '#fbbf24';
+      ctx.fillStyle = ft.color || '#fbbf24';
       ctx.font = '10px "Press Start 2P", monospace';
       ctx.fillText(ft.text, ft.x, ft.y);
       ctx.restore();
     });
 
-    // 9. Kavuşma Anında Parlayan Büyük Kalp
     if (gameState === 'VICTORY') {
       const heartPulse = Math.sin(gameTime * 0.12) * 4;
       ctx.save();
@@ -424,39 +541,34 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Oyun Döngüsü
   function loop() {
     update();
     draw();
     requestAnimationFrame(loop);
   }
 
-  // Zafer Ekranını Tetikle
   function triggerVictory() {
     if (gameState === 'VICTORY') return;
     gameState = 'VICTORY';
     playSound('win');
-
     setTimeout(() => {
-      victoryScreen.classList.remove('hidden');
+      victoryScreen?.classList.remove('hidden');
     }, 700);
   }
 
-  // Başlat
-  startBtn.addEventListener('click', () => {
+  startBtn?.addEventListener('click', () => {
     initAudio();
-    startScreen.classList.add('hidden');
+    startScreen?.classList.add('hidden');
     gameState = 'PLAYING';
     playSound('coin');
   });
 
-  // Zıplama Kontrolleri
-  jumpBtn.addEventListener('touchstart', (e) => {
+  jumpBtn?.addEventListener('touchstart', (e) => {
     e.preventDefault();
     initAudio();
     player.jump();
   });
-  jumpBtn.addEventListener('click', () => {
+  jumpBtn?.addEventListener('click', () => {
     initAudio();
     player.jump();
   });
@@ -479,27 +591,25 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Sevgi Butonları
-  function celebrateAccept(btn, text) {
+  function claimReward(btn, text) {
     playSound('win');
     btn.textContent = text;
     btn.style.background = '#10b981';
     btn.style.boxShadow = '0 5px 0 #047857';
 
-    // Konfeti kalpleri
-    for (let i = 0; i < 45; i++) {
+    for (let i = 0; i < 40; i++) {
       collectibles.push({
         x: player.x + Math.random() * 50 - 25,
         y: player.y - Math.random() * 80,
-        w: 10,
-        h: 10,
+        w: 8,
+        h: 8,
         type: 'heart'
       });
     }
   }
 
-  yesBtn1.addEventListener('click', () => celebrateAccept(yesBtn1, 'CANIMSIN BENİM! 🥰'));
-  yesBtn2.addEventListener('click', () => celebrateAccept(yesBtn2, 'BEN DAHA ÇOK SEVİYORUM 💖'));
+  yesBtn1?.addEventListener('click', () => claimReward(yesBtn1, 'BORÇ YAZILDI! EKRAN GÖRÜNTÜSÜNÜ AT 😉☕'));
+  yesBtn2?.addEventListener('click', () => claimReward(yesBtn2, 'BORÇ YAZILDI! TATLI BENDEN 😉🍰'));
 
   requestAnimationFrame(loop);
 });
