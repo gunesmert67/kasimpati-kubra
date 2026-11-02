@@ -174,16 +174,16 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 12px;
+      gap: 16px;
       position: relative;
       min-height: 145px;
-      margin-top: 0.3rem;
+      margin-top: 0.5rem;
     }
 
-    /* EVET BUTONU - Büyüyen Süper Buton */
+    /* EVET BUTONU - Büyüyen Süper Buton (%50 Katlanarak Ekranı Kaplar) */
     .btn-yes {
       width: 85%;
-      max-width: 320px;
+      max-width: 300px;
       min-height: 54px;
       background: linear-gradient(135deg, #10b981, #059669);
       color: #ffffff;
@@ -194,22 +194,24 @@
       border-radius: 9999px;
       cursor: pointer;
       box-shadow: 0 6px 20px var(--green-glow), 0 2px 6px rgba(0, 0, 0, 0.3);
-      transition: width 0.25s ease, min-height 0.25s ease, font-size 0.25s ease, transform 0.2s ease, box-shadow 0.25s ease;
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transform-origin: center center;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
-      z-index: 50;
+      z-index: 100;
+      position: relative;
       text-align: center;
-      white-space: normal;
-      padding: 0.6rem 1.2rem;
+      white-space: nowrap;
+      padding: 0.7rem 1.4rem;
     }
 
     .btn-yes:active {
-      transform: scale(0.96);
+      filter: brightness(1.1);
     }
 
-    /* HAYIR BUTONU - Geniş, Tamamen Okunabilir & Altta */
+    /* HAYIR BUTONU - Altta Kalır, Asla Gizlenmez, Evet Büyüyerek Üstünü Örter */
     .btn-no {
       width: auto;
       max-width: 95%;
@@ -225,7 +227,8 @@
       cursor: pointer;
       backdrop-filter: blur(10px);
       transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
-      z-index: 40;
+      z-index: 10;
+      position: relative;
       text-align: center;
       white-space: normal;
       line-height: 1.35;
@@ -519,6 +522,7 @@
     ];
 
     let noClickCount = 0;
+    let yesScale = 1.0;
     const yesBtn = document.getElementById("yesBtn");
     const noBtn = document.getElementById("noBtn");
     const yesText = document.getElementById("yesText");
@@ -530,63 +534,22 @@
     const rouletteResult = document.getElementById("rouletteResult");
     const replayBtn = document.getElementById("replayBtn");
 
-    // "Hayır" Tıklama Mekaniği (Dikey Büyüyen Evet & Sonunda Kapatma)
+    // "Hayır" Tıklama Mekaniği (Her basışta %50 BÜYÜR, Hayır altta kalır, Evet tüm ekranı kaplar!)
     function handleNoClick(e) {
       if (e) e.preventDefault();
       AudioEngine.playBoing();
 
       if (navigator.vibrate) navigator.vibrate(40);
 
-      // Yazıyı sıradaki replikle değiştir (Dikeyde olduğu için asla sağa taşmaz, net okunur)
+      // Yazıyı sıradaki replikle değiştir
       const currentMsg = messages[noClickCount % messages.length];
       noText.textContent = currentMsg;
 
       noClickCount++;
 
-      // "EVET" BUTONUNU DİKEYDE VE YATAYDA KUSURSUZ BÜYÜT
-      if (noClickCount === 1) {
-        yesBtn.style.width = "92%";
-        yesBtn.style.minHeight = "62px";
-        yesBtn.style.fontSize = "1.25rem";
-      } else if (noClickCount === 2) {
-        yesBtn.style.width = "98%";
-        yesBtn.style.minHeight = "72px";
-        yesBtn.style.fontSize = "1.35rem";
-      } else if (noClickCount === 3) {
-        yesBtn.style.width = "100%";
-        yesBtn.style.minHeight = "84px";
-        yesBtn.style.fontSize = "1.5rem";
-      } else if (noClickCount === 4) {
-        yesBtn.style.width = "100%";
-        yesBtn.style.minHeight = "98px";
-        yesBtn.style.fontSize = "1.65rem";
-        noBtn.style.transform = "scale(0.95)";
-      } else if (noClickCount === 5) {
-        yesBtn.style.width = "100%";
-        yesBtn.style.minHeight = "115px";
-        yesBtn.style.fontSize = "1.85rem";
-        noBtn.style.transform = "scale(0.9)";
-      } else if (noClickCount === 6) {
-        yesBtn.style.width = "100%";
-        yesBtn.style.minHeight = "135px";
-        yesBtn.style.fontSize = "2rem";
-        noBtn.style.transform = "scale(0.85)";
-      } else {
-        // 7+ TIK: EVET BUTONU TÜM ALANI KAPLAR VE HAYIR'IN ÜSTÜNÜ TAMAMEN ÖRTER!
-        yesBtn.style.position = "absolute";
-        yesBtn.style.inset = "0";
-        yesBtn.style.width = "100%";
-        yesBtn.style.height = "100%";
-        yesBtn.style.minHeight = "150px";
-        yesBtn.style.borderRadius = "24px";
-        yesBtn.style.fontSize = "1.6rem";
-        yesBtn.style.zIndex = "99";
-        yesBtn.style.boxShadow = "0 0 35px rgba(16, 185, 129, 0.7)";
-        yesText.textContent = "EVET! 🥰 (Başka Şansın Yok ❤️)";
-
-        noBtn.style.opacity = "0";
-        noBtn.style.pointerEvents = "none";
-      }
+      // HER TIKLAMADA %50 BÜYÜT (1.0 -> 1.5 -> 2.25 -> 3.37 -> 5.06 -> 7.59 -> 11.39)
+      yesScale = yesScale * 1.5;
+      yesBtn.style.transform = `scale(${yesScale})`;
 
       // Hafif GIF sallanma animasyonu
       gifFrame.style.transform = "scale(0.95) rotate(-3deg)";
@@ -638,21 +601,10 @@
     // Baştan Başlat
     replayBtn.addEventListener("click", () => {
       noClickCount = 0;
-      yesBtn.style.position = "relative";
-      yesBtn.style.inset = "auto";
-      yesBtn.style.width = "85%";
-      yesBtn.style.height = "auto";
-      yesBtn.style.minHeight = "54px";
-      yesBtn.style.fontSize = "1.15rem";
-      yesBtn.style.borderRadius = "9999px";
-      yesBtn.style.boxShadow = "0 6px 20px var(--green-glow), 0 2px 6px rgba(0, 0, 0, 0.3)";
-      yesText.textContent = "Evet! 🥰";
-
+      yesScale = 1.0;
+      yesBtn.style.transform = "scale(1)";
       noBtn.style.transform = "none";
-      noBtn.style.opacity = "1";
-      noBtn.style.pointerEvents = "auto";
       noText.textContent = "Hayır 🙄";
-
       celebrationScreen.classList.remove("active");
     });
 
