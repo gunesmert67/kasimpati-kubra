@@ -11,8 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const flowerCenter = document.getElementById('flowerCenter');
   const flowerHeartGroup = document.getElementById('flowerHeartGroup');
   const surpriseBtn = document.getElementById('surpriseBtn');
-  const btnHint = document.getElementById('btnHint');
-  const interactiveArea = document.getElementById('interactiveArea');
+  const btnText = surpriseBtn.querySelector('.btn-text');
   const loveCard = document.getElementById('loveCard');
   const replayBtn = document.getElementById('replayBtn');
   const canvas = document.getElementById('particlesCanvas');
@@ -24,19 +23,18 @@ document.addEventListener('DOMContentLoaded', () => {
   const layerInner = document.getElementById('layerInner');
 
   // Durum Değişkenleri
-  let evadeCount = 0;
-  const maxEvades = 3;
-  let isReadyForClick = false;
+  let clickCount = 0;
+  let isReadyForFinalClick = false;
   let animationFinished = false;
 
   // 1. Yıldızları Oluştur
   function createStars() {
     starsContainer.innerHTML = '';
-    const starCount = window.innerWidth < 600 ? 35 : 65;
+    const starCount = window.innerWidth < 600 ? 30 : 55;
     for (let i = 0; i < starCount; i++) {
       const star = document.createElement('div');
       star.className = 'star';
-      const size = Math.random() * 2.5 + 1;
+      const size = Math.random() * 2 + 1;
       star.style.width = `${size}px`;
       star.style.height = `${size}px`;
       star.style.left = `${Math.random() * 100}%`;
@@ -53,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
     layerMid.innerHTML = '';
     layerInner.innerHTML = '';
 
-    // Katman 1: Dış Katman (Geniş, uzun zarif yapraklar)
+    // Katman 1: Dış Katman
     const countOuter = 30;
     for (let i = 0; i < countOuter; i++) {
       const angle = (360 / countOuter) * i + (Math.random() * 3 - 1.5);
@@ -64,11 +62,10 @@ document.addEventListener('DOMContentLoaded', () => {
       petal.setAttribute('fill', 'url(#petalOuterGrad)');
       petal.setAttribute('class', 'petal');
       petal.style.setProperty('--angle', `${angle}deg`);
-      petal.dataset.index = i;
       layerOuter.appendChild(petal);
     }
 
-    // Katman 2: Orta Katman (Yoğun, canlı şeftali-pembe)
+    // Katman 2: Orta Katman
     const countMid = 24;
     for (let i = 0; i < countMid; i++) {
       const angle = (360 / countMid) * i + 8 + (Math.random() * 2 - 1);
@@ -79,11 +76,10 @@ document.addEventListener('DOMContentLoaded', () => {
       petal.setAttribute('fill', 'url(#petalMidGrad)');
       petal.setAttribute('class', 'petal');
       petal.style.setProperty('--angle', `${angle}deg`);
-      petal.dataset.index = i;
       layerMid.appendChild(petal);
     }
 
-    // Katman 3: İç Katman (Kıvrımlı altın-günbatımı taç yapraklar)
+    // Katman 3: İç Katman
     const countInner = 18;
     for (let i = 0; i < countInner; i++) {
       const angle = (360 / countInner) * i + 14;
@@ -94,7 +90,6 @@ document.addEventListener('DOMContentLoaded', () => {
       petal.setAttribute('fill', 'url(#petalInnerGrad)');
       petal.setAttribute('class', 'petal');
       petal.style.setProperty('--angle', `${angle}deg`);
-      petal.dataset.index = i;
       layerInner.appendChild(petal);
     }
   }
@@ -108,11 +103,10 @@ document.addEventListener('DOMContentLoaded', () => {
     flowerCenter.classList.remove('bloom');
     flowerHeartGroup.classList.remove('show');
     flowerHead.classList.remove('sway');
-    surpriseBtn.classList.remove('ready', 'catchable', 'evading');
+    surpriseBtn.classList.remove('ready', 'catchable');
     surpriseBtn.style.transform = '';
-    btnHint.textContent = '';
-    evadeCount = 0;
-    isReadyForClick = false;
+    clickCount = 0;
+    isReadyForFinalClick = false;
     animationFinished = false;
 
     // Tüm petalleri kapat
@@ -171,118 +165,87 @@ document.addEventListener('DOMContentLoaded', () => {
       animationFinished = true;
     }, 4600);
 
-    // 8. Aşama: Buton Sahneye Gelir (5.2s)
+    // 8. Aşama: Buton Zarafetle Sahneye Gelir (5.2s)
     setTimeout(() => {
-      statusText.textContent = 'Aşağıda senin için bir sürpriz belirdi! 👇';
+      statusText.textContent = 'Senin için küçük bir sürpriz belirdi...';
       surpriseBtn.classList.add('ready');
-      surpriseBtn.querySelector('.btn-text').textContent = 'Sürpriz için butona bas ✨';
-      btnHint.textContent = 'Hadi butona dokun 🌸';
+      btnText.textContent = 'Sürpriz için butona bas ✨';
     }, 5200);
   }
 
-  // 4. Buton Kaçma / Yer Değiştirme Mantığı (3 Defa Kaçar, 4. de Basılır)
-  const evadeMessages = [
-    { text: "Hop! Kaçtım ki 😜", hint: "Yakalayamazsın kiii! (1/3)" },
-    { text: "Aramızda kalsın çok hızlıyım! 🏃💨", hint: "Kıl payı kaçırdın! (2/3)" },
-    { text: "Son bir şans daha veriyorum hadi! 🤭", hint: "Pes etme, az kaldı! (3/3)" }
-  ];
-
-  function handleButtonEvade(e) {
+  // 4. Butona Basınca Kaçma Mantığı (1: Yukarı, 2: Yana/Ortaya, 3: Alta, 4: Basılır)
+  surpriseBtn.addEventListener('click', (e) => {
+    e.preventDefault();
     if (!animationFinished) return;
-    if (isReadyForClick) return; // 4. aşamada artık kaçmaz
 
-    // Tıklamayı engelle
-    if (e) {
-      e.preventDefault();
-      e.stopPropagation();
+    // 4. Tıklama: Final Sürprizi!
+    if (isReadyForFinalClick) {
+      triggerFinalSurprise();
+      return;
     }
 
-    if (evadeCount < maxEvades) {
-      const msg = evadeMessages[evadeCount];
-      evadeCount++;
+    clickCount++;
 
-      // Kaçış pozisyonu hesaplama (mobilde ekran dışına çıkmayacak güvenli alan)
-      surpriseBtn.classList.add('evading');
-      
-      const areaRect = interactiveArea.getBoundingClientRect();
-      const maxDistanceX = Math.min(window.innerWidth * 0.32, 130);
-      const maxDistanceY = 45;
+    if (clickCount === 1) {
+      // 1. Tıklamada: YUKARI KAÇ
+      const isMobile = window.innerWidth < 480;
+      const upY = isMobile ? -110 : -140;
+      const upX = isMobile ? -25 : -35;
+      surpriseBtn.style.transform = `translate(${upX}px, ${upY}px)`;
+      btnText.textContent = 'Hop! Kaçtım ki 🙈';
+      statusText.textContent = 'Yakalayamazsın ki...';
+    } 
+    else if (clickCount === 2) {
+      // 2. Tıklamada: ORTAYA / SAĞA KAÇ
+      const isMobile = window.innerWidth < 480;
+      const sideX = isMobile ? 80 : 120;
+      const sideY = isMobile ? -45 : -60;
+      surpriseBtn.style.transform = `translate(${sideX}px, ${sideY}px)`;
+      btnText.textContent = 'Aaa yine kaçtım! 🏃‍♀️💨';
+      statusText.textContent = 'Biraz daha hızlı olman lazım...';
+    } 
+    else if (clickCount === 3) {
+      // 3. Tıklamada: ALTA KAÇ
+      const isMobile = window.innerWidth < 480;
+      const downX = isMobile ? -50 : -75;
+      const downY = isMobile ? 35 : 45;
+      surpriseBtn.style.transform = `translate(${downX}px, ${downY}px)`;
+      btnText.textContent = 'Son bir şans daha veriyorum hadi! 🤭';
+      statusText.textContent = 'Hadi son kez dene...';
 
-      // Rastgele yeni yön
-      let randomX = (Math.random() * (maxDistanceX * 2)) - maxDistanceX;
-      let randomY = (Math.random() * (maxDistanceY * 2)) - maxDistanceY;
-
-      // Hafif eğlenceli rotasyon
-      const randomRot = (Math.random() * 16) - 8;
-
-      surpriseBtn.style.transform = `translate(${randomX}px, ${randomY}px) rotate(${randomRot}deg) scale(0.95)`;
-      surpriseBtn.querySelector('.btn-text').textContent = msg.text;
-      btnHint.textContent = msg.hint;
-
-      // 3. kaçıştan sonra 4. aşamaya geçer: Artık teslim oldu ve tıklanabilir
-      if (evadeCount >= maxEvades) {
-        setTimeout(() => {
-          isReadyForClick = true;
-          surpriseBtn.classList.remove('evading');
-          surpriseBtn.classList.add('catchable');
-          surpriseBtn.style.transform = 'translate(0px, 0px) scale(1.05)';
-          surpriseBtn.querySelector('.btn-icon').textContent = '💖';
-          surpriseBtn.querySelector('.btn-text').textContent = 'Tamam teslim oldum, tıkla bakalım! 💖';
-          btnHint.textContent = 'Şimdi basabilirsin minnoşum! 🥰';
-        }, 600);
-      }
-    }
-  }
-
-  // Hem Fare ile yaklaşma/tıklama hem de Dokunmatik Ekran Desteği
-  // Desktopta hover veya click, mobilde touchstart
-  surpriseBtn.addEventListener('mouseenter', (e) => {
-    if (!isReadyForClick && evadeCount < maxEvades) {
-      handleButtonEvade(e);
-    }
-  });
-
-  surpriseBtn.addEventListener('pointerdown', (e) => {
-    if (!isReadyForClick && evadeCount < maxEvades) {
-      handleButtonEvade(e);
+      // 3. kaçıştan 500ms sonra merkeze gelip teslim olur
+      setTimeout(() => {
+        isReadyForFinalClick = true;
+        surpriseBtn.classList.add('catchable');
+        surpriseBtn.style.transform = 'translate(0px, 0px)';
+        btnText.textContent = 'Tamam teslim oldum, bas bakalım 💖';
+        statusText.textContent = 'Artık kaçmayacağım...';
+      }, 550);
     }
   });
 
   // 5. Dördüncü Tıklamada Sürpriz Patlaması (Kalp & Aşk Mesajı)
-  surpriseBtn.addEventListener('click', (e) => {
-    if (!isReadyForClick) {
-      handleButtonEvade(e);
-      return;
-    }
-
-    // 4. Sefer Tıklandı!
-    e.preventDefault();
-    triggerFinalSurprise();
-  });
-
   function triggerFinalSurprise() {
-    // Butonu kaybet
+    // Butonu zarafetle kaybet
     surpriseBtn.style.transform = 'scale(0)';
     surpriseBtn.style.opacity = '0';
-    btnHint.style.opacity = '0';
-
     statusText.textContent = 'Kasımpatının kalbinde sana bir şey var... ❤️';
 
     // 1. Kasımpatı çiçeğinin ortasından KALP BÜYÜR VE ATAR
     setTimeout(() => {
       flowerHeartGroup.classList.add('show');
-    }, 400);
+    }, 350);
 
-    // 2. Parçacık konfeti & kalpler patlasın
+    // 2. Parçacık konfeti & kalpler
     launchConfettiAndHearts();
 
     // 3. Sevgi Kartı Açılsın
     setTimeout(() => {
       loveCard.classList.add('visible');
-    }, 1400);
+    }, 1300);
   }
 
-  // 6. Konfeti ve Kalp Yağmuru (Canvas Animasyonu)
+  // 6. Konfeti ve Kalp Yağmuru (Zarif ve Hafif)
   let particles = [];
   let isRaining = false;
 
@@ -298,17 +261,17 @@ document.addEventListener('DOMContentLoaded', () => {
       this.x = x || canvas.width / 2;
       this.y = y || canvas.height * 0.35;
       const angle = Math.random() * Math.PI * 2;
-      const speed = Math.random() * 8 + 3;
+      const speed = Math.random() * 6 + 2;
       this.vx = Math.cos(angle) * speed;
-      this.vy = Math.sin(angle) * speed - 3;
-      this.gravity = 0.14;
-      this.size = Math.random() * 8 + 6;
+      this.vy = Math.sin(angle) * speed - 2.5;
+      this.gravity = 0.12;
+      this.size = Math.random() * 7 + 5;
       this.rotation = Math.random() * 360;
-      this.rotSpeed = (Math.random() - 0.5) * 10;
+      this.rotSpeed = (Math.random() - 0.5) * 8;
       this.opacity = 1;
       this.decay = Math.random() * 0.006 + 0.003;
       this.type = Math.random() > 0.45 ? 'heart' : 'confetti';
-      const colors = ['#f43f5e', '#fb7185', '#fda4af', '#fde047', '#fbbf24', '#ffffff', '#ec4899'];
+      const colors = ['#f43f5e', '#fb7185', '#fda4af', '#fecdd3', '#ffffff'];
       this.color = colors[Math.floor(Math.random() * colors.length)];
     }
 
@@ -329,8 +292,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (this.type === 'heart') {
         ctx.fillStyle = this.color;
-        ctx.font = `${this.size * 1.5}px sans-serif`;
-        ctx.fillText('❤️', -this.size / 2, this.size / 2);
+        ctx.font = `${this.size * 1.4}px sans-serif`;
+        ctx.fillText('🌸', -this.size / 2, this.size / 2);
       } else {
         ctx.fillStyle = this.color;
         ctx.fillRect(-this.size / 2, -this.size / 2, this.size, this.size * 0.6);
@@ -341,27 +304,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function launchConfettiAndHearts() {
     isRaining = true;
-    for (let i = 0; i < 90; i++) {
+    for (let i = 0; i < 75; i++) {
       particles.push(new Particle(canvas.width / 2, canvas.height * 0.35));
     }
 
-    // Ekstra sürekli düşen kalpler
     let rainInterval = setInterval(() => {
       if (!isRaining) {
         clearInterval(rainInterval);
         return;
       }
-      if (particles.length < 130) {
+      if (particles.length < 100) {
         const p = new Particle(Math.random() * canvas.width, -10);
-        p.vy = Math.random() * 2 + 1.5;
-        p.vx = (Math.random() - 0.5) * 2;
+        p.vy = Math.random() * 2 + 1.2;
+        p.vx = (Math.random() - 0.5) * 1.5;
         particles.push(p);
       }
-    }, 180);
+    }, 220);
 
     setTimeout(() => {
       isRaining = false;
-    }, 9000);
+    }, 8000);
 
     animateParticles();
   }
@@ -392,7 +354,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     setTimeout(() => {
       startGrowthAnimation();
-    }, 500);
+    }, 400);
   });
 
   // Başlat
