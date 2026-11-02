@@ -1,4 +1,4 @@
-// Kasımpatı Hikayesi - Kübra İçin Özel Etkileşim Scripti
+// Kasımpatı Hikayesi - Kübra İçin Özel Etkileşim Scripti (Gelişmiş & Bug'sız Sürüm)
 
 document.addEventListener('DOMContentLoaded', () => {
   // Element referansları
@@ -24,13 +24,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Durum Değişkenleri
   let clickCount = 0;
-  let isReadyForFinalClick = false;
+  let isClickLocked = false;
   let animationFinished = false;
 
-  // 1. Yıldızları Oluştur
+  // 1. Yıldızları Sakin ve Zarif Şekilde Oluştur
   function createStars() {
     starsContainer.innerHTML = '';
-    const starCount = window.innerWidth < 600 ? 30 : 55;
+    const starCount = window.innerWidth < 600 ? 28 : 50;
     for (let i = 0; i < starCount; i++) {
       const star = document.createElement('div');
       star.className = 'star';
@@ -39,24 +39,24 @@ document.addEventListener('DOMContentLoaded', () => {
       star.style.height = `${size}px`;
       star.style.left = `${Math.random() * 100}%`;
       star.style.top = `${Math.random() * 100}%`;
-      star.style.setProperty('--duration', `${Math.random() * 3 + 2}s`);
-      star.style.animationDelay = `${Math.random() * 3}s`;
+      star.style.setProperty('--duration', `${Math.random() * 3 + 3}s`);
+      star.style.animationDelay = `${Math.random() * 4}s`;
       starsContainer.appendChild(star);
     }
   }
 
-  // 2. Kasımpatı Taç Yapraklarını Dinamik Üret
+  // 2. Kasımpatı Taç Yapraklarını Dinamik Üret (%25 Büyütülmüş Ebatlar)
   function buildChrysanthemumPetals() {
     layerOuter.innerHTML = '';
     layerMid.innerHTML = '';
     layerInner.innerHTML = '';
 
-    // Katman 1: Dış Katman
-    const countOuter = 30;
+    // Katman 1: Dış Katman (%25 daha uzun ve dolgun: len 115)
+    const countOuter = 32;
     for (let i = 0; i < countOuter; i++) {
       const angle = (360 / countOuter) * i + (Math.random() * 3 - 1.5);
-      const len = 92 + Math.random() * 6;
-      const rx = 10;
+      const len = 114 + Math.random() * 8;
+      const rx = 11.5;
       const petal = document.createElementNS('http://www.w3.org/2000/svg', 'path');
       petal.setAttribute('d', `M 0 0 C -${rx} -${len * 0.35}, -${rx * 1.15} -${len * 0.8}, 0 -${len} C ${rx * 1.15} -${len * 0.8}, ${rx} -${len * 0.35}, 0 0 Z`);
       petal.setAttribute('fill', 'url(#petalOuterGrad)');
@@ -65,12 +65,12 @@ document.addEventListener('DOMContentLoaded', () => {
       layerOuter.appendChild(petal);
     }
 
-    // Katman 2: Orta Katman
-    const countMid = 24;
+    // Katman 2: Orta Katman (len 90)
+    const countMid = 26;
     for (let i = 0; i < countMid; i++) {
-      const angle = (360 / countMid) * i + 8 + (Math.random() * 2 - 1);
-      const len = 72 + Math.random() * 5;
-      const rx = 8.5;
+      const angle = (360 / countMid) * i + 7 + (Math.random() * 2 - 1);
+      const len = 88 + Math.random() * 6;
+      const rx = 9.8;
       const petal = document.createElementNS('http://www.w3.org/2000/svg', 'path');
       petal.setAttribute('d', `M 0 0 C -${rx} -${len * 0.35}, -${rx * 1.1} -${len * 0.8}, 0 -${len} C ${rx * 1.1} -${len * 0.8}, ${rx} -${len * 0.35}, 0 0 Z`);
       petal.setAttribute('fill', 'url(#petalMidGrad)');
@@ -79,12 +79,12 @@ document.addEventListener('DOMContentLoaded', () => {
       layerMid.appendChild(petal);
     }
 
-    // Katman 3: İç Katman
-    const countInner = 18;
+    // Katman 3: İç Katman (len 64)
+    const countInner = 20;
     for (let i = 0; i < countInner; i++) {
-      const angle = (360 / countInner) * i + 14;
-      const len = 50 + Math.random() * 4;
-      const rx = 7;
+      const angle = (360 / countInner) * i + 12;
+      const len = 62 + Math.random() * 5;
+      const rx = 8.2;
       const petal = document.createElementNS('http://www.w3.org/2000/svg', 'path');
       petal.setAttribute('d', `M 0 0 C -${rx} -${len * 0.35}, -${rx * 1.05} -${len * 0.8}, 0 -${len} C ${rx * 1.05} -${len * 0.8}, ${rx} -${len * 0.35}, 0 0 Z`);
       petal.setAttribute('fill', 'url(#petalInnerGrad)');
@@ -92,9 +92,12 @@ document.addEventListener('DOMContentLoaded', () => {
       petal.style.setProperty('--angle', `${angle}deg`);
       layerInner.appendChild(petal);
     }
+
+    // Göbek boyutunu da %25 büyüt
+    flowerCenter.setAttribute('r', '26');
   }
 
-  // 3. Çiçeğin Büyüme ve Açma Animasyonu
+  // 3. Çiçeğin Büyüme ve Açma Animasyonu (%50 Daha Yavaş, Şiirsel & Okunabilir)
   function startGrowthAnimation() {
     // Sıfırlama
     stem.classList.remove('grow');
@@ -105,8 +108,10 @@ document.addEventListener('DOMContentLoaded', () => {
     flowerHead.classList.remove('sway');
     surpriseBtn.classList.remove('ready', 'catchable');
     surpriseBtn.style.transform = '';
+    surpriseBtn.style.opacity = '0';
+    surpriseBtn.style.pointerEvents = 'none';
     clickCount = 0;
-    isReadyForFinalClick = false;
+    isClickLocked = false;
     animationFinished = false;
 
     // Tüm petalleri kapat
@@ -114,121 +119,125 @@ document.addEventListener('DOMContentLoaded', () => {
 
     statusText.textContent = 'Topraktan bir kasımpatı filizi doğuyor... 🌱';
 
-    // 1. Aşama: Gövde uzar (0.4s)
+    // 1. Aşama: Gövde ağır ağır uzar (0.8s)
     setTimeout(() => {
       stem.classList.add('grow');
-    }, 400);
+    }, 800);
 
-    // 2. Aşama: Yapraklar açılır (1s - 2s)
-    setTimeout(() => leaves[0]?.classList.add('unfurl'), 1000);
-    setTimeout(() => leaves[1]?.classList.add('unfurl'), 1500);
-    setTimeout(() => leaves[2]?.classList.add('unfurl'), 1900);
+    // 2. Aşama: Yapraklar sırayla dallanır
+    setTimeout(() => leaves[0]?.classList.add('unfurl'), 2200);
+    setTimeout(() => leaves[1]?.classList.add('unfurl'), 3400);
+    setTimeout(() => leaves[2]?.classList.add('unfurl'), 4400);
 
-    // 3. Aşama: Tomurcuk belirir (2.2s)
+    // 3. Aşama: Tomurcuk belirir (4.8s)
     setTimeout(() => {
       calyxGroup.classList.add('show');
-      statusText.textContent = 'Tomurcuk olgunlaşıyor... ✨';
-    }, 2200);
+      statusText.textContent = 'Tomurcuk güneşe doğru uzanıyor... ✨';
+    }, 4800);
 
-    // 4. Aşama: Dış yapraklar sırayla açmaya başlar (2.6s)
+    // 4. Aşama: Dış yapraklar yavaşça açar (7.4s)
     setTimeout(() => {
-      statusText.textContent = 'Kasımpatı yapraklarını güneşe açıyor... 🌸';
+      statusText.textContent = 'Kasımpatı yapraklarını usulca açıyor... 🌸';
       const outerPetals = layerOuter.querySelectorAll('.petal');
       outerPetals.forEach((p, idx) => {
-        setTimeout(() => p.classList.add('bloom'), idx * 30);
+        setTimeout(() => p.classList.add('bloom'), idx * 55);
       });
-    }, 2600);
+    }, 7400);
 
-    // 5. Aşama: Orta yapraklar açılır (3.3s)
+    // 5. Aşama: Orta yapraklar açılır (10.4s)
     setTimeout(() => {
+      statusText.textContent = 'Her yaprağında sevgi filizleniyor... ✨';
       const midPetals = layerMid.querySelectorAll('.petal');
       midPetals.forEach((p, idx) => {
-        setTimeout(() => p.classList.add('bloom'), idx * 28);
+        setTimeout(() => p.classList.add('bloom'), idx * 50);
       });
-    }, 3300);
+    }, 10400);
 
-    // 6. Aşama: İç yapraklar ve altın göbek açılır (3.8s)
+    // 6. Aşama: İç yapraklar ve altın göbek açılır (13.2s)
     setTimeout(() => {
+      statusText.textContent = 'Altın sarısı kalbi güneşe kavuştu... 🌼';
       const innerPetals = layerInner.querySelectorAll('.petal');
       innerPetals.forEach((p, idx) => {
-        setTimeout(() => p.classList.add('bloom'), idx * 25);
+        setTimeout(() => p.classList.add('bloom'), idx * 45);
       });
       setTimeout(() => {
         flowerCenter.classList.add('bloom');
-      }, 300);
-    }, 3800);
+      }, 500);
+    }, 13200);
 
-    // 7. Aşama: Çiçek açması bitti! Sabit kalır ve hafifçe salınır (4.6s)
+    // 7. Aşama: Çiçek açması bitti! Sabit kalır ve hafifçe salınır (16.2s)
     setTimeout(() => {
       statusText.textContent = 'Kasımpatın tüm zarafetiyle açtı 🌼';
       flowerHead.classList.add('sway');
       animationFinished = true;
-    }, 4600);
+    }, 16200);
 
-    // 8. Aşama: Buton Zarafetle Sahneye Gelir (5.2s)
+    // 8. Aşama: Buton Zarafetle Sahneye Gelir (18.6s)
     setTimeout(() => {
-      statusText.textContent = 'Senin için küçük bir sürpriz belirdi...';
+      statusText.textContent = 'Senin için küçük bir sürpriz belirdi... 👇';
       surpriseBtn.classList.add('ready');
+      surpriseBtn.style.opacity = '1';
+      surpriseBtn.style.pointerEvents = 'auto';
       btnText.textContent = 'Sürpriz için butona bas ✨';
-    }, 5200);
+    }, 18600);
   }
 
-  // 4. Butona Basınca Kaçma Mantığı (1: Yukarı, 2: Yana/Ortaya, 3: Alta, 4: Basılır)
+  // 4. BUTON KAÇMA MEKANİZMASI (Kesinlikle Bug'sız & Neredeyse Orada Sabit Kalır!)
   surpriseBtn.addEventListener('click', (e) => {
     e.preventDefault();
     if (!animationFinished) return;
+    if (isClickLocked) return;
 
-    // 4. Tıklama: Final Sürprizi!
-    if (isReadyForFinalClick) {
-      triggerFinalSurprise();
-      return;
-    }
+    // Hızlı çift tıklamaları önlemek için 300ms kilit
+    isClickLocked = true;
+    setTimeout(() => {
+      isClickLocked = false;
+    }, 320);
 
     clickCount++;
 
     if (clickCount === 1) {
-      // 1. Tıklamada: YUKARI KAÇ
+      // 1. TIKLAMA: YUKARI KAÇ
       const isMobile = window.innerWidth < 480;
-      const upY = isMobile ? -110 : -140;
       const upX = isMobile ? -25 : -35;
+      const upY = isMobile ? -110 : -135;
       surpriseBtn.style.transform = `translate(${upX}px, ${upY}px)`;
       btnText.textContent = 'Hop! Kaçtım ki 🙈';
       statusText.textContent = 'Yakalayamazsın ki...';
     } 
     else if (clickCount === 2) {
-      // 2. Tıklamada: ORTAYA / SAĞA KAÇ
+      // 2. TIKLAMA: YANA / SAĞA KAÇ
       const isMobile = window.innerWidth < 480;
-      const sideX = isMobile ? 80 : 120;
-      const sideY = isMobile ? -45 : -60;
+      const sideX = isMobile ? 75 : 110;
+      const sideY = isMobile ? -45 : -55;
       surpriseBtn.style.transform = `translate(${sideX}px, ${sideY}px)`;
       btnText.textContent = 'Aaa yine kaçtım! 🏃‍♀️💨';
       statusText.textContent = 'Biraz daha hızlı olman lazım...';
     } 
     else if (clickCount === 3) {
-      // 3. Tıklamada: ALTA KAÇ
+      // 3. TIKLAMA: ALTA KAÇ VE NEREDEYSE ORADA SABİT KAL! (Geri merkeze çekilmez!)
       const isMobile = window.innerWidth < 480;
-      const downX = isMobile ? -50 : -75;
+      const downX = isMobile ? -50 : -70;
       const downY = isMobile ? 35 : 45;
+      
       surpriseBtn.style.transform = `translate(${downX}px, ${downY}px)`;
-      btnText.textContent = 'Son bir şans daha veriyorum hadi! 🤭';
-      statusText.textContent = 'Hadi son kez dene...';
-
-      // 3. kaçıştan 500ms sonra merkeze gelip teslim olur
-      setTimeout(() => {
-        isReadyForFinalClick = true;
-        surpriseBtn.classList.add('catchable');
-        surpriseBtn.style.transform = 'translate(0px, 0px)';
-        btnText.textContent = 'Tamam teslim oldum, bas bakalım 💖';
-        statusText.textContent = 'Artık kaçmayacağım...';
-      }, 550);
+      surpriseBtn.classList.add('catchable');
+      btnText.textContent = 'Tamam yakaladın, bas bakalım 💖';
+      statusText.textContent = 'Sonunda teslim oldum... 🥰';
+    } 
+    else if (clickCount >= 4) {
+      // 4. TIKLAMA: OLDUĞU YERDE BASILIR VE BÜYÜK SÜRPRİZ PATLAR!
+      triggerFinalSurprise();
     }
   });
 
   // 5. Dördüncü Tıklamada Sürpriz Patlaması (Kalp & Aşk Mesajı)
   function triggerFinalSurprise() {
-    // Butonu zarafetle kaybet
-    surpriseBtn.style.transform = 'scale(0)';
+    // Butonu olduğu yerde zarafetle kaybet
+    surpriseBtn.style.transform += ' scale(0)';
     surpriseBtn.style.opacity = '0';
+    surpriseBtn.style.pointerEvents = 'none';
+
     statusText.textContent = 'Kasımpatının kalbinde sana bir şey var... ❤️';
 
     // 1. Kasımpatı çiçeğinin ortasından KALP BÜYÜR VE ATAR
@@ -236,16 +245,16 @@ document.addEventListener('DOMContentLoaded', () => {
       flowerHeartGroup.classList.add('show');
     }, 350);
 
-    // 2. Parçacık konfeti & kalpler
+    // 2. Parçacık konfeti & çiçekler
     launchConfettiAndHearts();
 
     // 3. Sevgi Kartı Açılsın
     setTimeout(() => {
       loveCard.classList.add('visible');
-    }, 1300);
+    }, 1200);
   }
 
-  // 6. Konfeti ve Kalp Yağmuru (Zarif ve Hafif)
+  // 6. Konfeti ve Çiçek Yağmuru
   let particles = [];
   let isRaining = false;
 

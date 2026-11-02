@@ -30,7 +30,7 @@ body {
   user-select: none;
 }
 
-/* Arka Plan Efektleri - Yumuşak ve Dingin */
+/* Arka Plan Efektleri */
 .stars-container {
   position: fixed;
   inset: 0;
@@ -42,7 +42,7 @@ body {
   position: absolute;
   background: #ffffff;
   border-radius: 50%;
-  animation: twinkle var(--duration, 3s) infinite ease-in-out;
+  animation: twinkle var(--duration, 4s) infinite ease-in-out;
 }
 
 @keyframes twinkle {
@@ -55,10 +55,10 @@ body {
   top: 32%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 420px;
-  height: 420px;
-  background: radial-gradient(circle, rgba(244, 63, 94, 0.14) 0%, rgba(192, 132, 252, 0.05) 50%, transparent 70%);
-  filter: blur(60px);
+  width: 460px;
+  height: 460px;
+  background: radial-gradient(circle, rgba(244, 63, 94, 0.16) 0%, rgba(192, 132, 252, 0.05) 50%, transparent 70%);
+  filter: blur(70px);
   pointer-events: none;
   z-index: 1;
 }
@@ -68,38 +68,38 @@ body {
   position: relative;
   z-index: 10;
   width: 100%;
-  max-width: 500px;
-  padding: 1.5rem 1rem 2rem;
+  max-width: 520px;
+  padding: 1rem 1rem 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
 }
 
-/* Başlık - Zarif & Sade */
+/* Başlık */
 .header {
   margin-bottom: 0.25rem;
   opacity: 0;
   transform: translateY(-12px);
-  animation: fadeInDown 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.2s;
+  animation: fadeInDown 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.3s;
 }
 
 .badge {
   display: inline-block;
-  padding: 0.3rem 0.85rem;
-  font-size: 0.78rem;
+  padding: 0.3rem 0.9rem;
+  font-size: 0.8rem;
   font-weight: 600;
   letter-spacing: 0.04em;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 9999px;
   color: #fbcfe8;
-  margin-bottom: 0.6rem;
+  margin-bottom: 0.5rem;
 }
 
 .title {
   font-family: 'Playfair Display', Georgia, serif;
-  font-size: 1.85rem;
+  font-size: 1.9rem;
   font-weight: 600;
   letter-spacing: -0.01em;
   color: #ffffff;
@@ -107,18 +107,18 @@ body {
 }
 
 .subtitle {
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   color: #cbd5e1;
-  opacity: 0.85;
-  min-height: 1.4rem;
-  transition: opacity 0.4s ease;
+  opacity: 0.9;
+  min-height: 1.5rem;
+  transition: opacity 0.6s ease;
 }
 
-/* Çiçek Sahnesi */
+/* Çiçek Sahnesi - %25 Büyütüldü */
 .garden-stage {
   position: relative;
   width: 100%;
-  height: 380px;
+  height: 450px; /* 380px'den 450px'e büyütüldü */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -128,9 +128,11 @@ body {
 .flower-svg {
   width: 100%;
   height: 100%;
-  max-height: 420px;
+  max-height: 480px;
+  transform: scale(1.15); /* Çiçek %25 daha ihtişamlı ve dolgun */
+  transform-origin: center bottom;
   overflow: visible;
-  filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.45));
+  filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.45));
 }
 
 .ground-shadow {
@@ -139,27 +141,27 @@ body {
   filter: blur(5px);
 }
 
-/* Gövde Çizim Animasyonu */
+/* Gövde Çizim Animasyonu - Hızı %50 Yavaşlatıldı (4.2 saniye) */
 .stem {
   fill: none;
   stroke: url(#stemGrad);
-  stroke-width: 7;
+  stroke-width: 8;
   stroke-linecap: round;
   stroke-dasharray: 600;
   stroke-dashoffset: 600;
-  transition: stroke-dashoffset 2.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: stroke-dashoffset 4.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .stem.grow {
   stroke-dashoffset: 0;
 }
 
-/* Yapraklar */
+/* Yapraklar - Yavaş ve Organik Açılır */
 .leaf {
   transform-origin: 200px 360px;
   opacity: 0;
   transform: scale(0);
-  transition: transform 1.2s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.8s ease;
+  transition: transform 2.2s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 1.5s ease;
 }
 
 .leaf-left-1 { transform-origin: 197px 420px; }
@@ -168,23 +170,23 @@ body {
 
 .leaf.unfurl {
   opacity: 1;
-  transform: scale(1);
+  transform: scale(1.1);
 }
 
 /* Çiçek Başı & Salınım */
 .flower-head {
   transform-origin: 0 0;
-  transition: transform 0.8s ease;
+  transition: transform 1.2s ease;
 }
 
 .flower-head.sway {
-  animation: gentleBreeze 4.5s infinite ease-in-out;
+  animation: gentleBreeze 5s infinite ease-in-out;
 }
 
 @keyframes gentleBreeze {
   0%, 100% { transform: translate(200px, 150px) rotate(0deg); }
-  35% { transform: translate(200px, 150px) rotate(2deg); }
-  75% { transform: translate(200px, 150px) rotate(-2deg); }
+  35% { transform: translate(200px, 150px) rotate(1.8deg); }
+  75% { transform: translate(200px, 150px) rotate(-1.8deg); }
 }
 
 /* Çanak Yapraklar */
@@ -192,20 +194,20 @@ body {
   opacity: 0;
   transform: scale(0);
   transform-origin: 200px 160px;
-  transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: all 1.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 .calyx-group.show {
   opacity: 1;
-  transform: scale(1);
+  transform: scale(1.2);
 }
 
-/* Taç Yaprakları */
+/* Taç Yaprakları - %50 Daha Yavaş ve Şiirsel Açılır */
 .petal {
   transform-origin: 0 0;
   opacity: 0;
   transform: scale(0) rotate(var(--angle, 0deg));
-  transition: transform 1.4s cubic-bezier(0.18, 1.25, 0.4, 1), opacity 0.6s ease;
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+  transition: transform 2.4s cubic-bezier(0.18, 1.25, 0.4, 1), opacity 1s ease;
+  filter: drop-shadow(0 2px 5px rgba(0,0,0,0.22));
 }
 
 .petal.bloom {
@@ -218,7 +220,7 @@ body {
   opacity: 0;
   transform: scale(0);
   transform-origin: 0 0;
-  transition: transform 1s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.6s ease;
+  transition: transform 1.8s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 1s ease;
 }
 
 .flower-center.bloom {
@@ -232,26 +234,26 @@ body {
   transform: scale(0);
   transform-origin: 0 10px;
   pointer-events: none;
-  filter: drop-shadow(0 0 18px rgba(255, 30, 86, 0.8));
-  transition: transform 1.2s cubic-bezier(0.34, 1.7, 0.64, 1), opacity 0.6s ease;
+  filter: drop-shadow(0 0 22px rgba(255, 30, 86, 0.85));
+  transition: transform 1.5s cubic-bezier(0.34, 1.7, 0.64, 1), opacity 0.8s ease;
 }
 
 .flower-heart-group.show {
   opacity: 1;
-  transform: scale(1.65);
+  transform: scale(1.8);
   animation: heartThrob 1.3s infinite ease-in-out;
 }
 
 @keyframes heartThrob {
-  0%, 100% { transform: scale(1.65); }
-  50% { transform: scale(1.95); }
+  0%, 100% { transform: scale(1.8); }
+  50% { transform: scale(2.1); }
 }
 
-/* Kaçan Buton Alanı - Şık, Sade, Reklamsız */
+/* Kaçan Buton Alanı - Bug'sız ve Akıcı */
 .interactive-area {
   position: relative;
   width: 100%;
-  height: 85px;
+  height: 90px;
   margin-top: 0.5rem;
   display: flex;
   align-items: center;
@@ -260,14 +262,14 @@ body {
 
 .surprise-btn {
   position: relative;
-  padding: 0.85rem 1.8rem;
+  padding: 0.9rem 1.9rem;
   font-family: 'Nunito', sans-serif;
-  font-size: 0.98rem;
+  font-size: 1rem;
   font-weight: 600;
   letter-spacing: 0.02em;
   color: #ffffff;
   background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.22);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border-radius: 9999px;
@@ -276,7 +278,7 @@ body {
   opacity: 0;
   transform: translateY(15px);
   pointer-events: none;
-  transition: transform 0.42s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s ease, background 0.3s ease, border-color 0.3s ease;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s ease, background 0.3s ease, border-color 0.3s ease;
   z-index: 50;
   touch-action: manipulation;
 }
@@ -293,11 +295,11 @@ body {
   transform: scale(0.96);
 }
 
-/* 4. Aşamada Teslim Olmuş Buton (Zarif Pembe Gül Efekti) */
+/* 4. Aşamada Teslim Olmuş Buton (Neredeyse Orada Sabit Kalır!) */
 .surprise-btn.catchable {
-  background: linear-gradient(135deg, rgba(244, 63, 94, 0.85), rgba(225, 29, 72, 0.95));
-  border-color: rgba(255, 255, 255, 0.4);
-  box-shadow: 0 10px 30px rgba(244, 63, 94, 0.4);
+  background: linear-gradient(135deg, rgba(244, 63, 94, 0.88), rgba(225, 29, 72, 0.96));
+  border-color: rgba(255, 255, 255, 0.45);
+  box-shadow: 0 10px 30px rgba(244, 63, 94, 0.45);
   animation: gentlePulse 2s infinite ease-in-out;
 }
 
@@ -306,14 +308,14 @@ body {
   50% { transform: scale(1.05); }
 }
 
-/* Sevgi Kartı - Estetik & Romantik */
+/* Sevgi Kartı */
 .love-card {
   position: fixed;
   inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(7, 6, 14, 0.85);
+  background: rgba(7, 6, 14, 0.86);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   z-index: 100;
@@ -346,9 +348,9 @@ body {
 }
 
 .floating-hearts {
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   margin-bottom: 0.75rem;
-  opacity: 0.9;
+  opacity: 0.95;
 }
 
 .love-name {
@@ -406,9 +408,10 @@ body {
 }
 
 @media (max-width: 480px) {
-  .title { font-size: 1.6rem; }
-  .garden-stage { height: 350px; }
+  .title { font-size: 1.65rem; }
+  .garden-stage { height: 400px; }
+  .flower-svg { transform: scale(1.1); }
   .love-name { font-size: 1.9rem; }
   .love-message { font-size: 1.85rem; }
-  .surprise-btn { font-size: 0.92rem; padding: 0.8rem 1.5rem; }
+  .surprise-btn { font-size: 0.95rem; padding: 0.85rem 1.6rem; }
 }
