@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Kübra'ya Özel Sürprizler & Oyunlar ✨</title>
+  <meta name="theme-color" content="#090812">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Nunito:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    :root {
+      --bg-dark: #090812;
+      --bg-gradient: radial-gradient(circle at 50% 25%, #22122b 0%, #110b1e 50%, #07060e 100%);
+      --card-bg: rgba(255, 255, 255, 0.05);
+      --card-border: rgba(255, 255, 255, 0.12);
+      --rose: #f43f5e;
+      --gold: #fbbf24;
+    }
+
+    html, body {
+      min-height: 100vh;
+      min-height: 100dvh;
+      background: var(--bg-dark);
+      background-image: var(--bg-gradient);
+      font-family: 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Arka Plan Parıltısı */
+    .glow-blob {
+      position: fixed;
+      top: 20%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 420px;
+      height: 420px;
+      background: radial-gradient(circle, rgba(244, 63, 94, 0.15) 0%, rgba(192, 132, 252, 0.05) 50%, transparent 70%);
+      filter: blur(70px);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Ana Konteyner */
+    .hub-container {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      max-width: 440px;
+      min-height: 100vh;
+      min-height: 100dvh;
+      padding: max(1.2rem, env(safe-area-inset-top)) 1rem max(1.4rem, env(safe-area-inset-bottom));
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Üst Başlık */
+    .hub-header {
+      text-align: center;
+      margin-bottom: 1.4rem;
+      padding-top: 0.5rem;
+    }
+
+    .hub-badge {
+      display: inline-block;
+      padding: 0.3rem 0.9rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      background: rgba(244, 63, 94, 0.15);
+      border: 1px solid rgba(244, 63, 94, 0.3);
+      border-radius: 9999px;
+      color: #fbcfe8;
+      margin-bottom: 0.5rem;
+    }
+
+    .hub-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.85rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 0.3rem;
+      line-height: 1.25;
+    }
+
+    .hub-subtitle {
+      font-size: 0.9rem;
+      color: #cbd5e1;
+      opacity: 0.85;
+    }
+
+    /* Kartlar Listesi */
+    .cards-grid {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .game-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-radius: 20px;
+      padding: 1.2rem 1.1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      text-decoration: none;
+      color: inherit;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 10px 25px -10px rgba(0, 0, 0, 0.5);
+    }
+
+    .game-card:active {
+      transform: scale(0.98);
+    }
+
+    .game-card.active-card {
+      border-color: rgba(244, 63, 94, 0.35);
+    }
+    .game-card.active-card:hover {
+      border-color: rgba(244, 63, 94, 0.6);
+      box-shadow: 0 12px 30px -8px rgba(244, 63, 94, 0.3);
+    }
+
+    .game-card.locked-card {
+      opacity: 0.55;
+      pointer-events: none;
+      filter: grayscale(0.5);
+    }
+
+    .card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .card-icon-wrap {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+    }
+
+    .card-tag {
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 0.25rem 0.65rem;
+      border-radius: 9999px;
+      letter-spacing: 0.03em;
+    }
+
+    .tag-live {
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      color: #6ee7b7;
+    }
+
+    .tag-locked {
+      background: rgba(100, 116, 139, 0.15);
+      border: 1px solid rgba(100, 116, 139, 0.3);
+      color: #94a3b8;
+    }
+
+    .card-body h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 0.25rem;
+    }
+
+    .card-body p {
+      font-size: 0.85rem;
+      line-height: 1.45;
+      color: #94a3b8;
+    }
+
+    .card-action {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      margin-top: 0.4rem;
+    }
+
+    .action-pill {
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 0.45rem 1rem;
+      border-radius: 9999px;
+      background: linear-gradient(135deg, #f43f5e, #e11d48);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      box-shadow: 0 4px 12px rgba(244, 63, 94, 0.4);
+    }
+
+    /* Alt Footer */
+    .hub-footer {
+      margin-top: auto;
+      text-align: center;
+      font-size: 0.8rem;
+      color: #64748b;
+      padding: 1rem 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="glow-blob"></div>
+
+  <main class="hub-container">
+    <!-- Başlık -->
+    <header class="hub-header">
+      <span class="hub-badge">Mert & Kübra Arşivi ✨</span>
+      <h1 class="hub-title">Kübra'nın Dünyası 🌸</h1>
+      <p class="hub-subtitle">Sana özel hazırlanan mini oyunlar ve sürprizler</p>
+    </header>
+
+    <!-- Oyun Kartları -->
+    <div class="cards-grid">
+      <!-- 1. Kasımpatı -->
+      <a href="/kasimpati" class="game-card active-card">
+        <div class="card-top">
+          <div class="card-icon-wrap">🌸</div>
+          <span class="card-tag tag-live">1. BÖLÜM</span>
+        </div>
+        <div class="card-body">
+          <h3>Kasımpatı Hikayesi</h3>
+          <p>Topraktan kalbe uzanan, sana özel açan ve sürpriziyle kaçan o ilk kasımpatı.</p>
+        </div>
+        <div class="card-action">
+          <span class="action-pill">Çiçeği Gör ➔</span>
+        </div>
+      </a>
+
+      <!-- 2. Retro Pixel Oyun -->
+      <a href="/pixel" class="game-card active-card">
+        <div class="card-top">
+          <div class="card-icon-wrap">🕹️</div>
+          <span class="card-tag tag-live">2. BÖLÜM</span>
+        </div>
+        <div class="card-body">
+          <h3>1520 KM Retro Kavuşma</h3>
+          <p>İstanbul - Iğdır mesafesini aşıp kahve ve tatlı borcunu tahsil etme oyunu!</p>
+        </div>
+        <div class="card-action">
+          <span class="action-pill">Oyuna Gir ➔</span>
+        </div>
+      </a>
+
+      <!-- 3. Yakında Gelecek Bölüm -->
+      <div class="game-card locked-card">
+        <div class="card-top">
+          <div class="card-icon-wrap">🎁</div>
+          <span class="card-tag tag-locked">YAKINDA</span>
+        </div>
+        <div class="card-body">
+          <h3>3. Bölüm: Sürpriz Macera</h3>
+          <p>Yeni bir anı ve mini oyun için kodlar yazılıyor, zamanı gelince açılacak...</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="hub-footer">
+      Mert tarafından Kübra için kodlandı 💖
+    </footer>
+  </main>
+</body>
+</html>

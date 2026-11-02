@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Kübra İçin Kasımpatı 🌸</title>
+  <meta name="description" content="Kübra'ya özel kasımpatı sürprizi...">
+  <meta name="theme-color" content="#f43f5e">
+
+  <!-- WhatsApp & Sosyal Medya Önizleme (Open Graph) -->
+  <meta property="og:title" content="Kübra'ya Özel Kasımpatı 🌸">
+  <meta property="og:description" content="Sana küçük bir bahçe...">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://kubra.mertgunes.com/kasimpati">
+  <meta property="og:site_name" content="Kübra'ya Özel Sürpriz">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Nunito:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <!-- Arka plan yıldızları ve ışık parçacıkları -->
+  <div class="stars-container" id="starsContainer"></div>
+  <div class="glow-bg"></div>
+
+  <main class="main-container">
+    <!-- Başlık / İntro (Zarif & Minimal) -->
+    <header class="header">
+      <span class="badge">Kübra için küçük bir bahçe 🌸</span>
+      <p class="subtitle" id="statusText">Topraktan bir filiz yükseliyor...</p>
+    </header>
+
+    <!-- Kasımpatı Çiçeği Sahnesi (TAMAMEN KORUNDU) -->
+    <div class="garden-stage">
+      <!-- Çiçek SVG -->
+      <svg class="flower-svg" id="flowerSvg" viewBox="0 0 400 520" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <!-- Gövde degrade -->
+          <linearGradient id="stemGrad" x1="0%" y1="100%" x2="0%" y2="0%">
+            <stop offset="0%" stop-color="#14532d"/>
+            <stop offset="60%" stop-color="#16a34a"/>
+            <stop offset="100%" stop-color="#4ade80"/>
+          </linearGradient>
+
+          <!-- Yaprak degrade -->
+          <linearGradient id="leafGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#4ade80"/>
+            <stop offset="50%" stop-color="#22c55e"/>
+            <stop offset="100%" stop-color="#15803d"/>
+          </linearGradient>
+
+          <!-- Dış yapraklar - Sıcak Kasımpatı Pembe-Gül Degrade -->
+          <linearGradient id="petalOuterGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#fda4af"/>
+            <stop offset="40%" stop-color="#f43f5e"/>
+            <stop offset="100%" stop-color="#be123c"/>
+          </linearGradient>
+
+          <!-- Orta yapraklar - Canlı Şeftali/Mercan Degrade -->
+          <linearGradient id="petalMidGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#fecdd3"/>
+            <stop offset="50%" stop-color="#fb7185"/>
+            <stop offset="100%" stop-color="#e11d48"/>
+          </linearGradient>
+
+          <!-- İç katman - Altın Günbatımı Degrade -->
+          <linearGradient id="petalInnerGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#fef08a"/>
+            <stop offset="45%" stop-color="#fbbf24"/>
+            <stop offset="100%" stop-color="#f59e0b"/>
+          </linearGradient>
+
+          <!-- Merkez çekirdek degrade -->
+          <radialGradient id="centerCoreGrad" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#fffbeb"/>
+            <stop offset="35%" stop-color="#fde047"/>
+            <stop offset="70%" stop-color="#ea580c"/>
+            <stop offset="100%" stop-color="#9a3412"/>
+          </radialGradient>
+
+          <!-- Kalp degrade -->
+          <radialGradient id="heartGrad" cx="40%" cy="40%" r="60%">
+            <stop offset="0%" stop-color="#ff758c"/>
+            <stop offset="40%" stop-color="#ff1e56"/>
+            <stop offset="100%" stop-color="#990024"/>
+          </radialGradient>
+
+          <!-- Parıltı Filtresi -->
+          <filter id="bloomGlow" x="-30%" y="-30%" width="160%" height="160%">
+            <feGaussianBlur stdDeviation="4" result="blur"/>
+            <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+          </filter>
+        </defs>
+
+        <!-- Toprak Tabanı -->
+        <ellipse cx="200" cy="500" rx="90" ry="14" class="ground-shadow"/>
+
+        <!-- Gövde -->
+        <path id="stem" class="stem" d="M 200 500 C 192 410, 208 320, 198 230 C 194 195, 200 170, 200 155" />
+
+        <!-- Yapraklar -->
+        <g id="leavesGroup" class="leaves-group">
+          <!-- Sol alt yaprak -->
+          <path class="leaf leaf-left-1" d="M 197 420 C 145 425, 120 380, 105 390 C 125 415, 160 440, 196 428 Z" fill="url(#leafGrad)"/>
+          <!-- Sağ orta yaprak -->
+          <path class="leaf leaf-right-1" d="M 202 360 C 255 350, 275 320, 295 330 C 275 355, 240 375, 201 368 Z" fill="url(#leafGrad)"/>
+          <!-- Sol üst yaprak -->
+          <path class="leaf leaf-left-2" d="M 198 290 C 150 280, 135 250, 120 255 C 140 275, 170 295, 198 296 Z" fill="url(#leafGrad)"/>
+        </g>
+
+        <!-- Çiçek Çanak Yaprakları (Kalıks) -->
+        <g id="calyxGroup" class="calyx-group">
+          <ellipse cx="200" cy="160" rx="14" ry="12" fill="#15803d"/>
+        </g>
+
+        <!-- Kasımpatı Taç Yaprakları Grubu -->
+        <g id="flowerHead" class="flower-head" transform="translate(200, 150)">
+          <!-- Katman 1: En dış katman (30 adet yaprak) -->
+          <g id="layerOuter" class="petal-layer"></g>
+          <!-- Katman 2: Orta katman (24 adet yaprak) -->
+          <g id="layerMid" class="petal-layer"></g>
+          <!-- Katman 3: İç katman (18 adet kıvrık yaprak) -->
+          <g id="layerInner" class="petal-layer"></g>
+          <!-- Çiçek Göbeği (Merkezi Disk) -->
+          <circle id="flowerCenter" class="flower-center" cx="0" cy="0" r="22" fill="url(#centerCoreGrad)"/>
+          
+          <!-- Ortadan çıkacak Kalp -->
+          <g id="flowerHeartGroup" class="flower-heart-group">
+            <path id="centerHeart" class="center-heart" d="M 0 -12 C -2 -30, -32 -25, -30 4 C -28 20, 0 38, 0 46 C 0 38, 28 20, 30 4 C 32 -25, 2 -30, 0 -12 Z" fill="url(#heartGrad)"/>
+            <circle cx="-10" cy="-6" r="4" fill="#ffffff" opacity="0.6"/>
+          </g>
+        </g>
+      </svg>
+    </div>
+
+    <!-- Kaçan Buton Alanı (Şık, Cam Efektli, Minimal) -->
+    <div class="interactive-area" id="interactiveArea">
+      <button id="surpriseBtn" class="surprise-btn" aria-label="Sürpriz butonu">
+        <span class="btn-text">Sürpriz için butona bas ✨</span>
+      </button>
+    </div>
+
+    <!-- Aşk Mesajı Modal / Kart Alanı (Zarif & Estetik) -->
+    <div id="loveCard" class="love-card hidden">
+      <div class="love-card-content">
+        <div class="floating-hearts">🌸 💕 🌸</div>
+        <h2 class="love-name">KÜBRA'M</h2>
+        <p class="love-message">Sana bayılıyorum yicem minnoşumu 🥰</p>
+        <p class="love-sub">Dünyanın en güzel kasımpatısı bile yanında sönük kalır...</p>
+        <button id="replayBtn" class="replay-btn">Yeniden İzle ↺</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- Konfeti / Kalp Parçacıkları Tuvali -->
+  <canvas id="particlesCanvas"></canvas>
+
+  <script src="/script.js"></script>
+</body>
+</html>
