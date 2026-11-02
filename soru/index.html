@@ -5,12 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <title>Kübra'ya Küçük Bir Soru... ☕🍰</title>
+  <title>Kahve & Tatlı Sözleşmesi ☕🍰</title>
   <meta name="theme-color" content="#090812">
 
   <!-- WhatsApp & Sosyal Medya Önizleme -->
-  <meta property="og:title" content="Kübra'ya Küçük Bir Soru... ☕🍰">
-  <meta property="og:description" content="Mert'in sana sormak istediği çok önemli bir soru var!">
+  <meta property="og:title" content="Kahve & Tatlı Sözleşmesi ☕🍰">
+  <meta property="og:description" content="Sıradaki buluşmamızın tatlı ve kahve planı...">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://kubra.mertgunes.com/soru">
 
@@ -34,7 +34,7 @@
       --rose: #f43f5e;
       --rose-glow: rgba(244, 63, 94, 0.45);
       --green: #10b981;
-      --green-glow: rgba(16, 185, 129, 0.45);
+      --green-glow: rgba(16, 185, 129, 0.5);
     }
 
     html, body {
@@ -87,7 +87,7 @@
       width: 100%;
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: flex-start;
       flex-shrink: 0;
     }
 
@@ -98,9 +98,9 @@
       background: rgba(255, 255, 255, 0.08);
       border: 1px solid rgba(255, 255, 255, 0.15);
       border-radius: 9999px;
-      padding: 0.4rem 0.85rem;
+      padding: 0.42rem 0.95rem;
       color: #e2e8f0;
-      font-size: 0.78rem;
+      font-size: 0.8rem;
       font-weight: 700;
       text-decoration: none;
       backdrop-filter: blur(10px);
@@ -109,17 +109,6 @@
     .back-btn:active {
       transform: scale(0.95);
       background: rgba(255, 255, 255, 0.15);
-    }
-
-    .badge-pill {
-      font-size: 0.72rem;
-      font-weight: 700;
-      padding: 0.35rem 0.8rem;
-      border-radius: 9999px;
-      background: rgba(244, 63, 94, 0.15);
-      border: 1px solid rgba(244, 63, 94, 0.35);
-      color: #fda4af;
-      letter-spacing: 0.02em;
     }
 
     /* Orta Soru & Görsel Alanı */
@@ -135,11 +124,11 @@
     /* Başlık */
     .question-title {
       font-family: 'Nunito', sans-serif;
-      font-size: clamp(1.25rem, 5.2vw, 1.55rem);
+      font-size: clamp(1.2rem, 5vw, 1.5rem);
       font-weight: 900;
       line-height: 1.35;
       color: #ffffff;
-      margin-bottom: 0.4rem;
+      margin-bottom: 0.35rem;
       text-shadow: 0 2px 14px rgba(0, 0, 0, 0.6);
       padding: 0 0.5rem;
     }
@@ -147,16 +136,16 @@
     .question-sub {
       font-size: 0.85rem;
       font-weight: 600;
-      color: #cbd5e1;
-      margin-bottom: 1.2rem;
+      color: #fda4af;
+      margin-bottom: 1rem;
     }
 
     /* Sevimli GIF Konteyneri */
     .gif-frame {
-      width: 190px;
-      height: 190px;
-      max-width: 55vw;
-      max-height: 55vw;
+      width: 180px;
+      height: 180px;
+      max-width: 52vw;
+      max-height: 52vw;
       border-radius: 28px;
       background: rgba(255, 255, 255, 0.05);
       border: 2px solid rgba(255, 255, 255, 0.12);
@@ -166,7 +155,7 @@
       align-items: center;
       justify-content: center;
       position: relative;
-      margin-bottom: 1.2rem;
+      margin-bottom: 1.1rem;
       transition: transform 0.3s ease;
     }
 
@@ -177,64 +166,75 @@
       display: block;
     }
 
-    /* Alt Butonlar Bölgesi */
+    /* Alt Butonlar Bölgesi - DİKEY (ÜST/ALT) DÜZEN */
     .action-container {
       width: 100%;
+      max-width: 360px;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
       gap: 12px;
       position: relative;
-      min-height: 120px;
-      margin-top: 0.5rem;
+      min-height: 145px;
+      margin-top: 0.3rem;
     }
 
     /* EVET BUTONU - Büyüyen Süper Buton */
     .btn-yes {
+      width: 85%;
+      max-width: 320px;
+      min-height: 54px;
       background: linear-gradient(135deg, #10b981, #059669);
       color: #ffffff;
       font-family: 'Nunito', sans-serif;
-      font-size: 1.1rem;
-      font-weight: 800;
-      padding: 0.85rem 2rem;
+      font-size: 1.15rem;
+      font-weight: 900;
       border: none;
       border-radius: 9999px;
       cursor: pointer;
       box-shadow: 0 6px 20px var(--green-glow), 0 2px 6px rgba(0, 0, 0, 0.3);
-      transition: all 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transition: width 0.25s ease, min-height 0.25s ease, font-size 0.25s ease, transform 0.2s ease, box-shadow 0.25s ease;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
       z-index: 50;
-      white-space: nowrap;
+      text-align: center;
+      white-space: normal;
+      padding: 0.6rem 1.2rem;
     }
 
     .btn-yes:active {
-      transform: scale(0.94);
+      transform: scale(0.96);
     }
 
-    /* HAYIR BUTONU - Replikleri Değişen & Kaçan */
+    /* HAYIR BUTONU - Geniş, Tamamen Okunabilir & Altta */
     .btn-no {
-      background: rgba(255, 255, 255, 0.1);
+      width: auto;
+      max-width: 95%;
+      min-height: 46px;
+      background: rgba(255, 255, 255, 0.08);
       color: #f1f5f9;
       font-family: 'Nunito', sans-serif;
       font-size: 0.95rem;
       font-weight: 700;
-      padding: 0.85rem 1.4rem;
+      padding: 0.75rem 1.4rem;
       border: 1px solid rgba(255, 255, 255, 0.2);
       border-radius: 9999px;
       cursor: pointer;
       backdrop-filter: blur(10px);
       transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
       z-index: 40;
-      white-space: nowrap;
+      text-align: center;
+      white-space: normal;
+      line-height: 1.35;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
     }
 
     .btn-no:active {
-      transform: scale(0.92);
-      background: rgba(255, 255, 255, 0.18);
+      transform: scale(0.94);
+      background: rgba(255, 255, 255, 0.16);
     }
 
     /* KUTLAMA MODALI / SÖZLEŞME EKRANI */
@@ -290,14 +290,14 @@
     }
 
     .celeb-desc {
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       color: #cbd5e1;
       line-height: 1.5;
       margin-bottom: 1.2rem;
       padding: 0 0.8rem;
     }
 
-    /* Date Ruleti / Ne Yiyeceğiz Kartı */
+    /* Date Ruleti */
     .roulette-box {
       width: 100%;
       background: rgba(255, 255, 255, 0.05);
@@ -398,43 +398,36 @@
   <canvas id="confettiCanvas"></canvas>
 
   <main class="app-card">
-    <!-- Üst Bar -->
+    <!-- Üst Bar: Sadece Geri Dön Butonu -->
     <header class="top-nav">
       <a href="/hub" class="back-btn">← Menü</a>
-      <span class="badge-pill">Mert'in Sorusu ✨</span>
     </header>
 
     <!-- Soru & Karakter Sahnesi -->
     <div class="center-stage" id="mainStage">
       <h1 class="question-title">İstanbul'a gelince kahve & tatlı date'ine çıkmayı onaylıyor musun? ☕🍰</h1>
-      <p class="question-sub">1520 KM mesafeden sonra ilk resmi teklif 🌸</p>
+      <p class="question-sub">Sıradaki buluşmamızın kahve ve tatlı planı 🌸</p>
 
       <div class="gif-frame" id="gifFrame">
         <img id="mainGif" src="/soru/images/ask.gif" alt="Sevimli Teklif">
       </div>
 
-      <!-- Butonlar Bölgesi -->
+      <!-- Butonlar Bölgesi: DİKEY (ÜST/ALT) DÜZEN -->
       <div class="action-container" id="actionContainer">
         <button id="yesBtn" class="btn-yes">
-          <span>Evet! 🥰</span>
+          <span id="yesText">Evet! 🥰</span>
         </button>
         <button id="noBtn" class="btn-no">
-          <span>Hayır 🙄</span>
+          <span id="noText">Hayır 🙄</span>
         </button>
       </div>
     </div>
-
-    <!-- Alt Bilgi / İpucu -->
-    <footer style="font-size: 0.72rem; color: #64748b; text-align: center;">
-      Kübra için sevgiyle kodlandı 💖
-    </footer>
   </main>
 
   <!-- KUTLAMA / SÖZLEŞME EKRANI -->
   <div id="celebrationScreen" class="celebration-screen">
     <header class="top-nav">
       <a href="/hub" class="back-btn">← Oyun Merkezi</a>
-      <span class="badge-pill" style="border-color: #34d399; color: #6ee7b7;">Sözleşme Onaylandı ✨</span>
     </header>
 
     <div class="celeb-card">
@@ -444,7 +437,7 @@
       <span class="celeb-badge">RESMİ OLARAK KAYDEDİLDİ 📜</span>
       <h2 class="celeb-title">SÖZLEŞME İMZALANDI! 🥳</h2>
       <p class="celeb-desc">
-        Tebrikler Kübra! 1520 KM mesafe kapandığında kahve ve tatlılar Mert'ten, sohbet senden! ☕🍰
+        Tebrikler Kübra! Sıradaki buluşmada kahve ve tatlılar Mert'ten, sohbet senden! ☕🍰
       </p>
 
       <!-- İnteraktif Date Ruleti -->
@@ -462,7 +455,7 @@
   </div>
 
   <script>
-    // --- SES MOTORU (Web Audio API - Sıfır Dış Bağımlılık) ---
+    // --- SES MOTORU (Web Audio API) ---
     const AudioEngine = {
       ctx: null,
       init() {
@@ -493,7 +486,7 @@
         try {
           this.init();
           if (!this.ctx) return;
-          const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+          const notes = [523.25, 659.25, 783.99, 1046.50];
           notes.forEach((freq, idx) => {
             const osc = this.ctx.createOscillator();
             const gain = this.ctx.createGain();
@@ -515,11 +508,11 @@
     const messages = [
       "Emin misin? 🥺",
       "Gerçekten mi yaa? 💔",
-      "1520 KM yol gelicem ama... 🥺",
+      "Tatlısız kahve olmaz ama... 🍰",
       "Diyetteyim dersen filtre kahve içeriz? ☕",
       "Birazcık düşünsen bari? 🍰",
       "Bak çok çok çok üzülürüm... 🌧️",
-      "Ağlarım ama bak yapma... 😭",
+      "Ağlarım ama yapma... 😭",
       "Son kararın mı cidden? 🥀",
       "Tamam pes, bir daha sormuyorum... 😔",
       "Şaka yaptım tabii ki, EVET de lütfen! 🥰"
@@ -528,50 +521,71 @@
     let noClickCount = 0;
     const yesBtn = document.getElementById("yesBtn");
     const noBtn = document.getElementById("noBtn");
-    const mainGif = document.getElementById("mainGif");
+    const yesText = document.getElementById("yesText");
+    const noText = document.getElementById("noText");
+    const actionContainer = document.getElementById("actionContainer");
     const gifFrame = document.getElementById("gifFrame");
     const celebrationScreen = document.getElementById("celebrationScreen");
     const spinBtn = document.getElementById("spinBtn");
     const rouletteResult = document.getElementById("rouletteResult");
     const replayBtn = document.getElementById("replayBtn");
 
-    // "Hayır" Tıklama Mekaniği (TikTok İvysone Büyüyen Evet & Değişen Replikler)
+    // "Hayır" Tıklama Mekaniği (Dikey Büyüyen Evet & Sonunda Kapatma)
     function handleNoClick(e) {
       if (e) e.preventDefault();
       AudioEngine.playBoing();
 
-      // Titreşim (destekleyen cihazlarda)
       if (navigator.vibrate) navigator.vibrate(40);
 
-      // Yazıyı sıradaki replikle değiştir
+      // Yazıyı sıradaki replikle değiştir (Dikeyde olduğu için asla sağa taşmaz, net okunur)
       const currentMsg = messages[noClickCount % messages.length];
-      noBtn.querySelector("span").textContent = currentMsg;
+      noText.textContent = currentMsg;
 
       noClickCount++;
 
-      // "EVET" BUTONUNU AKILLI VE KADEMELİ BÜYÜT
-      // iPhone 14 Pro Max ekranına sığacak şekilde dinamik büyüme
-      const scaleMultiplier = 1 + (noClickCount * 0.22);
-      const paddingY = Math.min(0.85 + (noClickCount * 0.12), 1.6);
-      const paddingX = Math.min(2.0 + (noClickCount * 0.35), 4.2);
-      const fontSize = Math.min(1.1 + (noClickCount * 0.16), 2.2);
+      // "EVET" BUTONUNU DİKEYDE VE YATAYDA KUSURSUZ BÜYÜT
+      if (noClickCount === 1) {
+        yesBtn.style.width = "92%";
+        yesBtn.style.minHeight = "62px";
+        yesBtn.style.fontSize = "1.25rem";
+      } else if (noClickCount === 2) {
+        yesBtn.style.width = "98%";
+        yesBtn.style.minHeight = "72px";
+        yesBtn.style.fontSize = "1.35rem";
+      } else if (noClickCount === 3) {
+        yesBtn.style.width = "100%";
+        yesBtn.style.minHeight = "84px";
+        yesBtn.style.fontSize = "1.5rem";
+      } else if (noClickCount === 4) {
+        yesBtn.style.width = "100%";
+        yesBtn.style.minHeight = "98px";
+        yesBtn.style.fontSize = "1.65rem";
+        noBtn.style.transform = "scale(0.95)";
+      } else if (noClickCount === 5) {
+        yesBtn.style.width = "100%";
+        yesBtn.style.minHeight = "115px";
+        yesBtn.style.fontSize = "1.85rem";
+        noBtn.style.transform = "scale(0.9)";
+      } else if (noClickCount === 6) {
+        yesBtn.style.width = "100%";
+        yesBtn.style.minHeight = "135px";
+        yesBtn.style.fontSize = "2rem";
+        noBtn.style.transform = "scale(0.85)";
+      } else {
+        // 7+ TIK: EVET BUTONU TÜM ALANI KAPLAR VE HAYIR'IN ÜSTÜNÜ TAMAMEN ÖRTER!
+        yesBtn.style.position = "absolute";
+        yesBtn.style.inset = "0";
+        yesBtn.style.width = "100%";
+        yesBtn.style.height = "100%";
+        yesBtn.style.minHeight = "150px";
+        yesBtn.style.borderRadius = "24px";
+        yesBtn.style.fontSize = "1.6rem";
+        yesBtn.style.zIndex = "99";
+        yesBtn.style.boxShadow = "0 0 35px rgba(16, 185, 129, 0.7)";
+        yesText.textContent = "EVET! 🥰 (Başka Şansın Yok ❤️)";
 
-      yesBtn.style.transform = `scale(${Math.min(scaleMultiplier, 1.8)})`;
-      yesBtn.style.padding = `${paddingY}rem ${paddingX}rem`;
-      yesBtn.style.fontSize = `${fontSize}rem`;
-      yesBtn.style.zIndex = "60";
-
-      // 4. tıklamadan sonra Hayır butonu hafifçe koordinat kaçışı yapsın
-      if (noClickCount >= 3) {
-        const randomX = (Math.random() - 0.5) * 60;
-        const randomY = (Math.random() - 0.5) * 40;
-        noBtn.style.transform = `translate(${randomX}px, ${randomY}px) scale(0.9)`;
-      }
-
-      // 8. tıklamadan sonra Hayır butonu minicik kalsın, Evet tamamen odakta olsun
-      if (noClickCount >= 8) {
-        noBtn.style.opacity = "0.6";
-        noBtn.style.transform = "scale(0.75)";
+        noBtn.style.opacity = "0";
+        noBtn.style.pointerEvents = "none";
       }
 
       // Hafif GIF sallanma animasyonu
@@ -582,22 +596,12 @@
     }
 
     noBtn.addEventListener("click", handleNoClick);
-    noBtn.addEventListener("touchstart", function(e) {
-      // 5. tıklamadan sonra parmak dokunur dokunmaz kaçsın
-      if (noClickCount >= 4) {
-        handleNoClick(e);
-      }
-    }, { passive: false });
 
     // "Evet" Tıklama Mekaniği (Kutlama Ekranı & Konfeti)
     function handleYesClick() {
       AudioEngine.playFanfare();
       if (navigator.vibrate) navigator.vibrate([100, 50, 150]);
-
-      // Konfetiyi başlat
       startConfetti();
-
-      // Kutlama ekranını aç
       celebrationScreen.classList.add("active");
     }
 
@@ -610,7 +614,7 @@
       "Tarihi Çınaraltı'nda Sıcak Çay & Çıtır Simit 🥯",
       "Karaköy'de Fıstıklı Sıcak Baklava & Dondurma 🍨",
       "Sıcak Belçika Çikolatalı Akışkan Sufle 🍫",
-      "Iğdır'da Közde Demlik Çay & Saatlerce Sohbet 🌸",
+      "Közde Demlik Çay & Saatlerce Sohbet 🌸",
       "Buzlu Karamel Latte & Lotus Cheesecake 🍓"
     ];
 
@@ -634,12 +638,21 @@
     // Baştan Başlat
     replayBtn.addEventListener("click", () => {
       noClickCount = 0;
-      yesBtn.style.transform = "scale(1)";
-      yesBtn.style.padding = "0.85rem 2rem";
-      yesBtn.style.fontSize = "1.1rem";
+      yesBtn.style.position = "relative";
+      yesBtn.style.inset = "auto";
+      yesBtn.style.width = "85%";
+      yesBtn.style.height = "auto";
+      yesBtn.style.minHeight = "54px";
+      yesBtn.style.fontSize = "1.15rem";
+      yesBtn.style.borderRadius = "9999px";
+      yesBtn.style.boxShadow = "0 6px 20px var(--green-glow), 0 2px 6px rgba(0, 0, 0, 0.3)";
+      yesText.textContent = "Evet! 🥰";
+
       noBtn.style.transform = "none";
       noBtn.style.opacity = "1";
-      noBtn.querySelector("span").textContent = "Hayır 🙄";
+      noBtn.style.pointerEvents = "auto";
+      noText.textContent = "Hayır 🙄";
+
       celebrationScreen.classList.remove("active");
     });
 
