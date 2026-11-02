@@ -84,46 +84,36 @@ html, body {
   text-align: center;
 }
 
-/* Başlık */
+/* Başlık & Durum */
 .header {
   width: 100%;
-  padding-top: 0.2rem;
-  margin-bottom: 0.2rem;
+  padding-top: 0.5rem;
+  margin-bottom: 0.4rem;
   opacity: 0;
-  transform: translateY(-12px);
+  transform: translateY(-8px);
   animation: fadeInDown 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.3s;
   flex-shrink: 0;
 }
 
 .badge {
   display: inline-block;
-  padding: 0.3rem 0.9rem;
-  font-size: 0.82rem;
+  padding: 0.35rem 1rem;
+  font-size: 0.85rem;
   font-weight: 600;
   letter-spacing: 0.04em;
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 9999px;
   color: #fbcfe8;
-  margin-bottom: 0.4rem;
-}
-
-.title {
-  font-family: 'Playfair Display', Georgia, serif;
-  font-size: 1.95rem;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  color: #ffffff;
-  margin-bottom: 0.25rem;
-  line-height: 1.2;
+  margin-bottom: 0.5rem;
 }
 
 .subtitle {
   font-size: 0.95rem;
   color: #cbd5e1;
   opacity: 0.9;
-  min-height: 1.4rem;
-  transition: opacity 0.6s ease;
+  min-height: 1.5rem;
+  transition: opacity 0.5s ease;
 }
 
 /* Çiçek Sahnesi - Ekrana Göre Tam Esnek (Flex-1) */

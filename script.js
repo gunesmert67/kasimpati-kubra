@@ -195,10 +195,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 320);
 
     clickCount++;
+    const isMobile = window.innerWidth < 480;
 
     if (clickCount === 1) {
       // 1. TIKLAMA: YUKARI KAÇ
-      const isMobile = window.innerWidth < 480;
       const upX = isMobile ? -25 : -35;
       const upY = isMobile ? -110 : -135;
       surpriseBtn.style.transform = `translate(${upX}px, ${upY}px)`;
@@ -206,17 +206,31 @@ document.addEventListener('DOMContentLoaded', () => {
       statusText.textContent = 'Yakalayamazsın ki...';
     } 
     else if (clickCount === 2) {
-      // 2. TIKLAMA: YANA / SAĞA KAÇ
-      const isMobile = window.innerWidth < 480;
-      const sideX = isMobile ? 75 : 110;
-      const sideY = isMobile ? -45 : -55;
+      // 2. TIKLAMA: SAĞA / YUKARI KAÇ
+      const sideX = isMobile ? 80 : 115;
+      const sideY = isMobile ? -65 : -80;
       surpriseBtn.style.transform = `translate(${sideX}px, ${sideY}px)`;
       btnText.textContent = 'Aaa yine kaçtım! 🏃‍♀️💨';
       statusText.textContent = 'Biraz daha hızlı olman lazım...';
     } 
     else if (clickCount === 3) {
-      // 3. TIKLAMA: ALTA KAÇ VE NEREDEYSE ORADA SABİT KAL! (Geri merkeze çekilmez!)
-      const isMobile = window.innerWidth < 480;
+      // 3. TIKLAMA: EKRANIN TAM ORTASINA DOĞRU KAÇ (Çiçeğin ortasına kadar gelir!)
+      const midX = isMobile ? 0 : 10;
+      const midY = isMobile ? -215 : -245;
+      surpriseBtn.style.transform = `translate(${midX}px, ${midY}px)`;
+      btnText.textContent = 'Buradayım baksana! 😜';
+      statusText.textContent = 'Bak çiçeğin yanına geldim...';
+    }
+    else if (clickCount === 4) {
+      // 4. TIKLAMA: SOLA / ORTAYA KAÇ
+      const leftX = isMobile ? -70 : -95;
+      const leftY = isMobile ? -130 : -150;
+      surpriseBtn.style.transform = `translate(${leftX}px, ${leftY}px)`;
+      btnText.textContent = 'Kıl payı kaçırdın! 🤭';
+      statusText.textContent = 'Hadi gayret, çok yaklaştın...';
+    }
+    else if (clickCount === 5) {
+      // 5. TIKLAMA: ALTA KAÇ VE NEREDEYSE ORADA SABİT KAL! (Merkeze çekilmez!)
       const downX = isMobile ? -50 : -70;
       const downY = isMobile ? 35 : 45;
       
@@ -225,8 +239,8 @@ document.addEventListener('DOMContentLoaded', () => {
       btnText.textContent = 'Tamam yakaladın, bas bakalım 💖';
       statusText.textContent = 'Sonunda teslim oldum... 🥰';
     } 
-    else if (clickCount >= 4) {
-      // 4. TIKLAMA: OLDUĞU YERDE BASILIR VE BÜYÜK SÜRPRİZ PATLAR!
+    else if (clickCount >= 6) {
+      // 6. TIKLAMA: OLDUĞU YERDE BASILIR VE BÜYÜK SÜRPRİZ PATLAR!
       triggerFinalSurprise();
     }
   });
