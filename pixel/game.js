@@ -94,21 +94,28 @@ window.addEventListener('DOMContentLoaded', () => {
 
   let activeCharacter = 'kubra';
 
-  charBtnKubra?.addEventListener('click', () => {
+  function selectKubra(e) {
+    if (e) e.stopPropagation();
     activeCharacter = 'kubra';
-    charBtnKubra.classList.add('active');
+    charBtnKubra?.classList.add('active');
     charBtnMert?.classList.remove('active');
     if (hudRoute) hudRoute.textContent = 'IĞDIR ➔ İSTANBUL';
     if (vicDesc) vicDesc.textContent = 'Iğdır - İstanbul arası 1520 km bile bana ulaşmana engel olamadı.';
-  });
+  }
 
-  charBtnMert?.addEventListener('click', () => {
+  function selectMert(e) {
+    if (e) e.stopPropagation();
     activeCharacter = 'mert';
-    charBtnMert.classList.add('active');
+    charBtnMert?.classList.add('active');
     charBtnKubra?.classList.remove('active');
     if (hudRoute) hudRoute.textContent = 'İSTANBUL ➔ IĞDIR';
     if (vicDesc) vicDesc.textContent = 'İstanbul - Iğdır arası 1520 km bile sana gelmeme engel olamaz.';
-  });
+  }
+
+  charBtnKubra?.addEventListener('click', selectKubra);
+  charBtnKubra?.addEventListener('touchstart', selectKubra);
+  charBtnMert?.addEventListener('click', selectMert);
+  charBtnMert?.addEventListener('touchstart', selectMert);
 
   let gameState = 'START';
   let distance = 1520;
@@ -556,38 +563,48 @@ window.addEventListener('DOMContentLoaded', () => {
     }, 700);
   }
 
-  startBtn?.addEventListener('click', () => {
+  function startGame() {
+    if (gameState === 'PLAYING') return;
     initAudio();
     startScreen?.classList.add('hidden');
+    if (startScreen) startScreen.style.display = 'none';
     gameState = 'PLAYING';
     playSound('coin');
+  }
+
+  startBtn?.addEventListener('click', (e) => {
+    if (e) e.stopPropagation();
+    startGame();
+  });
+  startBtn?.addEventListener('touchstart', (e) => {
+    if (e) { e.preventDefault(); e.stopPropagation(); }
+    startGame();
   });
 
-  jumpBtn?.addEventListener('touchstart', (e) => {
-    e.preventDefault();
-    initAudio();
-    player.jump();
-  });
-  jumpBtn?.addEventListener('click', () => {
-    initAudio();
-    player.jump();
+  startScreen?.addEventListener('click', (e) => {
+    if (e.target.closest('.char-btn')) return;
+    startGame();
   });
 
-  canvas.addEventListener('touchstart', (e) => {
-    e.preventDefault();
+  function handleJumpAction(e) {
+    if (e && e.type === 'touchstart') e.preventDefault();
     initAudio();
+    if (gameState === 'START') {
+      startGame();
+    }
     player.jump();
-  });
-  canvas.addEventListener('click', () => {
-    initAudio();
-    player.jump();
-  });
+  }
+
+  jumpBtn?.addEventListener('touchstart', handleJumpAction, { passive: false });
+  jumpBtn?.addEventListener('click', handleJumpAction);
+
+  canvas?.addEventListener('touchstart', handleJumpAction, { passive: false });
+  canvas?.addEventListener('click', handleJumpAction);
 
   window.addEventListener('keydown', (e) => {
-    if (e.code === 'Space' || e.code === 'ArrowUp') {
+    if (e.code === 'Space' || e.code === 'ArrowUp' || e.code === 'Enter') {
       e.preventDefault();
-      initAudio();
-      player.jump();
+      handleJumpAction();
     }
   });
 
@@ -617,7 +634,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
       if (rewardResult) {
         rewardResult.style.display = 'block';
-        rewardResult.innerHTML = '☕🍰 <b>Borç Yazıldı!</b> En lezzetli kahve ve tatlılar Mert\'ten sana söz olsun. Ekran görüntüsünü at ve tahsil et bakalım 😉';
+        rewardResult.innerHTML = "☕🍰 <b>Borç Yazıldı!</b> En lezzetli kahve ve tatlılar Mert'ten sana söz olsun. Ekran görüntüsünü at ve tahsil et bakalım 😉";
       }
     } else {
       if (yesBtn2) {
@@ -630,7 +647,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
       if (rewardResult) {
         rewardResult.style.display = 'block';
-        rewardResult.innerHTML = '🥰💖 <b>Ben de seni çok seviyorum/istiyorum minnoşum!</b> Zaten tamamen seninim... Kahveler ve tatlılar da üstüne bonus olsun! 💕🌸';
+        rewardResult.innerHTML = "🥰💖 <b>Ben de seni çok seviyorum/istiyorum minnoşum!</b> Zaten tamamen seninim... Kahveler ve tatlılar da üstüne bonus olsun! 💕🌸";
       }
     }
   }
