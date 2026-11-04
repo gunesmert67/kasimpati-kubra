@@ -1,0 +1,29 @@
+name: CI & Security Audit
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  audit-and-test:
+    name: Lint, Test & Security Audit
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Validate vercel.json Syntax
+        run: |
+          python -c "import json; json.load(open('vercel.json', 'r', encoding='utf-8')); print('vercel.json is valid JSON')"
+
+      - name: Run Automated Test Suite
+        run: |
+          python -m unittest tests/test_audit.py -v

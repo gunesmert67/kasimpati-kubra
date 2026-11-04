@@ -1,129 +1,134 @@
 # 🌸 Kübra İçin Mini Oyun & Sürprizler Portalı
 
-Bu proje, **Kübra**'ya özel olarak tasarlanmış, modüler mimariye sahip romantik bir mini oyun ve interaktif sürpriz web uygulamasıdır.
+Bu proje, **Kübra**'ya özel olarak tasarlanmış, sıfır harici bağımlılığa sahip ultra hızlı, modüler ve güvenli romantik bir mini oyun ve interaktif sürpriz web portalıdır.
 
 - **Canlı Adres:** [https://kubra.mertgunes.com](https://kubra.mertgunes.com)
-- **Teknoloji:** Saf HTML5, Modern CSS3 (Glassmorphism & Retro Arcade), Vanilla JavaScript (Canvas 2D & Web Audio API). Harici kütüphane veya ağır framework bağımlılığı yoktur; ultra hızlı ve her cihazda anında yüklenir.
+- **Teknoloji Yığını:** Saf HTML5, Modern CSS3 (Glassmorphism & Retro 8-Bit Arcade), Vanilla JavaScript (Canvas 2D & Web Audio API).
+- **Altyapı:** Vercel Edge Network & GitHub Actions CI/CD.
+- **Güvenlik:** Strict CSP, OWASP & CVE güvenlik başlıkları, sıfır harici paket riski.
 
 ---
 
-## 🗺️ Rota ve Modül Haritası
+## 🗺️ Rota ve Bölüm Haritası
 
-| Rota | Modül Adı | Durum | Açıklama |
+| Rota | Bölüm Adı | Durum | Açıklama |
 | :--- | :--- | :--- | :--- |
-| `/` veya `/hub` | **Oyun Portalı (Ana Sayfa)** | 🟢 Canlı | Tüm oyunların ve bölümlerin listelendiği kompakt ana menü. |
-| `/kasimpati` | **1. Bölüm: Kasımpatı Hikayesi** | 🟢 Canlı | Canlı filizlenen kasımpatı, kaçan buton ve kalp sürprizi. |
-| `/pixel` | **2. Bölüm: 1520 KM Retro Oyun** | 🟢 Canlı | 8-Bit piksel runner. Kübra / Mert karakter seçimi, Iğdır-İstanbul mesafesi ve flörtöz bitiş. |
-| `/soru` | **3. Bölüm: Kahve & Tatlı Sözleşmesi** | 🟢 Canlı | TikTok büyüyen Evet / kaçan buton akımı ve date ruleti. |
+| `/` | **Ana Sayfa / Oyun Merkezi** | 🟢 Canlı | Tüm bölümlerin listelendiği kompakt modern cam arayüz. |
+| `/hub` | **Hub Yedek Rotası** | 🟢 Canlı | Ana sayfayla senkronize çalışan doğrudan menü rotası. |
+| `/kasimpati` | **1. Bölüm: Kasımpatı** | 🟢 Canlı | Tohumdan filizlenen SVG kasımpatı, kaçan buton ve kalp kartı. |
+| `/pixel` | **2. Bölüm: Retro 8-Bit** | 🟢 Canlı | İstanbul ➔ Iğdır 8-bit runner. Çoklu dokunmatik kontroller ve flörtöz bitiş. |
+| `/soru` | **3. Bölüm: Küçük Bir Soru** | 🟢 Canlı | Sürekli süzülen kaçak Hayır butonu, üste doğru devleşen Evet ve Date Ruleti. |
+| `/` (Yakında) | **4. Bölüm: Sürpriz** | 🔒 Kilitli | Gelecekte eklenecek yeni sürprizler için rezerve bölüm. |
 
 ---
 
-## 📁 Profesyonel Proje Dizin Yapısı
+## 📁 Detaylı Proje ve Klasör Mimarisi
 
-Tüm modüller birbirini bozmayacak şekilde bağımsız klasörlere (self-contained) ayrılmıştır:
+Her bölüm kendi stilleri ve mantığı ile bağımsız (self-contained) çalışacak şekilde izole edilmiştir:
 
 ```text
 kasimpati-kubra/
-├── index.html              # ANA SAYFA (Artık Oyun Portalı / Hub)
-├── README.md               # Detaylı mimari ve yönetim rehberi
-├── push.bat                # Tek tıkla GitHub & Vercel güncelleme betiği
+├── .github/
+│   └── workflows/
+│       └── ci.yml             # GitHub Actions CI/CD otomatik test ve denetim iş akışı
 │
-├── hub/                    # OYUN PORTALI YEDEĞİ (/hub rotası)
-│   └── index.html          # Kompakt oyun seçim kartları
+├── tests/
+│   └── test_audit.py          # Routing, DOM bağlantıları, JS sözdizimi ve CVE testleri
 │
-├── kasimpati/              # 1. BÖLÜM: KASIMPATI HİKAYESİ
-│   ├── index.html          # /kasimpati rotası
-│   ├── style.css           # Kasımpatıya özel stiller
-│   └── script.js           # SVG büyüme, kaçan buton ve konfeti motoru
+├── vercel.json                # Vercel temiz yönlendirme ve OWASP/CVE güvenlik başlıkları
+├── index.html                 # KÖK ANA SAYFA: Modern Kompakt Oyun Portalı
+├── push.bat                   # Tek tıkla yerel ortamdan GitHub'a pushlama betiği
+├── README.md                  # Kapsamlı mimari ve dokümantasyon rehberi
 │
-├── pixel/                  # 2. BÖLÜM: 1520 KM RETRO PİKSEL OYUNU
-│   ├── index.html          # /pixel rotası (Self-contained arcade kabineti)
-│   ├── style.css           # Arcade retro piksel teması
-│   └── game.js             # Canvas 8-bit motoru, engeller ve flörtöz seçenekler
+├── hub/                       # OYUN PORTALI YEDEĞİ
+│   └── index.html             # /hub rotası (index.html ile birebir senkron)
 │
-└── soru/                   # 3. BÖLÜM: KAHVE & TATLI SÖZLEŞMESİ (TIKTOK KAÇAN BUTON)
-    ├── index.html          # /soru rotası (Dikey büyüyen Evet, replikler, date ruleti)
-    └── images/             # Yerel animasyonlu GIF'ler (ask.gif, yes.gif)
+├── kasimpati/                 # 1. BÖLÜM: KASIMPATI
+│   ├── index.html             # Organik SVG çiçek açma animasyonu & Menü dönüşü
+│   ├── style.css              # Çiçek ve kalp animasyon stilleri
+│   └── script.js              # Çiçek büyüme, 5 adımlı kaçış ve konfeti motoru
+│
+├── pixel/                     # 2. BÖLÜM: RETRO 8-BIT RUNNER
+│   ├── index.html             # 8-bit arcade kabineti ve tam ekran canvas
+│   ├── style.css              # Retro piksel butonlar ve HUD stilleri
+│   └── game.js                # Canvas 2D render, chiptune sesler, çoklu dokunma kontrolü
+│
+└── soru/                      # 3. BÖLÜM: KÜÇÜK BİR SORU (KAHVE & TATLI SÖZLEŞMESİ)
+    ├── index.html             # Sürekli hareket eden Hayır, üste devleşen Evet, Date Ruleti
+    └── images/
+        ├── ask.gif            # Teklif sahnesi sevimli animasyonu
+        └── yes.gif            # Kutlama ve sözleşme sahnesi animasyonu
 ```
 
 ---
 
-## 🎮 Modül Detayları
+## 🎮 Bölüm Detayları ve Mekanikler
 
-### 1. Kasımpatı Sürprizi (`/` ve `/kasimpati`)
-- **Organik Büyüme:** Sayfa açıldığında tohum filizlenir, organik yapraklar uzar ve 3 kademeli taç yapraklar sırayla açılır.
-- **5 Aşamalı Kaçan Buton:**
-  1. Tıklama: `"Kaçtım ki! 😜"`
-  2. Tıklama: `"Yakalayamazsın ki! 🏃‍♀️"`
-  3. Tıklama: `"Hızlı olan kazansın! 💨"`
-  4. Tıklama: `"Son bir kez daha dene! 🌸"`
-  5. Tıklama: Buton pes eder (`"Tamam tamam teslim oldum, bas bakalım! 💖"`) ve sabit kalır.
-- **Final:** 6. tıklamada çiçeğin kalbinden atan büyük bir kalp doğar, konfetiler yağar ve özel sevgi kartı açılır:
-  > *"Sana bayılıyorum yicem minnoşumu 🥰"*
+### 1. Bölüm: Kasımpatı (`/kasimpati`)
+- **Organik Büyüme:** Sayfa açılışında tohum topraktan filizlenir; sap, organik yapraklar ve 3 katmanlı kasımpatı taç yaprakları sırayla doğar.
+- **5 Aşamalı Kaçan Buton:** Tıklandıkça *"Kaçtım ki! 😜"*, *"Yakalayamazsın ki! 🏃‍♀️"*, *"Hızlı olan kazansın! 💨"*, *"Son bir kez daha dene! 🌸"* replikleriyle yer değiştirir; 5. adımda *"Tamam tamam teslim oldum, bas bakalım! 💖"* diyerek durur.
+- **Final:** Ortadan atan büyük bir kalp yükselir, rengarenk konfetiler yağar ve özel not açılır.
 
-### 2. 1520 KM Retro Runner (`/pixel`)
-- **İlişki Uyumu:** İstanbul - Iğdır arası 1520 KM mesafe teması.
-- **Karakter Seçimi:**
-  - **Kübra:** Pembe eşarplı, temiz yüzlü sevimli piksel karakter. Rota: Iğdır ➔ İstanbul.
-  - **Mert:** Siyah saçlı piksel karakter. Rota: İstanbul ➔ Iğdır.
-- **Oyun Mekaniği:**
-  - Zıplayarak uçan kasımpatıları (+10 puan) ve parlayan kalpleri (+25 puan) toplama.
-  - Kuş, kedi ve taş engellerinden kaçınma.
-  - Her zıplama ve toplanan eşya için 8-bit chiptune ses efektleri (Web Audio API).
-- **Final (Fikir 1 - Kahve & Tatlı Borcu):**
-  - Mesafe sıfırlandığında ve hedefe varıldığında:
-  > *"Tebrikler Kübra! 1520 KM bitti ama Mert'e büyük bir kahve & tatlı borcun var! ☕🍰 Borcu tahsil etmek için görüşmeyi kabul ediyor musun?"*
-  - Butona tıklandığında: `"Sözleşme İmzalandı! Mert kahve ve tatlıyı hazırlıyor 🥳"`
+### 2. Bölüm: Retro 8-Bit (`/pixel`)
+- **Hikaye:** İstanbul ile Iğdır arasındaki 1520 KM mesafe teması.
+- **Karakterler:**
+  - **Kübra:** Pembe eşarplı sevimli piksel karakter (Iğdır ➔ İstanbul rotası).
+  - **Mert:** Siyah saçlı piksel karakter (İstanbul ➔ Iğdır rotası).
+- **Kontroller:** İster ekrana dokunulsun, ister **▲ ZIPLA** butonuna, ister klavyede Space/Yukarı Ok tuşlarına basılsın anında başlar ve zıplar.
+- **Kavuşma & Flörtöz Ödül:**
+  - `☕ KAHVE & TATLI`: *"☕🍰 Borç Yazıldı! En lezzetli kahve ve tatlılar Mert'ten sana söz olsun..."*
+  - `💖 SENİ İSTERİM`: *"🥰💖 Ben de seni çok seviyorum/istiyorum minnoşum! Zaten tamamen seninim..."*
 
-### 3. Oyun Portalı (`/hub`)
-- iPhone 14 Pro Max ve mobil ekranlara optimize edilmiş dikey oyun kartı düzeni.
-- Mevcut oyunlara tek dokunuşla geçiş sağlayan butonlar.
-- Yeni eklenecek oyunlar için kilitli `"Yakında Gelecek"` kartları.
+### 3. Bölüm: Küçük Bir Soru (`/soru`)
+- **Sürekli Canlı Hareket (`floatNo`):** Hayır butonu ekranda sürekli süzülür, durduğu yerde bile canlı ve dinamiktir.
+- **Asla Kaybolmayan Hayır (`z-index: 200`):** Evet büyüse bile Hayır onun üstünde kalır, tıklandıkça rastgele güvenli koordinatlara fırlar (*"Kaçtım kii! 😜"*, *"Yakalayamazsın! 🏃‍♀️💨"*, *"Hala kaçıyorum! 🏃‍♀️"*).
+- **Üste Doğru Büyüyen Evet:** `transform-origin: bottom center` ile Evet butonu aşağıya veya Hayır'ın üstüne çökmez; **yukarıya doğru (başlık ve görsele doğru)** devleşir.
+- **İnteraktif Date Ruleti:** Kutlama ekranında buluşmada ilk ne yeneceğini rastgele seçen mini rulet çarkı.
 
 ---
 
-## 🛠️ Gelecekte Yeni Oyun Ekleme Rehberi
+## 🛡️ Güvenlik, CVE ve Kod Kalitesi
 
-Yeni bir oyun (örneğin bir bilgi yarışması: `/quiz`) eklemek istediğinde:
+Proje, OWASP Top 10 ve modern web güvenlik standartlarına göre sertleştirilmiştir:
 
-1. Ana dizinde yeni bir klasör oluştur: `quiz/`
-2. İçine oyun dosyalarını koy: `quiz/index.html` (ve gerekiyorsa `style.css`, `script.js`).
-3. `hub/index.html` dosyasını aç:
-   - `locked-card` olan kartı aktif kart haline getirip linkini `href="/quiz"` yap.
-4. Git'e commit atıp pushla. Vercel otomatik olarak `https://kubra.mertgunes.com/quiz` adresini aktif edecektir!
-
----
-
-## 🔄 Ana Sayfayı Portal (Hub) Yapma Adımı (Zamanı Gelince)
-
-İleride oyun sayısı arttığında ve doğrudan `kubra.mertgunes.com` adresine giren kişinin Kasımpatı yerine **Oyun Merkezi**'ni görmesini istersen sadece şu adımı yapman yeterlidir:
-
-1. `hub/index.html` dosyasının içeriğini kök dizindeki `index.html` dosyasının üzerine kopyala.
-2. Artık `kubra.mertgunes.com` doğrudan Hub olur; Kasımpatı ise `kubra.mertgunes.com/kasimpati` adresinden erişilmeye devam eder!
-*(Şu anda bu düzen hazırlandı ancak mevcut isteğin üzerine ana sayfa Kasımpatı olarak muhafaza edilmektedir).*
+1. **Sıfır Harici Paket Bağımlılığı (Zero-Dependency):**
+   - NPM paketleri üzerinden gelebilecek Supply Chain CVE riskleri tamamen sıfırdır.
+2. **Güvenlik Başlıkları (`vercel.json`):**
+   - `Content-Security-Policy`: Sadece projenin kendi kök dizinine ve güvenli Google Fonts kaynaklarına izin verir.
+   - `X-Content-Type-Options: nosniff`: MIME-sniffing açıklarını engeller.
+   - `X-Frame-Options: SAMEORIGIN`: Clickjacking saldırılarına karşı korur.
+   - `Referrer-Policy: strict-origin-when-cross-origin`: Hassas yönlendirme verilerini gizler.
+   - `Permissions-Policy`: Kamera, mikrofon ve konum erişimlerini tamamen devre dışı bırakır.
+3. **Güvenli DOM Manipülasyonu:**
+   - Dışarıdan veya URL parametrelerinden gelen hiçbir kontrolsüz veri `innerHTML` veya `eval` ile işlenmez.
+4. **Harici Link Güvenliği:**
+   - Tüm harici bağlantılarda `rel="noopener noreferrer"` zorunludur.
 
 ---
 
-## 📱 Cihaz Optimizasyonları
+## 🧪 Otomatik Test Takımı ve CI/CD
 
-- **iPhone 14 Pro Max & iOS:**
-  - `viewport-fit=cover`, `100dvh` (Dynamic Island ve alt home bar çakışmalarını önleyen dinamik viewport).
-  - iOS Safari çift tıklama yakınlaştırma (double-tap zoom) engellendi (`touch-action: manipulation`).
-  - Sayfa kaydırması oyun içi kontrollerle çakışmaz.
-- **Android & Masaüstü:**
-  - Otomatik responsive ölçekleme, klavye (Space / Yukarı Ok) desteği ve dokunmatik zıplama butonu.
-- **Sosyal Medya & WhatsApp:**
-  - Open Graph meta etiketleri yapılandırıldı; link WhatsApp'tan atıldığında özel başlık ve açıklama kartı çıkar.
-
----
-
-## 🚀 Değişiklikleri Canlıya Alma (Push)
-
-Yapılan değişiklikleri GitHub ve Vercel'e göndermek için terminalde çalıştırman gereken komutlar:
+Proje, GitHub Actions üzerinde her push ve pull request'te otomatik olarak çalışan kapsamlı bir test suite'e sahiptir:
 
 ```bash
-git add .
-git commit -m "feat: pro multi-game portal architecture and docs"
-git push origin main
+# Testleri yerel ortamda çalıştırmak için:
+python -m unittest tests/test_audit.py -v
 ```
-Veya klasördeki `push.bat` dosyasına çift tıklayarak tek adımda gönderebilirsin.
+
+### Test Edilen Kriterler:
+- ✅ **TestFileExistence:** Tüm sayfaların ve GIF/CSS varlıklarının mevcudiyeti.
+- ✅ **TestRoutingAndLinks:** Tüm dahili bağlantıların ve rota yönlendirmelerinin doğruluğu.
+- ✅ **TestDomBindings:** JavaScript içindeki tüm `getElementById` referanslarının HTML'de karşılığı olduğu (`null` pointer hatalarına karşı tam koruma).
+- ✅ **TestSyntaxAndSecurity:** `eval()` ve `document.write()` kullanımının engellenmesi, süslü parantez ve tırnak dengesi.
+- ✅ **TestVercelConfiguration:** `vercel.json` geçerliliği ve güvenlik başlıklarının mevcudiyeti.
+- ✅ **TestMobileMetadata:** `viewport-fit=cover`, `100dvh` ve UTF-8 tanımları.
+
+---
+
+## 📱 Cihaz ve Ekran Uyumluluğu
+
+- **iOS / Safari (iPhone 14 Pro Max):**
+  - Dynamic Island ve Safe Area insetleri (`env(safe-area-inset-top)`, `env(safe-area-inset-bottom)`).
+  - `touch-action: manipulation` ile çift tıklama gecikmesi (double-tap delay) engellenmiştir.
+- **Android / Chrome & Masaüstü:**
+  - Responsive esnek layout, klavye ve dokunmatik ekran tam uyumu.
