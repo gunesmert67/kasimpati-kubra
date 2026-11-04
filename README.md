@@ -11,11 +11,10 @@ Bu proje, **Kübra**'ya özel olarak tasarlanmış, modüler mimariye sahip roma
 
 | Rota | Modül Adı | Durum | Açıklama |
 | :--- | :--- | :--- | :--- |
-| `/` | **Kasımpatı (Ana Karşılama)** | 🟢 Canlı | Canlı filizlenen kasımpatı, 5 adımlı kaçan buton ve kalp sürprizi. |
-| `/kasimpati` | **Kasımpatı (Bağımsız Modül)** | 🟢 Canlı | Kasımpatı animasyonunun tamamen kendi klasöründe çalışan bağımsız sürümü. |
-| `/pixel` | **1520 KM Retro Oyun** | 🟢 Canlı | 8-Bit piksel runner. Kübra / Mert karakter seçimi, Iğdır-İstanbul mesafesi ve tatlı/kahve borcu sonu. |
-| `/soru` | **Kahve & Tatlı Sözleşmesi** | 🟢 Canlı | Kaçan buton / Büyüyen Evet TikTok akımı, suçluluk psikolojisi replikleri ve date ruleti. |
-| `/hub` | **Oyun Portalı (Hub)** | 🟢 Hazır | İleride ana sayfa yapılacak olan lüks karanlık tema oyun seçim merkezi. |
+| `/` veya `/hub` | **Oyun Portalı (Ana Sayfa)** | 🟢 Canlı | Tüm oyunların ve bölümlerin listelendiği kompakt ana menü. |
+| `/kasimpati` | **1. Bölüm: Kasımpatı Hikayesi** | 🟢 Canlı | Canlı filizlenen kasımpatı, kaçan buton ve kalp sürprizi. |
+| `/pixel` | **2. Bölüm: 1520 KM Retro Oyun** | 🟢 Canlı | 8-Bit piksel runner. Kübra / Mert karakter seçimi, Iğdır-İstanbul mesafesi ve flörtöz bitiş. |
+| `/soru` | **3. Bölüm: Kahve & Tatlı Sözleşmesi** | 🟢 Canlı | TikTok büyüyen Evet / kaçan buton akımı ve date ruleti. |
 
 ---
 
@@ -25,14 +24,12 @@ Tüm modüller birbirini bozmayacak şekilde bağımsız klasörlere (self-conta
 
 ```text
 kasimpati-kubra/
-├── index.html              # Mevcut ana sayfa (Kasımpatı çiçeği - kesintisiz aktif)
-├── style.css               # Ana sayfa stilleri
-├── script.js               # Ana sayfa dinamik kodları
+├── index.html              # ANA SAYFA (Artık Oyun Portalı / Hub)
 ├── README.md               # Detaylı mimari ve yönetim rehberi
 ├── push.bat                # Tek tıkla GitHub & Vercel güncelleme betiği
 │
-├── hub/                    # GELECEKTEKİ ANA SAYFA (PORTAL)
-│   └── index.html          # /hub rotası - Oyun seçim kartları, parıltılı lüks arayüz
+├── hub/                    # OYUN PORTALI YEDEĞİ (/hub rotası)
+│   └── index.html          # Kompakt oyun seçim kartları
 │
 ├── kasimpati/              # 1. BÖLÜM: KASIMPATI HİKAYESİ
 │   ├── index.html          # /kasimpati rotası
@@ -42,10 +39,10 @@ kasimpati-kubra/
 ├── pixel/                  # 2. BÖLÜM: 1520 KM RETRO PİKSEL OYUNU
 │   ├── index.html          # /pixel rotası (Self-contained arcade kabineti)
 │   ├── style.css           # Arcade retro piksel teması
-│   └── game.js             # Canvas 8-bit motoru, ses sentezleyici ve fizik motoru
+│   └── game.js             # Canvas 8-bit motoru, engeller ve flörtöz seçenekler
 │
 └── soru/                   # 3. BÖLÜM: KAHVE & TATLI SÖZLEŞMESİ (TIKTOK KAÇAN BUTON)
-    ├── index.html          # /soru rotası (Büyüyen Evet, replikler, konfeti, date ruleti)
+    ├── index.html          # /soru rotası (Dikey büyüyen Evet, replikler, date ruleti)
     └── images/             # Yerel animasyonlu GIF'ler (ask.gif, yes.gif)
 ```
 
